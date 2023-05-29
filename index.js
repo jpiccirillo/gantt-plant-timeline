@@ -405,26 +405,17 @@ function Gantt(
   });
 }
 
-function assignRows(
-  data,
-  {
-    start = (d, i) => d.start, // given d in data, return the start of the bar as a date or number
-    end = (d, i) => d.end, // given d in data, return the end of the bar as a date or number
-    xScale = d3.scaleTime(), // Scale used to add padding to bars
-    xPadding = 0, // Padding between bars in pixels.
-    monotonic = false, // If set to true assign an new monotically increasing row to EVERY bar.
-  } = {}
-) {
+function assignRows(data, opts = {}) {
   // Algorithm used to assign bars to lanes.
   const slots = [];
   const findSlot = (slots, barStart, barEnd) => {
     // Add some padding to bars to leave space between them
     // Do comparisons in pixel space for cleaner padding.
-    const barStartPx = Math.round(xScale(barStart));
-    const barEndPaddedPx = Math.round(xScale(barEnd) + xPadding);
+    const barStartPx = Math.round(opts.xScale(barStart));
+    const barEndPaddedPx = Math.round(opts.xScale(barEnd) + opts.xPadding);
 
     for (var i = 0; i < slots.length; i++) {
-      if (slots[i][1] <= barStartPx && !monotonic) {
+      if (slots[i][1] <= barStartPx && !opts.monotonic) {
         slots[i][1] = barEndPaddedPx;
         return slots[i][0];
       }
@@ -435,35 +426,18 @@ function assignRows(
   };
 
   return data
-    .sort((a, b) => Number(start(a)) - Number(start(b))) // Sort by the date.
-    .map((d) => ({ ...d, rowNo: findSlot(slots, start(d), end(d)) }));
+    .sort((a, b) => Number(opts.start(a)) - Number(opts.start(b))) // Sort by the date.
+    .map((d) => ({ ...d, rowNo: findSlot(slots, opts.start(d), opts.end(d)) }));
 }
 
-function assignLanes(
-  data,
-  {
-    start = (d, i) => d.start, // given d in data, return the start of the bar as a date or number
-    end = (d, i) => d.end, // given d in data, return the end of the bar as a date or number
-    lane = (d, i) => 0, // given d in data, return the swim lane it belongs to,
-    xScale = d3.scaleTime(), //padding between rows.
-    xPadding = 0,
-    monotonic = false, // Monotonically increase lane number, dont fill existing lanes with more bars.
-  } = {}
-) {
+function assignLanes(data, options = {}) {
   // Assign rows, but grouped by some keys so that bars are arranged in groups belonging to the same lane.
-  const groups = d3.flatGroup(data, lane);
+  const groups = d3.flatGroup(data, options.lane);
   const newData = [];
   var rowCount = 0;
-  groups.forEach((g, i) => {
-    const [laneName, _groupData] = g;
+  groups.forEach(([laneName, _groupData], i) => {
     // For each group assign rows.
-    const groupData = assignRows(_groupData, {
-      start,
-      end,
-      xScale,
-      xPadding,
-      monotonic,
-    });
+    const groupData = assignRows(_groupData, options);
     groupData.forEach((d) => {
       newData.push({
         ...d,
