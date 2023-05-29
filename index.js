@@ -1,3 +1,12 @@
+function slugify(text) {
+  return text
+    .toString()
+    .toLowerCase()
+    .split(/[^a-z0-9]/)
+    .filter((d) => d)
+    .join("-");
+}
+
 function Gantt(
   _data,
   {
@@ -40,6 +49,7 @@ function Gantt(
     .append("g")
     .attr("class", "gantt__group-axis")
     .attr("transform", `translate(0, ${margin.top})`);
+
   const barsGroup = svg.append("g").attr("class", "gantt__group-bars");
   const lanesGroup = svg.append("g").attr("class", "gantt__group-lanes");
   const referenceLinesGroup = svg
@@ -52,7 +62,6 @@ function Gantt(
   ]);
 
   var y = d3.scaleBand().padding(yPadding).round(true);
-
   function updateReferenceLines(referenceLines) {
     // Update reference lines
     referenceLinesGroup
@@ -71,16 +80,14 @@ function Gantt(
                 [0, height - margin.bottom],
               ])
             )
-            .attr("stroke", (d) => d.color || "darkgrey")
-            .attr("stroke-dasharray", "10,5");
+            .attr("stroke", (d) => d.color || "darkgrey");
+
           g.append("text")
             .text((d) => d.label || "")
             .attr("x", 5)
             .attr("y", height - margin.bottom + 10)
-            .attr("text-anchor", "middle")
-            .attr("dominant-baseline", "bottom")
-            .attr("font-size", "0.75em")
             .attr("fill", (d) => d.color || "darkgrey");
+
           return g;
         },
         (update) => {
@@ -108,19 +115,17 @@ function Gantt(
       );
   }
 
+  function barLength(d, i, shrink = 0.0) {
+    return Math.max(Math.round(x(end(d)) - x(start(d)) - shrink), 0); // Subtract 2 for a pixels gap between every bar.
+  }
+
   function updateBars(_newData, duration = 0) {
     // Persist data|
     _data = _newData;
     // Create x scales using our raw data. Since we need a scale to map it with assignLanes
     const xDomainData = [
-      d3.min([
-        ..._data.map((d) => start(d)),
-        ...referenceLines.map((d) => d.start),
-      ]),
-      d3.max([
-        ..._data.map((d) => end(d)),
-        ...referenceLines.map((d) => d.start),
-      ]),
+      d3.min([..._data.map(start), ...referenceLines.map((d) => d.start)]),
+      d3.max([..._data.map(end), ...referenceLines.map((d) => d.start)]),
     ];
 
     // Update the x domain
@@ -149,10 +154,6 @@ function Gantt(
     const yDomain = [...new Set(data.map((d) => d.rowNo))];
     y.domain(yDomain).range([margin.top, height - margin.bottom]);
 
-    function barLength(d, i, shrink = 0.0) {
-      //   return 10;
-      return Math.max(Math.round(x(end(d)) - x(start(d)) - shrink), 0); // Subtract 2 for a pixels gap between every bar.
-    }
     // Update bars
 
     barsGroup
@@ -175,10 +176,7 @@ function Gantt(
           const rect = g
             .append("rect")
             .attr("height", y.bandwidth())
-            .attr("rx", roundRadius)
             .attr("fill", (d) => color(d))
-            .attr("stroke", "white")
-            .attr("stroke-width", 1)
             .transition()
             .duration(duration)
             .attr("width", (d) => barLength(d));
@@ -188,31 +186,23 @@ function Gantt(
           }
           if (label !== undefined) {
             // Add a clipping path for text
-            const slugify = (text) =>
-              text
-                .toString()
-                .toLowerCase()
-                .split(/[^a-z0-9]/)
-                .filter((d) => d)
-                .join("-");
+
             const clip = g
               .append("clipPath")
               .attr("id", (d, i) => `barclip-${slugify(key(d, i))}`)
               .append("rect")
               .attr("width", (d, i) => barLength(d, i, 4))
-              .attr("height", y.bandwidth())
-              .attr("rx", roundRadius);
+              .attr("height", y.bandwidth());
+
             g.append("text")
               .attr("x", Math.max(roundRadius * 0.75, 5))
               .attr("y", y.bandwidth() / 2)
-              .attr("dominant-baseline", "middle")
               .attr("font-size", d3.min([y.bandwidth() * 0.6, 16]))
-              .attr("fill", "white")
               .attr("visibility", (d) =>
                 barLength(d) >= labelMinWidth ? "visible" : "hidden"
               ) // Hide labels on short bars
               .attr("clip-path", (d, i) => `url(#barclip-${slugify(key(d, i))}`)
-              .text((d) => label(d));
+              .text(label);
           }
           return g;
         },

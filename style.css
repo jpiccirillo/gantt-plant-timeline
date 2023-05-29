@@ -1,0 +1,30 @@
+:root {
+  --radius: 2px;
+}
+
+.gantt {
+  font-family: "Roboto", sans-serif;
+}
+
+.gantt_group-reference-lines g path {
+  stroke-dasharray: 10 5;
+}
+.gantt_group-reference-lines g text {
+  text-anchor: middle;
+  font-size: 0.75em;
+}
+
+.gantt__group-bars g rect {
+  stroke: white;
+  stroke-width: 1;
+  rx: 2px;
+}
+
+.gantt__group-bars g [id^="barclip-"] rect {
+  rx: 2px;
+}
+
+.gantt__group-bars g text {
+  fill: white;
+  dominant-baseline: middle;
+}
