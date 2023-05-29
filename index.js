@@ -31,10 +31,10 @@ function Gantt(
 ) {
   // SETUP
   let width = window.innerWidth - margin.laneGutter;
+  let newHeight = height;
+
   if (svg === undefined)
     svg = d3.create("svg").attr("class", "gantt").attr("width", width);
-
-  if (!fixedRowHeight) svg.attr("height", height);
 
   const axisGroup = createAxisGroup(svg, margin.top);
   const barsGroup = createBarGroup(svg);
@@ -64,14 +64,15 @@ function Gantt(
     margin,
   };
 
-  function updateReferenceLines(referenceLines) {
+  function updateReferenceLines(referenceLines, newHeight) {
+    const refOptions = { ...options, height: newHeight };
     // Update reference lines
     referenceLinesGroup
       .selectAll("g")
       .data(referenceLines)
       .join(
-        (enter) => refLineGroupUtils.enter.apply({ enter, ...options }),
-        (update) => refLineGroupUtils.update.apply({ update, ...options }),
+        (enter) => refLineGroupUtils.enter.apply({ enter, ...refOptions }),
+        (update) => refLineGroupUtils.update.apply({ update, ...refOptions }),
         (exit) => exit.remove()
       );
   }
@@ -102,12 +103,7 @@ function Gantt(
     const nRows = d3.max(data.map((d) => d.laneNo + 1));
 
     // Calculate the height of our chart if not specified exactly.
-    if (fixedRowHeight) {
-      height = rowHeight * nRows + margin.top + margin.bottom;
-      svg.attr("height", height);
-    } else {
-      rowHeight = (height - margin.top - margin.bottom) / nRows;
-    }
+    height = rowHeight * nRows + margin.top + margin.bottom;
 
     // Update the yDomain
     const yDomain = [...new Set(data.map((d) => d.rowNo))];
@@ -145,10 +141,15 @@ function Gantt(
       axisGroup.transition().duration(duration).call(d3.axisTop(x));
     }
     // Update the reference lines, since our axis has adjusted
-    updateReferenceLines(referenceLines);
+    updateReferenceLines(referenceLines, height);
+
+    return { height };
   }
 
   updateBars(_data, 100);
+
+  // When data changes, the # of countries changes too, so update height of the SVG
+  svg.attr("height", newHeight);
 
   return Object.assign(svg.node(), {
     _key: (f) => {
