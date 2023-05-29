@@ -1,6 +1,6 @@
 const config = {
   fixedRowHeight: true,
-  rowHeight: 20,
+  rowHeight: 15,
   height: 500,
   labelMinWidth: 50,
   roundRadius: 2,
@@ -15,24 +15,38 @@ let cm = d3
   .domain([...d3.group(data, (d) => d.exit).keys()])
   .unknown(null);
 
+function format(entry) {
+  entry["Departure date"] = !entry["Departure date"]
+    ? "5/29/2023"
+    : entry["Departure date"];
+
+  return entry;
+}
+
 function chart(config) {
   console.log(data);
   const gantt = Gantt(
-    data.filter((d) =>
-      ["United States of America", "Solomon Islands"].includes(d.countryname)
-    ),
+    data
+      .filter((entry) =>
+        ["Intake date", "Departure date", "Name"].every((requiredKey) => {
+          return Object.keys(entry).includes(requiredKey);
+        })
+      )
+      .map(format),
     {
-      key: (d) => d.obsid,
-      start: (d) => new Date(d.startdate),
-      end: (d) => new Date(d.enddate),
-      lane: (d) => d.countryname,
-      color: (d) => cm(d.exit),
-      label: (d) => d.leader,
+      key: (d) => d.Name.split(" ").join("_") + d.id,
+      start: (d) => new Date(d["Intake date"]),
+      end: (d) => new Date(d["Departure date"]),
+      lane: (d) => d.Name,
+      color: (d) => cm(d.Name.split(" ")[0]),
+      label: (d) => d.Name,
       labelMinWidth: config.labelMinWidth,
-      title: (d) =>
-        `${d.countryname} - ${d.leader} - ${d3.timeFormat("%Y")(
-          new Date(d.startdate)
-        )} to ${d3.timeFormat("%Y")(new Date(d.enddate))}`,
+      title: (d) => {
+        const f = d3.timeFormat("%b %d");
+        return `${f(new Date(d["Intake date"]))} to ${f(
+          new Date(d["Departure date"])
+        )}`;
+      },
       // layout
       //  margin
       //   width: width,
@@ -50,14 +64,20 @@ function chart(config) {
       //   svg
       referenceLines: [
         {
-          start: new Date(1989, 11, 9),
-          label: "Berlin Wall Falls",
-          color: "black",
+          start: new Date(2023, 4, 2),
+          label: "Some plants stolen",
+          color: "indianred",
         },
-        { start: new Date(1939, 9, 1), label: "WWII", color: "black" },
-        { start: new Date(1945, 9, 2), label: "", color: "#555" },
-        { start: new Date(1914, 7, 28), label: "WWI", color: "black" },
-        { start: new Date(1918, 11, 11), label: "", color: "#555" },
+        {
+          start: new Date(2023, 1, 20),
+          label: "Threw plants away when moving",
+          color: "indianred",
+        },
+        {
+          start: new Date(2023, 1, 19),
+          label: "",
+          color: "indianred",
+        },
       ],
     }
   );
@@ -71,9 +91,9 @@ function chart(config) {
 }
 
 let g = chart(config);
-setTimeout(() => {
-  return g.gantt._update().bars(
-    data.filter((d) => ["Cuba", "Croatia"].includes(d.countryname)),
-    1000
-  );
-}, 5000);
+// setTimeout(() => {
+//   return g.gantt._update().bars(
+//     data.filter((d) => ["Cuba", "Croatia"].includes(d.countryname)),
+//     1000
+//   );
+// }, 5000);

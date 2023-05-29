@@ -14,7 +14,6 @@ function Gantt(
     // Chart Config
     margin = { top: 30, right: 20, bottom: 30, left: 20, laneGutter: 120 }, // Standard d3 margin convention, plus an extra bit of space to write lane names.
     // width = 1000, // Width of chart
-    fixedRowHeight = true, // Whether to use a fixed row height, otherwise specify total height and work it out dynamically.
     height = null, // Height of chart. Leave undefined and use rowHeight to have the height determined by the number of lanes required * rowHeight
     rowHeight = 50, // Height of an individual row. Determines the overall chart height if you dont otherwise constrain height.
     roundRadius = 4, // Rounded corner radius for bars.
@@ -43,7 +42,7 @@ function Gantt(
 
   var x = xScale.range([margin.left + margin.laneGutter, width - margin.right]);
 
-  var y = d3.scaleBand().padding(yPadding).round(true);
+  var y = d3.scaleBand().padding(yPadding).paddingOuter(0.5);
 
   function barLength(d, i, shrink = 0.0) {
     return Math.max(Math.round(x(end(d)) - x(start(d)) - shrink), 0); // Subtract 2 for a pixels gap between every bar.
@@ -146,7 +145,7 @@ function Gantt(
     return { height };
   }
 
-  updateBars(_data, 100);
+  newHeight = updateBars(_data, 100).height;
 
   // When data changes, the # of countries changes too, so update height of the SVG
   svg.attr("height", newHeight);

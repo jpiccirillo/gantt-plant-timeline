@@ -90,7 +90,7 @@ const barGroupUtils = {
         .attr("height", y.bandwidth());
 
       g.append("text")
-        .attr("x", Math.max(roundRadius * 0.75, 5))
+        .attr("x", Math.max(roundRadius * 0.35, 5))
         .attr("y", y.bandwidth() / 2)
         .attr("font-size", d3.min([y.bandwidth() * 0.6, 16]))
         .attr("visibility", (d) =>
@@ -175,7 +175,7 @@ const laneGroupUtils = {
     g.append("text")
       .text((d) => d[0])
       .attr("x", margin.left + 5)
-      .attr("y", -5);
+      .attr("y", -2);
 
     return g;
   },

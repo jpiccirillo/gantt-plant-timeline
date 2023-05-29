@@ -11,18 +11,18 @@
 }
 .gantt__group-reference-lines g text {
   text-anchor: middle;
-  font-size: 0.75em;
+  font-size: 0.6em;
 }
 .gantt__group-lanes g text {
   text-anchor: "beginning";
   dominant-baseline: bottom;
-  font-size: 0.75em;
+  font-size: 0.6em;
   fill: grey;
 }
 
 .gantt__group-reference-lines g text {
   text-anchor: middle;
-  font-size: 0.75em;
+  font-size: 0.6em;
 }
 
 .gantt__group-bars g rect {
