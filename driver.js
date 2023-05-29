@@ -48,17 +48,17 @@ function chart(config) {
       xPadding: config.xPadding,
       showAxis: config.showAxis, // Only one of rowHeight or height takes effect based on fixedRowHeight
       //   svg
-      //   referenceLines: [
-      //     {
-      //       start: new Date(1989, 11, 9),
-      //       label: "Berlin Wall Falls",
-      //       color: "black",
-      //     },
-      //     { start: new Date(1939, 9, 1), label: "WWII", color: "black" },
-      //     { start: new Date(1945, 9, 2), label: "", color: "#555" },
-      //     { start: new Date(1914, 7, 28), label: "WWI", color: "black" },
-      //     { start: new Date(1918, 11, 11), label: "", color: "#555" },
-      //   ],
+      referenceLines: [
+        {
+          start: new Date(1989, 11, 9),
+          label: "Berlin Wall Falls",
+          color: "black",
+        },
+        { start: new Date(1939, 9, 1), label: "WWII", color: "black" },
+        { start: new Date(1945, 9, 2), label: "", color: "#555" },
+        { start: new Date(1914, 7, 28), label: "WWI", color: "black" },
+        { start: new Date(1918, 11, 11), label: "", color: "#555" },
+      ],
     }
   );
 

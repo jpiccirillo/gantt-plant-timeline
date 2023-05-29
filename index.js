@@ -1,12 +1,3 @@
-function slugify(text) {
-  return text
-    .toString()
-    .toLowerCase()
-    .split(/[^a-z0-9]/)
-    .filter((d) => d)
-    .join("-");
-}
-
 function Gantt(
   _data,
   {
@@ -28,7 +19,6 @@ function Gantt(
     rowHeight = 50, // Height of an individual row. Determines the overall chart height if you dont otherwise constrain height.
     roundRadius = 4, // Rounded corner radius for bars.
     showLaneBoundaries = true, // Whether to draw dividing lines for swim lanes
-    showLaneLabels = "left", // Whether to label lanes, enter left, right, or false
     xScale = d3.scaleTime(), // Kind of scale to use for the x axis, choose d3.scaleTime for dates, or d3.scaleLinear for numbers as your start and end values.
     xDomain = undefined, // Constrain the x axis by providing a domain to clip it to.
     yPadding = 0.2, // Padding between rows (float from 0-1)
@@ -45,81 +35,50 @@ function Gantt(
     svg = d3.create("svg").attr("class", "gantt").attr("width", width);
 
   if (!fixedRowHeight) svg.attr("height", height);
-  const axisGroup = svg
-    .append("g")
-    .attr("class", "gantt__group-axis")
-    .attr("transform", `translate(0, ${margin.top})`);
 
-  const barsGroup = svg.append("g").attr("class", "gantt__group-bars");
-  const lanesGroup = svg.append("g").attr("class", "gantt__group-lanes");
-  const referenceLinesGroup = svg
-    .append("g")
-    .attr("class", "gantt_group-reference-lines");
+  const axisGroup = createAxisGroup(svg, margin.top);
+  const barsGroup = createBarGroup(svg);
+  const lanesGroup = createLanesGroup(svg);
+  const referenceLinesGroup = createRefLinesGroup(svg);
 
-  var x = xScale.range([
-    margin.left + (showLaneLabels === "left" ? margin.laneGutter : 0),
-    width - margin.right - (showLaneLabels === "right" ? margin.laneGutter : 0),
-  ]);
+  var x = xScale.range([margin.left + margin.laneGutter, width - margin.right]);
 
   var y = d3.scaleBand().padding(yPadding).round(true);
+
+  function barLength(d, i, shrink = 0.0) {
+    return Math.max(Math.round(x(end(d)) - x(start(d)) - shrink), 0); // Subtract 2 for a pixels gap between every bar.
+  }
+
+  const options = {
+    y,
+    x,
+    title,
+    label,
+    width,
+    start,
+    barLength,
+    color,
+    key,
+    roundRadius,
+    labelMinWidth,
+    margin,
+  };
+
   function updateReferenceLines(referenceLines) {
     // Update reference lines
     referenceLinesGroup
       .selectAll("g")
       .data(referenceLines)
       .join(
-        (enter) => {
-          const g = enter
-            .append("g")
-            .attr("transform", (d) => `translate(${x(d.start)}, 0)`);
-          g.append("path")
-            .attr(
-              "d",
-              d3.line()([
-                [0, margin.top],
-                [0, height - margin.bottom],
-              ])
-            )
-            .attr("stroke", (d) => d.color || "darkgrey");
-
-          g.append("text")
-            .text((d) => d.label || "")
-            .attr("x", 5)
-            .attr("y", height - margin.bottom + 10)
-            .attr("fill", (d) => d.color || "darkgrey");
-
-          return g;
-        },
-        (update) => {
-          update.attr("transform", (d) => `translate(${x(d.start)}, 0)`);
-          update
-            .select("path")
-            .attr(
-              "d",
-              d3.line()([
-                [0, margin.top],
-                [0, height - margin.bottom],
-              ])
-            )
-            .attr("stroke", (d) => d.color || "darkgrey");
-          update
-            .select("text")
-            .text((d) => d.label || "")
-            .attr("y", height - margin.bottom + 10)
-            .attr("fill", (d) => d.color || "darkgrey");
-          return update;
-        },
-        (exit) => {
-          exit.remove();
-        }
+        (enter) => refLineGroupUtils.enter.apply({ enter, ...options }),
+        (update) => refLineGroupUtils.update.apply({ update, ...options }),
+        (exit) => exit.remove()
       );
   }
 
-  function barLength(d, i, shrink = 0.0) {
-    return Math.max(Math.round(x(end(d)) - x(start(d)) - shrink), 0); // Subtract 2 for a pixels gap between every bar.
-  }
-
   function updateBars(_newData, duration = 0) {
+    const updateOptions = { ...options, duration };
+
     // Persist data|
     _data = _newData;
     // Create x scales using our raw data. Since we need a scale to map it with assignLanes
@@ -155,95 +114,16 @@ function Gantt(
     y.domain(yDomain).range([margin.top, height - margin.bottom]);
 
     // Update bars
-
     barsGroup
       .selectAll("g")
-      .data(data, (d, i) => key(d, i))
+      .data(data, key)
       .join(
-        (enter) => {
-          const g = enter.append("g");
-          g
-            // It looks nice if we start in the correct y position and scale out
-            .attr("transform", (d) => `translate(${width / 2}, ${y(d.rowNo)})`)
-            .transition()
-            .ease(d3.easeExpOut)
-            .duration(duration)
-            .attr(
-              "transform",
-              (d) => `translate(${x(start(d))}, ${y(d.rowNo)})`
-            );
-
-          const rect = g
-            .append("rect")
-            .attr("height", y.bandwidth())
-            .attr("fill", (d) => color(d))
-            .transition()
-            .duration(duration)
-            .attr("width", (d) => barLength(d));
-
-          if (title !== undefined) {
-            g.append("title").text((d) => title(d));
-          }
-          if (label !== undefined) {
-            // Add a clipping path for text
-
-            const clip = g
-              .append("clipPath")
-              .attr("id", (d, i) => `barclip-${slugify(key(d, i))}`)
-              .append("rect")
-              .attr("width", (d, i) => barLength(d, i, 4))
-              .attr("height", y.bandwidth());
-
-            g.append("text")
-              .attr("x", Math.max(roundRadius * 0.75, 5))
-              .attr("y", y.bandwidth() / 2)
-              .attr("font-size", d3.min([y.bandwidth() * 0.6, 16]))
-              .attr("visibility", (d) =>
-                barLength(d) >= labelMinWidth ? "visible" : "hidden"
-              ) // Hide labels on short bars
-              .attr("clip-path", (d, i) => `url(#barclip-${slugify(key(d, i))}`)
-              .text(label);
-          }
-          return g;
-        },
-        (update) => {
-          update
-            .transition()
-            .duration(duration)
-            .attr("transform", (d) => `translate(${10}, 19})`);
-          update
-            .select("rect")
-            .transition()
-            .duration(duration)
-            .attr("fill", (d) => color(d))
-            .attr("width", (d) => barLength(d))
-            .attr("height", y.bandwidth());
-          if (title !== undefined) {
-            update.select("title").text((d) => title(d));
-          }
-          if (label !== undefined) {
-            update
-              .select("clipPath")
-              .select("rect")
-              .transition()
-              .duration(duration)
-              .attr("width", (d, i) => barLength(d, i, 4))
-              .attr("height", y.bandwidth());
-            update
-              .select("text")
-              .attr("y", y.bandwidth() / 2)
-              .attr("font-size", d3.min([y.bandwidth() * 0.6, 16]))
-              .attr("visibility", (d) =>
-                barLength(d) >= labelMinWidth ? "visible" : "hidden"
-              ) // Hide labels on short bars
-              .text((d) => label(d));
-          }
-          return update;
-        },
-        (exit) => {
-          exit.remove();
-        }
+        (enter) =>
+          barGroupUtils.enter.apply({ enter, duration, ...updateOptions }),
+        (update) => barGroupUtils.update.apply({ update, ...updateOptions }),
+        (exit) => exit.remove()
       );
+
     if (showLaneBoundaries) {
       const lanes = d3.flatRollup(
         data,
@@ -255,64 +135,9 @@ function Gantt(
         .selectAll("g")
         .data(lanes)
         .join(
-          (enter) => {
-            const g = enter
-              .append("g")
-              .attr(
-                "transform",
-                (d) =>
-                  `translate(0, ${
-                    y(d[1]) + y.step() - y.paddingInner() * y.step() * 0.5
-                  })`
-              );
-            g.append("path")
-              .attr(
-                "d",
-                d3.line()([
-                  [margin.left, 0],
-                  [width - margin.right, 0],
-                ])
-              )
-              .attr("stroke", "grey");
-            if (showLaneLabels) {
-              g.append("text")
-                .text((d) => d[0])
-                .attr(
-                  "x",
-                  showLaneLabels === "left"
-                    ? margin.left + 5
-                    : showLaneLabels === "right"
-                    ? width - margin.right - 5
-                    : 0
-                )
-                .attr("y", -5)
-                .attr(
-                  "text-anchor",
-                  showLaneLabels === "left" ? "beginning" : "end"
-                )
-                .attr("dominant-baseline", "bottom")
-                .attr("font-size", "0.75em")
-                .attr("fill", "grey");
-            }
-            return g;
-          },
-          (update) => {
-            update
-              .transition()
-              .duration(duration)
-              .attr(
-                "transform",
-                (d) =>
-                  `translate(0, ${
-                    y(d[1]) + y.step() - y.paddingInner() * y.step() * 0.5
-                  })`
-              );
-            update.select("text").text((d) => d[0]);
-            return update;
-          },
-          (exit) => {
-            exit.remove();
-          }
+          (enter) => laneGroupUtils.enter.apply({ enter, ...updateOptions }),
+          (update) => laneGroupUtils.update.apply({ update, ...updateOptions }),
+          (exit) => exit.remove()
         );
     }
     // Draw axis

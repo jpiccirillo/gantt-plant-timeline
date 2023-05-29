@@ -6,10 +6,21 @@
   font-family: "Roboto", sans-serif;
 }
 
-.gantt_group-reference-lines g path {
+.gantt__group-reference-lines g path {
   stroke-dasharray: 10 5;
 }
-.gantt_group-reference-lines g text {
+.gantt__group-reference-lines g text {
+  text-anchor: middle;
+  font-size: 0.75em;
+}
+.gantt__group-lanes g text {
+  text-anchor: "beginning";
+  dominant-baseline: bottom;
+  font-size: 0.75em;
+  fill: grey;
+}
+
+.gantt__group-reference-lines g text {
   text-anchor: middle;
   font-size: 0.75em;
 }
