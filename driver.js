@@ -16,15 +16,58 @@ let cm = d3
   .unknown(null);
 
 function format(entry) {
-  entry["Departure date"] = !entry["Departure date"]
-    ? "5/29/2023"
-    : entry["Departure date"];
+  entry.name = entry.Name;
+  entry.dates = {};
+  let dateKeys = [
+    { orig: "Departure date", new: "departed" },
+    { orig: "Intake date", new: "intake" },
+    { orig: "Sprouted date", new: "sprouted" },
+    { orig: "Planted date", new: "planted" },
+    { orig: "Water date", new: "inwater" },
+  ];
+  dateKeys.forEach((key) => {
+    if (entry[key.orig].trim())
+      entry.dates[key.new] = new Date(entry[key.orig]);
+  });
 
   return entry;
 }
 
+// Expand a given plant into separate chunks, or horizontal 'bars' for various sections of its lifetime
+function expandEntries(plant) {
+  let sortedArray = Object.entries(plant.dates)
+    .sort((a, b) => a[1] - b[1])
+    .filter(([name]) => name !== "departed");
+
+  let buckets = [];
+
+  for (let i = 0; i < sortedArray.length - 1; i++) {
+    let bucket = {
+      start: sortedArray[i][1],
+      end: sortedArray[i + 1][1],
+      type: sortedArray[i][0],
+      name: plant.name,
+    };
+    buckets.push(bucket);
+  }
+
+  // The last bucket has the same start and end date
+  buckets.push({
+    start: sortedArray[sortedArray.length - 1][1],
+    end: new Date(),
+    type: sortedArray[sortedArray.length - 1][0],
+    name: plant.name,
+  });
+
+  // If departed date is specified, ammend last bucket to end at that date
+  if (plant.dates.departed) {
+    buckets[buckets.length - 1].end = plant.dates.departed;
+  }
+
+  return buckets;
+}
+
 function chart(config) {
-  console.log(data);
   const gantt = Gantt(
     data
       .filter((entry) =>
@@ -32,20 +75,20 @@ function chart(config) {
           return Object.keys(entry).includes(requiredKey);
         })
       )
-      .map(format),
+      .map(format)
+      .map(expandEntries)
+      .flat(),
     {
-      key: (d) => d.Name.split(" ").join("_") + d.id,
-      start: (d) => new Date(d["Intake date"]),
-      end: (d) => new Date(d["Departure date"]),
-      lane: (d) => d.Name,
-      color: (d) => cm(d.Name.split(" ")[0]),
-      label: (d) => d.Name,
+      key: (d) => d.name.split(" ").join("_") + d.start,
+      start: (d) => new Date(d.start),
+      end: (d) => new Date(d.end),
+      lane: (d) => d.name,
+      color: (d) => cm(d.name.split(" ")[0]),
+      label: (d) => d.name,
       labelMinWidth: config.labelMinWidth,
       title: (d) => {
         const f = d3.timeFormat("%b %d");
-        return `${f(new Date(d["Intake date"]))} to ${f(
-          new Date(d["Departure date"])
-        )}`;
+        return `${f(new Date(d.start))} to ${f(new Date(d.end))}`;
       },
       // layout
       //  margin
