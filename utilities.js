@@ -163,7 +163,7 @@ const barGroupUtils = {
 
 const eventGroupUtils = {
   enter: function () {
-    const { enter, x, y, duration, width, start, title } = this;
+    const { enter, x, y, duration, width, start, eventTitle } = this;
 
     const g = enter.append("g");
     g
@@ -184,8 +184,8 @@ const eventGroupUtils = {
       .transition()
       .duration(duration);
 
-    if (title !== undefined) {
-      g.append("title").text((d) => title(d));
+    if (eventTitle !== undefined) {
+      g.append("title").text((d) => eventTitle(d));
     }
 
     return g;

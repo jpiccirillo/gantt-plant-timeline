@@ -122,7 +122,11 @@ function chart(processedData, config) {
     labelMinWidth: config.labelMinWidth,
     title: (d) => {
       const f = d3.timeFormat("%b %d");
-      return `${f(new Date(d.start))} to ${f(new Date(d.end))}`;
+      return `${d.type}, from ${f(new Date(d.start))} to ${f(new Date(d.end))}`;
+    },
+    eventTitle: (d) => {
+      const f = d3.timeFormat("%b %d");
+      return `${d.type}, on ${f(new Date(d.start))}`;
     },
     // layout
     //  margin

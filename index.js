@@ -10,6 +10,7 @@ function Gantt(
     label = undefined, // given d in data, return the label for the bar if desired
     labelMinWidth = 50, // Minimum bar width to allow writing labels on.
     title = undefined, // given d in data, return the title to displayed on hover.
+    eventTitle = undefined,
     layout = assignLanes, // Function to use for layout of bars into lanes and rows. Defaults to assignlanes
     // Chart Config
     margin = { top: 30, right: 20, bottom: 30, left: 20, laneGutter: 120 }, // Standard d3 margin convention, plus an extra bit of space to write lane names.
@@ -53,6 +54,7 @@ function Gantt(
     y,
     x,
     title,
+    eventTitle,
     label,
     width,
     start,
