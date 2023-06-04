@@ -1,6 +1,6 @@
 const config = {
   fixedRowHeight: true,
-  rowHeight: 15,
+  rowHeight: 13,
   height: 500,
   labelMinWidth: 50,
   roundRadius: 2,
@@ -10,23 +10,21 @@ const config = {
   showAxis: true,
 };
 
-let cm = d3
-  .scaleOrdinal(d3.schemeSet2)
-  .domain([...d3.group(data, (d) => d.exit).keys()])
-  .unknown(null);
-
 function format(entry) {
   entry.name = entry.Name;
   entry.dates = {};
+  entry.plantType = entry.name.replace(/[\ \.0-9]/g, "").toLowerCase();
   let dateKeys = [
     { orig: "Departure date", new: "departed" },
     { orig: "Intake date", new: "intake" },
     { orig: "Sprouted date", new: "sprouted" },
     { orig: "Planted date", new: "planted" },
     { orig: "Water date", new: "inwater" },
+    { orig: "Dormant date", new: "dormant" },
+    { orig: "Undormant date", new: "recovered" },
   ];
   dateKeys.forEach((key) => {
-    if (entry[key.orig].trim())
+    if (entry[key.orig] && entry[key.orig].trim())
       entry.dates[key.new] = new Date(entry[key.orig]);
   });
 
@@ -47,6 +45,7 @@ function expandEntries(plant) {
       end: sortedArray[i + 1][1],
       type: sortedArray[i][0],
       name: plant.name,
+      species: plant.plantType,
     };
     buckets.push(bucket);
   }
@@ -57,6 +56,7 @@ function expandEntries(plant) {
     end: new Date(),
     type: sortedArray[sortedArray.length - 1][0],
     name: plant.name,
+    species: plant.plantType,
   });
 
   // If departed date is specified, ammend last bucket to end at that date
@@ -67,63 +67,82 @@ function expandEntries(plant) {
   return buckets;
 }
 
-function chart(config) {
-  const gantt = Gantt(
-    data
-      .filter((entry) =>
-        ["Intake date", "Departure date", "Name"].every((requiredKey) => {
-          return Object.keys(entry).includes(requiredKey);
-        })
-      )
-      .map(format)
-      .map(expandEntries)
-      .flat(),
-    {
-      key: (d) => d.name.split(" ").join("_") + d.start,
-      start: (d) => new Date(d.start),
-      end: (d) => new Date(d.end),
-      lane: (d) => d.name,
-      color: (d) => cm(d.name.split(" ")[0]),
-      label: (d) => d.name,
-      labelMinWidth: config.labelMinWidth,
-      title: (d) => {
-        const f = d3.timeFormat("%b %d");
-        return `${f(new Date(d.start))} to ${f(new Date(d.end))}`;
+function chart(processedData, config) {
+  let cm = (species) => {
+    let map = {
+      mango: "#37031A",
+      avocado: "#6E260E",
+      jackfruit: "#0a481e",
+      pomegranate: "#f2003c",
+      pineapple: "#FEEA63",
+      guava: "#69b562",
+      blueberry: "#464196",
+      medjooldate: "#351E10",
+      serranopepper: "#507002",
+      poblanopepper: "#074304",
+      habanero: "#ff8100",
+      papaya: "#FFB90C",
+      lemon: "#FAFA33",
+      keylime: "#11b502",
+      turmeric: "#8FC128",
+      ginger: "#E5E3A8",
+      tomato: "#EA0001",
+      grapefruit: "#075900",
+      pinklemon: "#F2B4C0",
+      honeytangerine: "#FBBD66",
+      persimmon: "#9FC47F",
+      anaheimpepper: "#72A60A",
+      etrog: "#FFD507",
+      jalapeno: "#629e07",
+    };
+    return map[species];
+  };
+
+  const gantt = Gantt(processedData, {
+    key: (d) => d.name.split(" ").join("_") + d.start,
+    start: (d) => new Date(d.start),
+    end: (d) => new Date(d.end),
+    lane: (d) => d.name,
+    color: (d) => cm(d.species),
+    label: (d) => d.type,
+    labelMinWidth: config.labelMinWidth,
+    title: (d) => {
+      const f = d3.timeFormat("%b %d");
+      return `${f(new Date(d.start))} to ${f(new Date(d.end))}`;
+    },
+    // layout
+    //  margin
+    //   width: width,
+    fixedRowHeight: config.fixedRowHeight,
+    //   height: config.height,
+    rowHeight: config.rowHeight,
+    roundRadius: config.roundRadius,
+    showLaneBoundaries: config.showLaneBoundaries,
+    showLaneLabels: config.showLaneLabels,
+    //   xScale
+    //   xDomain
+    yPadding: config.yPadding,
+    xPadding: config.xPadding,
+    showAxis: config.showAxis, // Only one of rowHeight or height takes effect based on fixedRowHeight
+    //   svg
+    referenceLines: [
+      {
+        start: new Date(2023, 4, 2),
+        label: "Some plants stolen",
+        color: "indianred",
       },
-      // layout
-      //  margin
-      //   width: width,
-      fixedRowHeight: config.fixedRowHeight,
-      //   height: config.height,
-      rowHeight: config.rowHeight,
-      roundRadius: config.roundRadius,
-      showLaneBoundaries: config.showLaneBoundaries,
-      showLaneLabels: config.showLaneLabels,
-      //   xScale
-      //   xDomain
-      yPadding: config.yPadding,
-      xPadding: config.xPadding,
-      showAxis: config.showAxis, // Only one of rowHeight or height takes effect based on fixedRowHeight
-      //   svg
-      referenceLines: [
-        {
-          start: new Date(2023, 4, 2),
-          label: "Some plants stolen",
-          color: "indianred",
-        },
-        {
-          start: new Date(2023, 1, 20),
-          label: "Threw plants away when moving",
-          color: "indianred",
-        },
-        {
-          start: new Date(2023, 1, 19),
-          label: "",
-          color: "indianred",
-        },
-      ],
-    }
-  );
+      {
+        start: new Date(2023, 1, 20),
+        label: "Threw plants away when moving",
+        color: "indianred",
+      },
+      {
+        start: new Date(2023, 1, 19),
+        label: "",
+        color: "indianred",
+      },
+    ],
+  });
 
   const node = d3.create("div").style("overflow", "auto").node();
   node.appendChild(gantt);
@@ -133,10 +152,29 @@ function chart(config) {
   return Object.assign(node, { gantt: gantt });
 }
 
-let g = chart(config);
+const _data = data
+  // .filter((plant) => plant.Name.includes("Lemon"))
+  .filter((entry) =>
+    ["Intake date", "Departure date", "Name"].every((requiredKey) => {
+      return Object.keys(entry).includes(requiredKey);
+    })
+  )
+  .map(format)
+  .map(expandEntries)
+  .flat();
+
+let g = chart(_data, config);
+
 // setTimeout(() => {
-//   return g.gantt._update().bars(
-//     data.filter((d) => ["Cuba", "Croatia"].includes(d.countryname)),
-//     1000
+//   let __data = _data.filter(
+//     (d) =>
+//       d.name.includes("Lemon") ||
+//       d.name.includes("Etrog") ||
+//       d.name.includes("Pineapple") ||
+//       d.name.includes("Avocado") ||
+//       d.name.includes("Mango")
 //   );
-// }, 5000);
+
+//   console.log(__data);
+//   return g.gantt._update().bars(__data, 100);
+// }, 3000);

@@ -142,13 +142,13 @@ function Gantt(
     // Update the reference lines, since our axis has adjusted
     updateReferenceLines(referenceLines, height);
 
+    // When data changes, the # of countries changes too, so update height of the SVG
+    svg.attr("height", height);
+
     return { height };
   }
 
   newHeight = updateBars(_data, 100).height;
-
-  // When data changes, the # of countries changes too, so update height of the SVG
-  svg.attr("height", newHeight);
 
   return Object.assign(svg.node(), {
     _key: (f) => {
@@ -240,9 +240,14 @@ function assignRows(data, opts = {}) {
     return slots.length - 1;
   };
 
-  return data
-    .sort((a, b) => Number(opts.start(a)) - Number(opts.start(b))) // Sort by the date.
-    .map((d) => ({ ...d, rowNo: findSlot(slots, opts.start(d), opts.end(d)) }));
+  return (
+    data
+      // .sort((a, b) => Number(opts.start(a)) - Number(opts.start(b))) // Sort by the date.
+      .map((d) => ({
+        ...d,
+        rowNo: findSlot(slots, opts.start(d), opts.end(d)),
+      }))
+  );
 }
 
 function assignLanes(data, options = {}) {

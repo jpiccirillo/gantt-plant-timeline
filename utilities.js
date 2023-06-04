@@ -69,9 +69,11 @@ const barGroupUtils = {
       .attr("transform", (d) => `translate(${x(start(d))}, ${y(d.rowNo)})`);
 
     const rect = g
+      .attr("class", (d) => d.species)
       .append("rect")
       .attr("height", y.bandwidth())
       .attr("fill", (d) => color(d))
+      .attr("class", (d) => d.type)
       .transition()
       .duration(duration)
       .attr("width", (d) => barLength(d));
@@ -104,6 +106,7 @@ const barGroupUtils = {
   update: function () {
     const {
       update,
+      start,
       duration,
       x,
       y,
