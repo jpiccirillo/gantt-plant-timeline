@@ -78,12 +78,11 @@ const barGroupUtils = {
       .attr("height", y.bandwidth())
       .attr("fill", (d) => color(d))
       .attr("class", (d) => d.type)
-      .transition()
-      .duration(duration)
       .attr("width", (d) => barLength(d));
 
     if (title !== undefined) {
-      g.append("title").text((d) => title(d));
+      rect.attr("data-tippy-content", title);
+      tippy(rect.nodes());
     }
     if (label !== undefined) {
       // Add a clipping path for text
@@ -105,6 +104,7 @@ const barGroupUtils = {
         .attr("clip-path", (d, i) => `url(#barclip-${slugify(key(d, i))}`)
         .text(label);
     }
+    rect.transition().duration(duration);
     return g;
   },
   update: function () {
@@ -116,7 +116,6 @@ const barGroupUtils = {
       y,
       color,
       barLength,
-      title,
       labelMinWidth,
       label,
     } = this;
@@ -132,9 +131,7 @@ const barGroupUtils = {
       .attr("fill", color)
       .attr("width", (d) => barLength(d))
       .attr("height", y.bandwidth());
-    if (title !== undefined) {
-      update.select("title").text(title);
-    }
+
     if (label !== undefined) {
       update
         .select("clipPath")
@@ -149,8 +146,7 @@ const barGroupUtils = {
         .attr("font-size", d3.min([y.bandwidth() * 0.6, 16]))
         .attr("visibility", (d) =>
           barLength(d) >= labelMinWidth ? "visible" : "hidden"
-        ) // Hide labels on short bars
-        .text(label);
+        ); // Hide labels on short bars
     }
     return update;
   },
@@ -180,30 +176,19 @@ const eventGroupUtils = {
       .attr("cx", 0)
       .attr("cy", 6)
       .attr("r", 3)
-      .attr("class", (d) => d.type)
-      .transition()
-      .duration(duration);
+      .attr("class", (d) => d.type);
 
     if (eventTitle !== undefined) {
-      g.append("title").text((d) => eventTitle(d));
+      circle.attr("data-tippy-content", eventTitle);
+      tippy(circle.nodes());
     }
 
+    circle.transition().duration(duration);
     return g;
   },
 
   update: function () {
-    const {
-      update,
-      start,
-      duration,
-      x,
-      y,
-      color,
-      barLength,
-      title,
-      labelMinWidth,
-      label,
-    } = this;
+    const { update, start, duration, x, y } = this;
 
     update
       .transition()
@@ -211,10 +196,6 @@ const eventGroupUtils = {
       .attr("transform", (d) => `translate(${x(start(d))}, ${y(d.rowNo)})`);
 
     update.select("circle").transition().duration(duration);
-
-    if (title !== undefined) {
-      update.select("title").text(title);
-    }
 
     return update;
   },
