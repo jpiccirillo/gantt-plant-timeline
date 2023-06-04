@@ -15,6 +15,10 @@ function createBarGroup(svg) {
   return svg.append("g").attr("class", getClassName("bars"));
 }
 
+function createEventGroup(svg) {
+  return svg.append("g").attr("class", getClassName("events"));
+}
+
 function createLanesGroup(svg) {
   return svg.append("g").attr("class", getClassName("lanes"));
 }
@@ -148,6 +152,70 @@ const barGroupUtils = {
         ) // Hide labels on short bars
         .text(label);
     }
+    return update;
+  },
+  exit: function () {
+    const { exit } = this;
+
+    exit.remove();
+  },
+};
+
+const eventGroupUtils = {
+  enter: function () {
+    const { enter, x, y, duration, width, start, title } = this;
+
+    const g = enter.append("g");
+    g
+      // It looks nice if we start in the correct y position and scale out
+      .attr("transform", (d) => `translate(${width / 2}, ${y(d.rowNo)})`)
+      .transition()
+      .ease(d3.easeExpOut)
+      .duration(duration)
+      .attr("transform", (d) => `translate(${x(start(d))}, ${y(d.rowNo)})`);
+
+    const circle = g
+      .attr("class", (d) => d.species)
+      .append("circle")
+      .attr("cx", 0)
+      .attr("cy", 6)
+      .attr("r", 3)
+      .attr("class", (d) => d.type)
+      .transition()
+      .duration(duration);
+
+    if (title !== undefined) {
+      g.append("title").text((d) => title(d));
+    }
+
+    return g;
+  },
+
+  update: function () {
+    const {
+      update,
+      start,
+      duration,
+      x,
+      y,
+      color,
+      barLength,
+      title,
+      labelMinWidth,
+      label,
+    } = this;
+
+    update
+      .transition()
+      .duration(duration)
+      .attr("transform", (d) => `translate(${x(start(d))}, ${y(d.rowNo)})`);
+
+    update.select("circle").transition().duration(duration);
+
+    if (title !== undefined) {
+      update.select("title").text(title);
+    }
+
     return update;
   },
   exit: function () {

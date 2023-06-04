@@ -31,6 +31,12 @@
   rx: 2px;
 }
 
+.gantt__group-events g circle {
+  stroke: white;
+  stroke-width: 1;
+  opacity: 0.8;
+}
+
 .gantt__group-bars g [id^="barclip-"] rect {
   rx: 2px;
 }

@@ -10,6 +10,8 @@ const config = {
   showAxis: true,
 };
 
+let eventNames = ["departed", "planted", "inwater"];
+
 function format(entry) {
   entry.name = entry.Name;
   entry.dates = {};
@@ -35,7 +37,7 @@ function format(entry) {
 function expandEntries(plant) {
   let sortedArray = Object.entries(plant.dates)
     .sort((a, b) => a[1] - b[1])
-    .filter(([name]) => name !== "departed");
+    .filter(([name]) => !eventNames.includes(name));
 
   let buckets = [];
 
@@ -62,6 +64,18 @@ function expandEntries(plant) {
   // If departed date is specified, ammend last bucket to end at that date
   if (plant.dates.departed) {
     buckets[buckets.length - 1].end = plant.dates.departed;
+  }
+
+  // Now after we've calculated the buckets, add an entry in for planted date
+  for (let event of eventNames) {
+    if (plant.dates[event]) {
+      buckets.push({
+        start: plant.dates[event],
+        type: event,
+        name: plant.name,
+        species: plant.plantType,
+      });
+    }
   }
 
   return buckets;

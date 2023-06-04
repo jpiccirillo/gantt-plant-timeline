@@ -37,6 +37,7 @@ function Gantt(
 
   const axisGroup = createAxisGroup(svg, margin.top);
   const barsGroup = createBarGroup(svg);
+  const eventGroup = createEventGroup(svg);
   const lanesGroup = createLanesGroup(svg);
   const referenceLinesGroup = createRefLinesGroup(svg);
 
@@ -99,19 +100,26 @@ function Gantt(
       xPadding: xPadding,
     });
 
-    const nRows = d3.max(data.map((d) => d.laneNo + 1));
+    let map = {};
+    for (let entry of data) if (!map[entry.name]) map[entry.name] = entry;
 
+    const statusData = data.filter((p) => !eventNames.includes(p.type));
+    const eventData = data
+      .filter((p) => eventNames.includes(p.type))
+      .map((p) => ({ ...p, rowNo: map[p.name].rowNo }));
+
+    const nRows = d3.max(data.map((d) => d.laneNo + 1));
     // Calculate the height of our chart if not specified exactly.
     height = rowHeight * nRows + margin.top + margin.bottom;
 
     // Update the yDomain
-    const yDomain = [...new Set(data.map((d) => d.rowNo))];
+    const yDomain = [...new Set(statusData.map((d) => d.rowNo))];
     y.domain(yDomain).range([margin.top, height - margin.bottom]);
 
     // Update bars
     barsGroup
       .selectAll("g")
-      .data(data, key)
+      .data(statusData, key)
       .join(
         (enter) =>
           barGroupUtils.enter.apply({ enter, duration, ...updateOptions }),
@@ -119,9 +127,19 @@ function Gantt(
         (exit) => exit.remove()
       );
 
+    eventGroup
+      .selectAll("g")
+      .data(eventData, key)
+      .join(
+        (enter) =>
+          eventGroupUtils.enter.apply({ enter, duration, ...updateOptions }),
+        (update) => eventGroupUtils.update.apply({ update, ...updateOptions }),
+        (exit) => exit.remove()
+      );
+
     if (showLaneBoundaries) {
       const lanes = d3.flatRollup(
-        data,
+        statusData,
         (v) => d3.max(v, (d) => d.rowNo),
         (d) => lane(d)
       );
