@@ -1,4 +1,12 @@
 const eventNames = ["departed", "planted", "inwater"];
+const longMonthNames = [
+  "February",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
+];
 
 function Gantt(
   _data,
@@ -162,8 +170,19 @@ function Gantt(
     }
     // Draw axis
     if (showAxis) {
-      axisGroup.transition().duration(duration).call(d3.axisTop(x));
+      axisGroup
+        .transition()
+        .duration(duration)
+        .call(
+          d3.axisTop(x).tickFormat((one) => {
+            const label = x.tickFormat()(one);
+            return longMonthNames.includes(label)
+              ? d3.timeFormat("%b")(one)
+              : label;
+          })
+        );
     }
+
     // Update the reference lines, since our axis has adjusted
     updateReferenceLines(_referenceLines, height);
 
