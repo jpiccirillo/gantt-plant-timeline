@@ -1,0 +1,101 @@
+:root {
+  --radius: 2px;
+}
+
+.gantt {
+  font-family: "Roboto", sans-serif;
+}
+
+.gantt__group-reference-lines g path {
+  stroke-dasharray: 10 5;
+}
+.gantt__group-reference-lines g text {
+  text-anchor: middle;
+  font-size: 0.6em;
+}
+.gantt__group-lanes g text {
+  text-anchor: "beginning";
+  dominant-baseline: bottom;
+  font-size: 0.6em;
+  fill: grey;
+}
+
+.gantt__group-reference-lines g text {
+  text-anchor: middle;
+  font-size: 0.6em;
+}
+
+.gantt__group-bars g rect {
+  stroke: white;
+  stroke-width: 1;
+  rx: 2px;
+}
+
+.gantt__group-events g circle {
+  stroke: white;
+  stroke-width: 1;
+  opacity: 0.8;
+}
+
+.gantt__group-bars g [id^="barclip-"] rect {
+  rx: 2px;
+}
+
+.gantt__group-bars g text {
+  fill: white;
+  dominant-baseline: middle;
+}
+
+.germinating,
+.dormant {
+  opacity: 0.2;
+}
+
+.inwater {
+  opacity: 0.3;
+}
+
+.planted {
+  opacity: 0.5;
+}
+
+.sprouted,
+.recovered {
+  opacity: 1;
+}
+
+.pineapple text,
+.ginger text {
+  fill: rgb(150, 150, 150) !important;
+}
+
+.lemon .germinating ~ text,
+.papaya .germinating ~ text,
+.honeytangerine .germinating ~ text,
+.persimmon .germinating ~ text {
+  fill: rgb(150, 150, 150) !important;
+}
+
+.lemon .dormant ~ text,
+.keylime .dormant ~ text,
+.honeytangerine .dormant ~ text,
+.persimmon .dormant ~ text {
+  fill: rgb(150, 150, 150) !important;
+}
+
+.lemon text,
+.pinklemon text,
+.etrog text,
+.turmeric .germinating ~ text,
+.keylime .germinating ~ text,
+.guava .germinating ~ text,
+.turmeric .dormant ~ text,
+.guava .dormant ~ text,
+.habanero .dormant ~ text,
+.habanero .germinating ~ text,
+.serranopepper .germinating ~ text,
+.serranopepper .dormant ~ text,
+.papaya .dormant ~ text,
+.papaya .planted ~ text {
+  fill: rgb(100, 100, 100) !important;
+}
