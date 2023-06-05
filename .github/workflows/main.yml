@@ -36,6 +36,9 @@ jobs:
       - name: Examine data
         run: ls -la && cat ./processed-data.json
 
+      - name: Clear node_modules
+        run: rm -rf node_modules
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v1
         with:
