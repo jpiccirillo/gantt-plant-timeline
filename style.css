@@ -2,6 +2,10 @@
   --radius: 2px;
 }
 
+body {
+  margin: 0px;
+}
+
 .gantt {
   font-family: "Roboto", sans-serif;
 }

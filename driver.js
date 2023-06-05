@@ -84,11 +84,18 @@ fetch("./processed-data.json")
   .then(furtherCode);
 
 function furtherCode(g) {
-  // g, the gantt object, is available in scope here since promise has resolved
+  // // g, the gantt object, is available in scope here since promise has resolved
   // setTimeout(() => {
   //   fetch("./processed-data.json")
   //     .then((response) => response.json())
-  //     .then((data) => data.filter((plant) => plant.name === "Mango 16"))
-  //     .then((filteredData) => g.gantt._update().bars(filteredData, 100));
+  //     .then((data) =>
+  //       data.filter(
+  //         (plant) => plant.name === "Mango 29" || plant.name === "Mango 31"
+  //       )
+  //     )
+  //     .then((filteredData) => {
+  //       g.gantt._update().referenceLines([], 100);
+  //       g.gantt._update().bars(filteredData, 100);
+  //     });
   // }, 3000);
 }
