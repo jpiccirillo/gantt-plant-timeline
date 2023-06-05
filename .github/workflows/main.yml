@@ -33,6 +33,9 @@ jobs:
       - name: Process data
         run: node preprocessData.js
 
+      - name: Examine data
+        run: ls -la && cat ./processed-data.json
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v1
         with:

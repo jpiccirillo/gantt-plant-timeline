@@ -7,6 +7,7 @@ const csvFilePath = "./original-data.csv";
 csv().fromFile(csvFilePath).then(preprocessData).then(writePreprocessedData);
 
 function writePreprocessedData(contentsObject) {
+  console.log(contentsObject);
   fs.writeFileSync(
     path.resolve(__dirname, `./processed-data.json`),
     JSON.stringify(contentsObject, null, 2)
