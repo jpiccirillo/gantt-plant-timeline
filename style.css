@@ -46,7 +46,7 @@
   dominant-baseline: middle;
 }
 
-.intake,
+.germinating,
 .dormant {
   opacity: 0.2;
 }
@@ -69,10 +69,10 @@
   fill: rgb(150, 150, 150) !important;
 }
 
-.lemon .intake ~ text,
-.papaya .intake ~ text,
-.honeytangerine .intake ~ text,
-.persimmon .intake ~ text {
+.lemon .germinating ~ text,
+.papaya .germinating ~ text,
+.honeytangerine .germinating ~ text,
+.persimmon .germinating ~ text {
   fill: rgb(150, 150, 150) !important;
 }
 
@@ -86,14 +86,14 @@
 .lemon text,
 .pinklemon text,
 .etrog text,
-.turmeric .intake ~ text,
-.keylime .intake ~ text,
-.guava .intake ~ text,
+.turmeric .germinating ~ text,
+.keylime .germinating ~ text,
+.guava .germinating ~ text,
 .turmeric .dormant ~ text,
 .guava .dormant ~ text,
 .habanero .dormant ~ text,
-.habanero .intake ~ text,
-.serranopepper .intake ~ text,
+.habanero .germinating ~ text,
+.serranopepper .germinating ~ text,
 .serranopepper .dormant ~ text,
 .papaya .dormant ~ text,
 .papaya .planted ~ text {

@@ -18,7 +18,7 @@ function format(entry) {
   entry.plantType = entry.name.replace(/[\ \.0-9]/g, "").toLowerCase();
   let dateKeys = [
     { orig: "Departure date", new: "departed" },
-    { orig: "Intake date", new: "intake" },
+    { orig: "Intake date", new: "germinating" },
     { orig: "Sprouted date", new: "sprouted" },
     { orig: "Planted date", new: "planted" },
     { orig: "Water date", new: "inwater" },
@@ -112,6 +112,13 @@ function chart(processedData, config) {
     return map[species];
   };
 
+  const eventLabelMap = {
+    inwater: "Placed in water jar",
+  };
+  const statusLabel = toTitleCase;
+  const eventLabel = (d) =>
+    eventLabelMap[d] ? eventLabelMap[d] : toTitleCase(d);
+
   const gantt = Gantt(processedData, {
     key: (d) => d.name.split(" ").join("_") + d.start,
     start: (d) => new Date(d.start),
@@ -120,15 +127,16 @@ function chart(processedData, config) {
     color: (d) => cm(d.species),
     label: (d) => d.type,
     labelMinWidth: config.labelMinWidth,
+    eventLabel: (d) => eventLabelMap[d],
     title: (d) => {
       const f = d3.timeFormat("%b %d");
-      return `${d.name} - ${d.type} from ${f(new Date(d.start))} to ${f(
-        new Date(d.end)
-      )}`;
+      return `${d.name} - ${statusLabel(d.type)} from ${f(
+        new Date(d.start)
+      )} to ${f(new Date(d.end))}`;
     },
     eventTitle: (d) => {
       const f = d3.timeFormat("%b %d");
-      return `${d.name} - ${d.type} on ${f(new Date(d.start))}`;
+      return `${d.name} - ${eventLabel(d.type)} on ${f(new Date(d.start))}`;
     },
     // layout
     //  margin

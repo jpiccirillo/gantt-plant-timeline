@@ -1,3 +1,7 @@
+function toTitleCase(str) {
+  return `${str[0].toUpperCase()}${str.substr(1)}`;
+}
+
 function slugify(text) {
   return text
     .toString()
