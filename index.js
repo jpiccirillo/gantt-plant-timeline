@@ -32,8 +32,7 @@ function Gantt(
   } = {}
 ) {
   // SETUP
-  let width = window.innerWidth - margin.laneGutter;
-  let newHeight = height;
+  let width = window.innerWidth - margin.right;
 
   if (svg === undefined)
     svg = d3.create("svg").attr("class", "gantt").attr("width", width);
@@ -46,7 +45,7 @@ function Gantt(
 
   var x = xScale.range([margin.left + margin.laneGutter, width - margin.right]);
 
-  var y = d3.scaleBand().padding(yPadding).paddingOuter(0.5);
+  var y = d3.scaleBand().padding(yPadding);
 
   function barLength(d, i, shrink = 0.0) {
     return Math.max(Math.round(x(end(d)) - x(start(d)) - shrink), 0); // Subtract 2 for a pixels gap between every bar.
