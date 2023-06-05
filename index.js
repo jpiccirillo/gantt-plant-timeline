@@ -1,3 +1,5 @@
+const eventNames = ["departed", "planted", "inwater"];
+
 function Gantt(
   _data,
   {

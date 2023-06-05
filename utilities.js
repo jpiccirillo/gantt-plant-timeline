@@ -287,3 +287,33 @@ const refLineGroupUtils = {
     return update;
   },
 };
+
+function cm(species) {
+  let colorMap = {
+    mango: "#37031A",
+    avocado: "#6E260E",
+    jackfruit: "#0a481e",
+    pomegranate: "#f2003c",
+    pineapple: "#FEEA63",
+    guava: "#69b562",
+    blueberry: "#464196",
+    medjooldate: "#351E10",
+    serranopepper: "#507002",
+    poblanopepper: "#074304",
+    habanero: "#ff8100",
+    papaya: "#FFB90C",
+    lemon: "#FAFA33",
+    keylime: "#11b502",
+    turmeric: "#8FC128",
+    ginger: "#E5E3A8",
+    tomato: "#EA0001",
+    grapefruit: "#075900",
+    pinklemon: "#F2B4C0",
+    honeytangerine: "#FBBD66",
+    persimmon: "#9FC47F",
+    anaheimpepper: "#72A60A",
+    etrog: "#FFD507",
+    jalapeno: "#629e07",
+  };
+  return colorMap[species];
+}

@@ -1,0 +1,22 @@
+{
+  "name": "gant-plant-timeline",
+  "version": "1.0.0",
+  "description": "Gantt chart showing lifespan of plants",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jpiccirillo/gantt-plant-timeline.git"
+  },
+  "author": "Jeffrey Piccirillo",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jpiccirillo/gantt-plant-timeline/issues"
+  },
+  "homepage": "https://github.com/jpiccirillo/gantt-plant-timeline#readme",
+  "dependencies": {
+    "csvtojson": "^2.0.10"
+  }
+}
