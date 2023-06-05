@@ -317,3 +317,7 @@ function cm(species) {
   };
   return colorMap[species];
 }
+
+function isMobile() {
+  return window.innerWidth < 500;
+}

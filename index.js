@@ -15,8 +15,6 @@ function Gantt(
     eventTitle = undefined,
     layout = assignLanes, // Function to use for layout of bars into lanes and rows. Defaults to assignlanes
     // Chart Config
-    margin = { top: 30, right: 20, bottom: 30, left: 20, laneGutter: 120 }, // Standard d3 margin convention, plus an extra bit of space to write lane names.
-    // width = 1000, // Width of chart
     height = null, // Height of chart. Leave undefined and use rowHeight to have the height determined by the number of lanes required * rowHeight
     rowHeight = 50, // Height of an individual row. Determines the overall chart height if you dont otherwise constrain height.
     roundRadius = 4, // Rounded corner radius for bars.
@@ -32,6 +30,10 @@ function Gantt(
   } = {}
 ) {
   // SETUP
+  let _referenceLines = referenceLines;
+  let margin = isMobile()
+    ? { top: 30, right: 10, bottom: 30, left: 10, laneGutter: 90 }
+    : { top: 30, right: 20, bottom: 30, left: 20, laneGutter: 120 };
   let width = window.innerWidth - margin.right;
 
   if (svg === undefined)
@@ -78,6 +80,7 @@ function Gantt(
         (update) => refLineGroupUtils.update.apply({ update, ...refOptions }),
         (exit) => exit.remove()
       );
+    _referenceLines = referenceLines;
   }
 
   function updateBars(_newData, duration = 0) {
@@ -87,12 +90,13 @@ function Gantt(
     _data = _newData;
     // Create x scales using our raw data. Since we need a scale to map it with assignLanes
     const xDomainData = [
-      d3.min([..._data.map(start), ...referenceLines.map((d) => d.start)]),
-      d3.max([..._data.map(end), ...referenceLines.map((d) => d.start)]),
+      d3.min([..._data.map(start), ..._referenceLines.map((d) => d.start)]),
+      d3.max([..._data.map(end), ..._referenceLines.map((d) => d.start)]),
     ];
 
     // Update the x domain
-    x.domain(xDomain || xDomainData).nice();
+    x.domain(xDomain || xDomainData);
+    if (!isMobile()) x.nice();
 
     // Map our _data to swim lanes
     const data = layout(_data, {
@@ -161,7 +165,7 @@ function Gantt(
       axisGroup.transition().duration(duration).call(d3.axisTop(x));
     }
     // Update the reference lines, since our axis has adjusted
-    updateReferenceLines(referenceLines, height);
+    updateReferenceLines(_referenceLines, height);
 
     // When data changes, the # of countries changes too, so update height of the SVG
     svg.attr("height", height);
