@@ -1,3 +1,7 @@
+let margin = isMobile()
+  ? { top: 50, right: 10, bottom: 30, left: 10, laneGutter: 90 }
+  : { top: 50, right: 20, bottom: 30, left: 20, laneGutter: 120 };
+
 const config = {
   fixedRowHeight: true,
   rowHeight: 13,
@@ -8,7 +12,32 @@ const config = {
   yPadding: 0.1,
   showLaneLabels: "left",
   showAxis: true,
+  width: getWidth(),
 };
+
+const referenceLines = [
+  {
+    start: new Date(2023, 4, 2),
+    label: "Some plants stolen",
+    color: "indianred",
+  },
+  {
+    start: new Date(2023, 1, 20),
+    label: "Threw plants away when moving",
+    color: "indianred",
+  },
+  {
+    start: new Date(2023, 1, 19),
+    label: "",
+    color: "indianred",
+  },
+];
+
+const DESIRED_UPDATE_TIMEOUT = 100;
+
+function getWidth() {
+  return window.innerWidth - margin.right;
+}
 
 function chart(processedData, config) {
   const eventLabelMap = {
@@ -39,7 +68,7 @@ function chart(processedData, config) {
     },
     // layout
     //  margin
-    //   width: width,
+    width: config.width,
     fixedRowHeight: config.fixedRowHeight,
     //   height: config.height,
     rowHeight: config.rowHeight,
@@ -52,23 +81,7 @@ function chart(processedData, config) {
     xPadding: config.xPadding,
     showAxis: config.showAxis, // Only one of rowHeight or height takes effect based on fixedRowHeight
     //   svg
-    referenceLines: [
-      {
-        start: new Date(2023, 4, 2),
-        label: "Some plants stolen",
-        color: "indianred",
-      },
-      {
-        start: new Date(2023, 1, 20),
-        label: "Threw plants away when moving",
-        color: "indianred",
-      },
-      {
-        start: new Date(2023, 1, 19),
-        label: "",
-        color: "indianred",
-      },
-    ],
+    referenceLines,
   });
 
   const node = d3.create("div").style("overflow", "auto").node();
@@ -78,24 +91,42 @@ function chart(processedData, config) {
   return Object.assign(node, { gantt: gantt });
 }
 
-fetch("./processed-data.json")
-  .then((response) => response.json())
-  .then((data) => chart(data, config))
-  .then(furtherCode);
+// Later this will be hooked up to a typehead or dropdown
+function currentPlantFilter() {
+  return true;
+}
 
+function getDataForCurrentOptions() {
+  return fetch("./processed-data.json")
+    .then((response) => response.json())
+    .then((data) => data.filter(currentPlantFilter));
+}
+
+/**
+ * @returns { Object } g , gantt object to call instance methods on
+ */
+function main() {
+  return getDataForCurrentOptions().then((data) => chart(data, config));
+}
+
+// function
 function furtherCode(g) {
   // // g, the gantt object, is available in scope here since promise has resolved
-  // setTimeout(() => {
-  //   fetch("./processed-data.json")
-  //     .then((response) => response.json())
-  //     .then((data) =>
-  //       data.filter(
-  //         (plant) => plant.name === "Mango 29" || plant.name === "Mango 31"
-  //       )
-  //     )
-  //     .then((filteredData) => {
-  //       g.gantt._update().referenceLines([], 100);
-  //       g.gantt._update().bars(filteredData, 100);
-  //     });
-  // }, 3000);
+  setTimeout(() => {
+    currentPlantFilter = (plant) =>
+      plant.name === "Mango 29" || plant.name === "Mango 31";
+
+    getDataForCurrentOptions().then((filteredData) => {
+      g.gantt._update().referenceLines([], 100);
+      g.gantt._update().bars(filteredData, 100);
+    });
+  }, 3000);
 }
+
+main()
+  .then((g) => {
+    // Gant object is now available in scope
+    registerResize(() => g.gantt._width(getWidth()));
+    return g;
+  })
+  .then(furtherCode);

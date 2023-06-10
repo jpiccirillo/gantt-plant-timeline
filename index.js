@@ -35,14 +35,11 @@ function Gantt(
     svg = undefined, // An existing svg element to insert the resulting content into.
     // Supplemental data.
     referenceLines = [], // Can be an array of {start: Date, label: string, color: string} objects.
+    width,
   } = {}
 ) {
   // SETUP
   let _referenceLines = referenceLines;
-  let margin = isMobile()
-    ? { top: 30, right: 10, bottom: 30, left: 10, laneGutter: 90 }
-    : { top: 30, right: 20, bottom: 30, left: 20, laneGutter: 120 };
-  let width = window.innerWidth - margin.right;
 
   if (svg === undefined)
     svg = d3.create("svg").attr("class", "gantt").attr("width", width);
@@ -53,17 +50,24 @@ function Gantt(
   const lanesGroup = createLanesGroup(svg);
   const referenceLinesGroup = createRefLinesGroup(svg);
 
-  var x = xScale.range([margin.left + margin.laneGutter, width - margin.right]);
-
   var y = d3.scaleBand().padding(yPadding);
 
+  function getXScale() {
+    return xScale.range([
+      margin.left + margin.laneGutter,
+      width - margin.right,
+    ]);
+  }
+
   function barLength(d, i, shrink = 0.0) {
-    return Math.max(Math.round(x(end(d)) - x(start(d)) - shrink), 0); // Subtract 2 for a pixels gap between every bar.
+    return Math.max(
+      Math.round(getXScale()(end(d)) - getXScale()(start(d)) - shrink),
+      0
+    ); // Subtract 2 for a pixels gap between every bar.
   }
 
   const options = {
     y,
-    x,
     title,
     eventTitle,
     label,
@@ -78,7 +82,7 @@ function Gantt(
   };
 
   function updateReferenceLines(referenceLines, newHeight) {
-    const refOptions = { ...options, height: newHeight };
+    const refOptions = { ...options, height: newHeight, x: getXScale() };
     // Update reference lines
     referenceLinesGroup
       .selectAll("g")
@@ -92,8 +96,9 @@ function Gantt(
   }
 
   function updateBars(_newData, duration = 0) {
-    const updateOptions = { ...options, duration };
-
+    const updateOptions = { ...options, duration, width, x: getXScale() };
+    const x = getXScale();
+    // console.log(updateOptions.width, width);
     // Persist data|
     _data = _newData;
     // Create x scales using our raw data. Since we need a scale to map it with assignLanes
@@ -246,6 +251,7 @@ function Gantt(
     _width: (f) => {
       if (f === undefined) return width;
       width = f;
+      d3.select(".gantt").attr("width", width);
       updateBars(_data);
       return width;
     },
