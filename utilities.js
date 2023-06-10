@@ -236,12 +236,20 @@ const laneGroupUtils = {
     return g;
   },
   update: function () {
-    const { update, duration, y } = this;
+    const { update, duration, y, width, margin } = this;
 
     update
       .transition()
       .duration(duration)
       .attr("transform", (d) => `translate(0, ${yLabelTranslation(d, y)})`);
+
+    update.select("path").attr(
+      "d",
+      d3.line()([
+        [margin.left, 0],
+        [width - margin.right, 0],
+      ])
+    );
 
     update.select("text").text((d) => d[0]);
 
@@ -320,4 +328,18 @@ function cm(species) {
 
 function isMobile() {
   return window.innerWidth < 500;
+}
+
+function registerResize(callback) {
+  window.addEventListener("resize", debounce(callback));
+}
+
+// Debounce
+function debounce(func, time) {
+  var time = time || 100; // 100 by default if no param
+  var timer;
+  return function (event) {
+    if (timer) clearTimeout(timer);
+    timer = setTimeout(func, time, event);
+  };
 }
