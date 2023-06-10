@@ -34,8 +34,11 @@ jobs:
       - name: Examine data
         run: ls -la && cat ./processed-data.json
 
-      - name: Clear node_modules
-        run: rm -rf node_modules
+      - name: Move data into subdirectory
+        run: cp ./processed-data.json ./src/data/processed-data.json
+
+      - name: Build app
+        run: npm run build
 
       - name: Deploy 🚀
         uses: JamesIves/github-pages-deploy-action@v4
