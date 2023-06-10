@@ -16,7 +16,7 @@
   },
   "author": "Jeffrey Piccirillo",
   "license": "ISC",
-  "homepage": "https://jpiccirillo.com",
+  "homepage": "https://jpiccirillo.com/gantt-plant-timeline",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
