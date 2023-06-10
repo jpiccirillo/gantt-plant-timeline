@@ -3,7 +3,7 @@ import "../../style/style.css";
 import "../../style/tippy.css";
 import { Gantt } from "./gantt";
 import { isMobile, toTitleCase, registerResize, cm } from "../../utils";
-import data from "../../data/processed-data.json";
+import { useEffect, useRef, useState } from "react";
 
 let margin = isMobile()
   ? { top: 50, right: 10, bottom: 30, left: 10, laneGutter: 90 }
@@ -94,50 +94,25 @@ function chart(processedData, config) {
   return { gantt: gantt };
 }
 
-// Later this will be hooked up to a typehead or dropdown
-function currentPlantFilter() {
-  return true;
-}
+function GanttChart({ data }) {
+  let [g, setG] = useState({});
+  const gantIsSetup = useRef(false);
 
-function getDataForCurrentOptions() {
-  return Promise.resolve(data.filter(currentPlantFilter));
-}
+  useEffect(() => {
+    if (!g.gantt && !gantIsSetup.current) {
+      gantIsSetup.current = true;
+      let _g = chart(data, config);
+      registerResize(() => _g.gantt._width(getWidth()));
+      setG(_g);
+    }
+  }, []);
 
-/**
- * @returns { Object } g , gantt object to call instance methods on
- */
-async function main() {
-  return getDataForCurrentOptions().then(
-    (data) =>
-      new Promise((r, j) => {
-        setTimeout(() => r(chart(data, config)), 500);
-      })
-  );
-}
-
-// function
-function furtherCode(g) {
-  // // g, the gantt object, is available in scope here since promise has resolved
-  setTimeout(() => {
-    currentPlantFilter = (plant) =>
-      plant.name === "Mango 29" || plant.name === "Mango 31";
-
-    getDataForCurrentOptions().then((filteredData) => {
+  useEffect(() => {
+    if (g.gantt) {
       g.gantt._update().referenceLines([], DESIRED_UPDATE_TIMEOUT);
-      g.gantt._update().bars(filteredData, DESIRED_UPDATE_TIMEOUT);
-    });
-  }, 3000);
-}
-
-main()
-  .then((g) => {
-    // Gant object is now available in scope
-    registerResize(() => g.gantt._width(getWidth()));
-    return g;
-  })
-  .then(furtherCode);
-
-function GanttChart() {
+      g.gantt._update().bars(data, DESIRED_UPDATE_TIMEOUT);
+    }
+  }, [data]);
   return <svg className="gantt"></svg>;
 }
 
