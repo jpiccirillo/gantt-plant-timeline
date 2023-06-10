@@ -100,6 +100,7 @@ function GanttChart({ data }) {
       registerResize(() => _g.gantt._width());
       setG(_g);
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -107,7 +108,7 @@ function GanttChart({ data }) {
       g.gantt._update().referenceLines([], DESIRED_UPDATE_TIMEOUT);
       g.gantt._update().bars(data, DESIRED_UPDATE_TIMEOUT);
     }
-  }, [data]);
+  }, [data, g]);
   return <svg className="gantt" id="gantt"></svg>;
 }
 

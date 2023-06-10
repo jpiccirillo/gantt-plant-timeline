@@ -27,7 +27,7 @@ const Sidebar = ({ onSidebarEvent }) => {
       <h3>Show only:</h3>
       <div className="checkboxes-container">
         {checkboxes.map((checkbox) => (
-          <span className="label-input">
+          <span className="label-input" key={`span-${checkbox.id}`}>
             <label key={checkbox.id}>
               <input
                 type="checkbox"
