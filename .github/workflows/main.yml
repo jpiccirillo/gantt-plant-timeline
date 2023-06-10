@@ -29,7 +29,7 @@ jobs:
         run: npm install
 
       - name: Process data
-        run: node preprocessData.js
+        run: npm run preprocess-data
 
       - name: Examine data
         run: ls -la && cat ./processed-data.json
