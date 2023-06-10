@@ -1,6 +1,8 @@
 import GanttChart from "./components/Chart/Chart";
+import Sidebar from "./components/Sidebar/Sidebar";
 import data from "./data/processed-data.json";
 import { useState } from "react";
+import "./style/App.css";
 
 function App() {
   let [parentData, setParentData] = useState(data);
@@ -34,6 +36,7 @@ function App() {
       </button>
       <div id="gantt-wrapper">
         <GanttChart data={parentData} />
+        <Sidebar />
       </div>
     </div>
   );

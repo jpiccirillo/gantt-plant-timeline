@@ -10,6 +10,7 @@ import {
   barGroupUtils,
   laneGroupUtils,
   isMobile,
+  getPxWidth,
 } from "../../utils/";
 
 const eventNames = ["departed", "planted", "inwater"];
@@ -49,14 +50,15 @@ export function Gantt(
     svg = undefined, // An existing svg element to insert the resulting content into.
     // Supplemental data.
     referenceLines = [], // Can be an array of {start: Date, label: string, color: string} objects.
-    width,
     margin,
   } = {}
 ) {
   // SETUP
   let _referenceLines = referenceLines;
 
-  if (svg === undefined) svg = d3.select(".gantt").attr("width", width);
+  svg = d3.select(".gantt").attr("width", "100%");
+
+  let width = getPxWidth(margin);
 
   const axisGroup = createAxisGroup(svg, margin.top);
   const barsGroup = createBarGroup(svg);
@@ -268,10 +270,8 @@ export function Gantt(
       updateBars(_data);
       return height;
     },
-    _width: (f) => {
-      if (f === undefined) return width;
-      width = f;
-      d3.select(".gantt").attr("width", width);
+    _width: () => {
+      width = getPxWidth(margin);
       updateBars(_data);
       return width;
     },

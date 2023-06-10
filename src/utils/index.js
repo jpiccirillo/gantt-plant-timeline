@@ -334,3 +334,7 @@ export function isMobile() {
 export function registerResize(callback) {
   window.addEventListener("resize", debounce(callback));
 }
+
+export function getPxWidth(margin) {
+  return d3.select(".gantt").style("width").split("px")[0] - margin.right;
+}

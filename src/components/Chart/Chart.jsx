@@ -19,7 +19,6 @@ const config = {
   yPadding: 0.1,
   showLaneLabels: "left",
   showAxis: true,
-  width: getWidth(),
 };
 
 const referenceLines = [
@@ -41,10 +40,6 @@ const referenceLines = [
 ];
 
 const DESIRED_UPDATE_TIMEOUT = 100;
-
-function getWidth() {
-  return window.innerWidth - margin.right;
-}
 
 function chart(processedData, config) {
   const eventLabelMap = {
@@ -102,7 +97,7 @@ function GanttChart({ data }) {
     if (!g.gantt && !gantIsSetup.current) {
       gantIsSetup.current = true;
       let _g = chart(data, config);
-      registerResize(() => _g.gantt._width(getWidth()));
+      registerResize(() => _g.gantt._width());
       setG(_g);
     }
   }, []);
@@ -113,7 +108,7 @@ function GanttChart({ data }) {
       g.gantt._update().bars(data, DESIRED_UPDATE_TIMEOUT);
     }
   }, [data]);
-  return <svg className="gantt"></svg>;
+  return <svg className="gantt" id="gantt"></svg>;
 }
 
 export default GanttChart;
