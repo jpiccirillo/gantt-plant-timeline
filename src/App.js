@@ -7,36 +7,24 @@ import "./style/App.css";
 function App() {
   let [parentData, setParentData] = useState(data);
 
-  function toMangoData() {
+  const handleSidebarEvent = (tags) => {
     setParentData(
-      data.filter(
-        (plant) => plant.name === "Mango 29" || plant.name === "Mango 31"
-      )
+      data.filter((plant) => {
+        const validTags = tags.filter((t) => t.checked);
+        return !validTags.length
+          ? true
+          : validTags.find(({ id }) => {
+              return plant.name.toLowerCase().startsWith(id.toLowerCase());
+            });
+      })
     );
-  }
-
-  function toAvocadoData() {
-    setParentData(data.filter((plant) => plant.name.includes("Avocado")));
-  }
-
-  function toPersimmonData() {
-    setParentData(data.filter((plant) => plant.name.includes("Persimmon")));
-  }
+  };
 
   return (
     <div className="App">
-      <button className="App-header" onClick={toMangoData}>
-        Change Data to only mangos
-      </button>
-      <button className="App-header" onClick={toAvocadoData}>
-        Change Data to only avocado
-      </button>
-      <button className="App-header" onClick={toPersimmonData}>
-        Change Data to only persimmon
-      </button>
       <div id="gantt-wrapper">
         <GanttChart data={parentData} />
-        <Sidebar />
+        <Sidebar onSidebarEvent={handleSidebarEvent} />
       </div>
     </div>
   );

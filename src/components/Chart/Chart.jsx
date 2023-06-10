@@ -6,8 +6,8 @@ import { isMobile, toTitleCase, registerResize, cm } from "../../utils";
 import { useEffect, useRef, useState } from "react";
 
 let margin = isMobile()
-  ? { top: 50, right: 10, bottom: 30, left: 10, laneGutter: 90 }
-  : { top: 50, right: 20, bottom: 30, left: 20, laneGutter: 120 };
+  ? { top: 30, right: 10, bottom: 30, left: 10, laneGutter: 90 }
+  : { top: 30, right: 20, bottom: 30, left: 20, laneGutter: 120 };
 
 const config = {
   fixedRowHeight: true,
