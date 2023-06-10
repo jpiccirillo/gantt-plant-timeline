@@ -1,6 +1,13 @@
+import * as d3 from "d3";
+import "../../style/style.css";
+import "../../style/tippy.css";
+import { Gantt } from "./gantt";
+import { isMobile, toTitleCase, registerResize, cm } from "../../utils";
+import { useEffect, useRef, useState } from "react";
+
 let margin = isMobile()
-  ? { top: 50, right: 10, bottom: 30, left: 10, laneGutter: 90 }
-  : { top: 50, right: 20, bottom: 30, left: 20, laneGutter: 120 };
+  ? { top: 30, right: 10, bottom: 30, left: 10, laneGutter: 90 }
+  : { top: 30, right: 20, bottom: 30, left: 20, laneGutter: 120 };
 
 const config = {
   fixedRowHeight: true,
@@ -12,7 +19,6 @@ const config = {
   yPadding: 0.1,
   showLaneLabels: "left",
   showAxis: true,
-  width: getWidth(),
 };
 
 const referenceLines = [
@@ -34,10 +40,6 @@ const referenceLines = [
 ];
 
 const DESIRED_UPDATE_TIMEOUT = 100;
-
-function getWidth() {
-  return window.innerWidth - margin.right;
-}
 
 function chart(processedData, config) {
   const eventLabelMap = {
@@ -67,7 +69,7 @@ function chart(processedData, config) {
       return `${d.name} - ${eventLabel(d.type)} on ${f(new Date(d.start))}`;
     },
     // layout
-    //  margin
+    margin,
     width: config.width,
     fixedRowHeight: config.fixedRowHeight,
     //   height: config.height,
@@ -84,49 +86,29 @@ function chart(processedData, config) {
     referenceLines,
   });
 
-  const node = d3.create("div").style("overflow", "auto").node();
-  node.appendChild(gantt);
-  document.getElementById("body").appendChild(node);
-
-  return Object.assign(node, { gantt: gantt });
+  return { gantt: gantt };
 }
 
-// Later this will be hooked up to a typehead or dropdown
-function currentPlantFilter() {
-  return true;
+function GanttChart({ data }) {
+  let [g, setG] = useState({});
+  const gantIsSetup = useRef(false);
+
+  useEffect(() => {
+    if (!g.gantt && !gantIsSetup.current) {
+      gantIsSetup.current = true;
+      let _g = chart(data, config);
+      registerResize(() => _g.gantt._width());
+      setG(_g);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (g.gantt) {
+      g.gantt._update().referenceLines([], DESIRED_UPDATE_TIMEOUT);
+      g.gantt._update().bars(data, DESIRED_UPDATE_TIMEOUT);
+    }
+  }, [data]);
+  return <svg className="gantt" id="gantt"></svg>;
 }
 
-function getDataForCurrentOptions() {
-  return fetch("./processed-data.json")
-    .then((response) => response.json())
-    .then((data) => data.filter(currentPlantFilter));
-}
-
-/**
- * @returns { Object } g , gantt object to call instance methods on
- */
-function main() {
-  return getDataForCurrentOptions().then((data) => chart(data, config));
-}
-
-// function
-function furtherCode(g) {
-  // // g, the gantt object, is available in scope here since promise has resolved
-  setTimeout(() => {
-    currentPlantFilter = (plant) =>
-      plant.name === "Mango 29" || plant.name === "Mango 31";
-
-    getDataForCurrentOptions().then((filteredData) => {
-      g.gantt._update().referenceLines([], 100);
-      g.gantt._update().bars(filteredData, 100);
-    });
-  }, 3000);
-}
-
-main()
-  .then((g) => {
-    // Gant object is now available in scope
-    registerResize(() => g.gantt._width(getWidth()));
-    return g;
-  })
-  .then(furtherCode);
+export default GanttChart;

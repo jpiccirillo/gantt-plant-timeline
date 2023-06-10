@@ -1,8 +1,25 @@
-function toTitleCase(str) {
+import * as d3 from "d3";
+import tippy from "tippy.js";
+import "tippy.js/dist/tippy.css";
+
+// Debounce
+function debounce(func, time = 100) {
+  var timer;
+  return function (event) {
+    if (timer) clearTimeout(timer);
+    timer = setTimeout(func, time, event);
+  };
+}
+
+function getClassName(suffix) {
+  return `gantt__group-${suffix}`;
+}
+
+export function toTitleCase(str) {
   return `${str[0].toUpperCase()}${str.substr(1)}`;
 }
 
-function slugify(text) {
+export function slugify(text) {
   return text
     .toString()
     .toLowerCase()
@@ -11,45 +28,41 @@ function slugify(text) {
     .join("-");
 }
 
-function getClassName(suffix) {
-  return `gantt__group-${suffix}`;
-}
-
-function createBarGroup(svg) {
+export function createBarGroup(svg) {
   return svg.append("g").attr("class", getClassName("bars"));
 }
 
-function createEventGroup(svg) {
+export function createEventGroup(svg) {
   return svg.append("g").attr("class", getClassName("events"));
 }
 
-function createLanesGroup(svg) {
+export function createLanesGroup(svg) {
   return svg.append("g").attr("class", getClassName("lanes"));
 }
 
-function createAxisGroup(svg, topMargin) {
+export function createAxisGroup(svg, topMargin) {
   return svg
     .append("g")
     .attr("class", getClassName("axis"))
     .attr("transform", `translate(0, ${topMargin})`);
 }
 
-function createRefLinesGroup(svg) {
+export function createRefLinesGroup(svg) {
   return svg.append("g").attr("class", getClassName("reference-lines"));
 }
 
-function yLabelTranslation(d, y) {
+export function yLabelTranslation(d, y) {
   return y(d[1]) + y.step() - y.paddingInner() * y.step() * 0.5;
 }
 
-function generateD3Line({ top, bottom }, height) {
+export function generateD3Line({ top, bottom }, height) {
   return d3.line()([
     [0, top],
     [0, height - bottom],
   ]);
 }
 
-const barGroupUtils = {
+export const barGroupUtils = {
   enter: function () {
     const {
       enter,
@@ -91,8 +104,7 @@ const barGroupUtils = {
     if (label !== undefined) {
       // Add a clipping path for text
 
-      const clip = g
-        .append("clipPath")
+      g.append("clipPath")
         .attr("id", (d, i) => `barclip-${slugify(key(d, i))}`)
         .append("rect")
         .attr("width", (d, i) => barLength(d, i, 4))
@@ -154,14 +166,9 @@ const barGroupUtils = {
     }
     return update;
   },
-  exit: function () {
-    const { exit } = this;
-
-    exit.remove();
-  },
 };
 
-const eventGroupUtils = {
+export const eventGroupUtils = {
   enter: function () {
     const { enter, x, y, duration, width, start, eventTitle } = this;
 
@@ -190,7 +197,6 @@ const eventGroupUtils = {
     circle.transition().duration(duration);
     return g;
   },
-
   update: function () {
     const { update, start, duration, x, y } = this;
 
@@ -203,14 +209,9 @@ const eventGroupUtils = {
 
     return update;
   },
-  exit: function () {
-    const { exit } = this;
-
-    exit.remove();
-  },
 };
 
-const laneGroupUtils = {
+export const laneGroupUtils = {
   enter: function () {
     const { enter, y, width, margin } = this;
 
@@ -257,7 +258,7 @@ const laneGroupUtils = {
   },
 };
 
-const refLineGroupUtils = {
+export const refLineGroupUtils = {
   enter: function () {
     const { enter, x, margin, height } = this;
 
@@ -296,7 +297,7 @@ const refLineGroupUtils = {
   },
 };
 
-function cm(species) {
+export function cm(species) {
   let colorMap = {
     mango: "#37031A",
     avocado: "#6E260E",
@@ -326,20 +327,14 @@ function cm(species) {
   return colorMap[species];
 }
 
-function isMobile() {
+export function isMobile() {
   return window.innerWidth < 500;
 }
 
-function registerResize(callback) {
+export function registerResize(callback) {
   window.addEventListener("resize", debounce(callback));
 }
 
-// Debounce
-function debounce(func, time) {
-  var time = time || 100; // 100 by default if no param
-  var timer;
-  return function (event) {
-    if (timer) clearTimeout(timer);
-    timer = setTimeout(func, time, event);
-  };
+export function getPxWidth(margin) {
+  return d3.select(".gantt").style("width").split("px")[0] - margin.right;
 }

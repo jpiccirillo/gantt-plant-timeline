@@ -1,0 +1,19 @@
+#gantt-wrapper {
+  display: grid;
+  grid-template-columns: 4fr 1fr;
+  grid-gap: 10px;
+  padding: 10px;
+  margin-top: 10px;
+}
+
+@media only screen and (max-width: 500px) {
+  #gantt-wrapper {
+    grid-template-columns: 1fr;
+  }
+  .sidebar {
+    order: 1;
+  }
+  .gantt {
+    order: 2;
+  }
+}

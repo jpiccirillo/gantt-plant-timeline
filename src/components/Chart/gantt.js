@@ -1,3 +1,18 @@
+import * as d3 from "d3";
+import {
+  createRefLinesGroup,
+  createEventGroup,
+  createBarGroup,
+  createAxisGroup,
+  createLanesGroup,
+  refLineGroupUtils,
+  eventGroupUtils,
+  barGroupUtils,
+  laneGroupUtils,
+  isMobile,
+  getPxWidth,
+} from "../../utils/";
+
 const eventNames = ["departed", "planted", "inwater"];
 const longMonthNames = [
   "February",
@@ -8,7 +23,7 @@ const longMonthNames = [
   "December",
 ];
 
-function Gantt(
+export function Gantt(
   _data,
   {
     // Data Accessors
@@ -35,14 +50,15 @@ function Gantt(
     svg = undefined, // An existing svg element to insert the resulting content into.
     // Supplemental data.
     referenceLines = [], // Can be an array of {start: Date, label: string, color: string} objects.
-    width,
+    margin,
   } = {}
 ) {
   // SETUP
   let _referenceLines = referenceLines;
 
-  if (svg === undefined)
-    svg = d3.create("svg").attr("class", "gantt").attr("width", width);
+  svg = d3.select(".gantt").attr("width", "100%");
+
+  let width = getPxWidth(margin);
 
   const axisGroup = createAxisGroup(svg, margin.top);
   const barsGroup = createBarGroup(svg);
@@ -203,7 +219,7 @@ function Gantt(
     return { height };
   }
 
-  newHeight = updateBars(_data, 100).height;
+  updateBars(_data, 100);
 
   return Object.assign(svg.node(), {
     _key: (f) => {
@@ -254,10 +270,8 @@ function Gantt(
       updateBars(_data);
       return height;
     },
-    _width: (f) => {
-      if (f === undefined) return width;
-      width = f;
-      d3.select(".gantt").attr("width", width);
+    _width: () => {
+      width = getPxWidth(margin);
       updateBars(_data);
       return width;
     },
@@ -268,7 +282,7 @@ function Gantt(
       return margin;
     },
     _scales: () => {
-      return { x, y };
+      return { x: getXScale(), y };
     },
     _update: () => {
       return { bars: updateBars, referenceLines: updateReferenceLines };
