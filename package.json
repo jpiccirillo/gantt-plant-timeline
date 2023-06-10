@@ -16,6 +16,7 @@
   },
   "author": "Jeffrey Piccirillo",
   "license": "ISC",
+  "homepage": "https://jpiccirillo.com",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
