@@ -185,7 +185,13 @@ function Gantt(
               ? d3.timeFormat("%b")(one)
               : label;
           })
-        );
+        )
+        .selectAll("text")
+        .attr("y", -5)
+        .attr("x", 5)
+        .attr("dx", ".35em")
+        .attr("transform", "rotate(-45)")
+        .style("text-anchor", "start");
     }
 
     // Update the reference lines, since our axis has adjusted
