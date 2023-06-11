@@ -1,6 +1,8 @@
 import GanttChart from "./components/Chart/Chart";
+import LegendOverview from "./components/LegendOverview/LegendOverview";
 import Sidebar from "./components/Sidebar/Sidebar";
 import data from "./data/processed-data.json";
+import exampleData from "./data/example-data.json";
 import { useState } from "react";
 import "./style/App.css";
 import "tippy.js/dist/tippy.css";
@@ -50,12 +52,12 @@ function App() {
     );
 
     const chartData = matchingPlants.length ? matchingPlants : data;
-    // Remove duplicates
     setParentData(chartData);
   };
 
   return (
     <div className="App">
+      <LegendOverview data={exampleData} />
       <div id="gantt-wrapper">
         <GanttChart data={parentData} />
         <Sidebar onChoicesChanged={handleCheckboxChange} />

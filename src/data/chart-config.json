@@ -1,0 +1,11 @@
+{
+  "fixedRowHeight": true,
+  "rowHeight": 13,
+  "height": 500,
+  "labelMinWidth": 50,
+  "roundRadius": 2,
+  "xPadding": 0,
+  "yPadding": 0.1,
+  "showLaneLabels": "left",
+  "showAxis": true
+}

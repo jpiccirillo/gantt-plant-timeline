@@ -1,0 +1,47 @@
+[
+  {
+    "start": "2022-09-01T05:00:00.000Z",
+    "end": "2022-10-01T05:00:00.000Z",
+    "type": "germinating",
+    "name": "Plant 1",
+    "species": "serranopepper"
+  },
+  {
+    "start": "2022-10-01T05:00:00.000Z",
+    "end": "2022-12-01T06:00:00.000Z",
+    "type": "sprouted",
+    "name": "Plant 1",
+    "species": "serranopepper"
+  },
+  {
+    "start": "2022-12-01T06:00:00.000Z",
+    "end": "2023-01-10T06:00:00.000Z",
+    "type": "dormant",
+    "name": "Plant 1",
+    "species": "serranopepper"
+  },
+  {
+    "start": "2023-01-01T06:00:00.000Z",
+    "type": "departed",
+    "name": "Plant 1",
+    "species": "serranopepper"
+  },
+  {
+    "start": "2022-11-12T06:00:00.000Z",
+    "type": "leaves losing color",
+    "name": "Plant 1",
+    "species": "serranopepper"
+  },
+  {
+    "start": "2022-11-29T06:00:00.000Z",
+    "type": "accidentally left out in cold evening",
+    "name": "Plant 1",
+    "species": "serranopepper"
+  },
+  {
+    "start": "2022-09-10T05:00:00.000Z",
+    "type": "planted",
+    "name": "Plant 1",
+    "species": "serranopepper"
+  }
+]

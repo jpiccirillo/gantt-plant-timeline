@@ -13,7 +13,6 @@ import {
   getPxWidth,
 } from "../../utils/";
 
-const eventNames = ["departed", "planted", "inwater"];
 const longMonthNames = [
   "February",
   "August",
@@ -47,7 +46,7 @@ export function Gantt(
     yPadding = 0.2, // Padding between rows (float from 0-1)
     xPadding = 5, // Padding between bars in the same row (pixels)
     showAxis = true,
-    svg = undefined, // An existing svg element to insert the resulting content into.
+    svgID, // An existing svg element to insert the resulting content into.
     // Supplemental data.
     referenceLines = [], // Can be an array of {start: Date, label: string, color: string} objects.
     margin,
@@ -55,10 +54,8 @@ export function Gantt(
 ) {
   // SETUP
   let _referenceLines = referenceLines;
-
-  svg = d3.select(".gantt").attr("width", "100%");
-
-  let width = getPxWidth(margin);
+  let svg = d3.select(`#${svgID}`).attr("width", "100%");
+  let width = getPxWidth(margin, svgID);
 
   const axisGroup = createAxisGroup(svg, margin.top);
   const barsGroup = createBarGroup(svg);
@@ -114,7 +111,6 @@ export function Gantt(
   function updateBars(_newData, duration = 0) {
     const updateOptions = { ...options, duration, width, x: getXScale() };
     const x = getXScale();
-    // console.log(updateOptions.width, width);
     // Persist data|
     _data = _newData;
     // Create x scales using our raw data. Since we need a scale to map it with assignLanes
@@ -139,9 +135,9 @@ export function Gantt(
     let map = {};
     for (let entry of data) if (!map[entry.name]) map[entry.name] = entry;
 
-    const statusData = data.filter((p) => !eventNames.includes(p.type));
+    const statusData = data.filter((p) => p.end);
     const eventData = data
-      .filter((p) => eventNames.includes(p.type))
+      .filter((p) => !p.end)
       .map((p) => ({ ...p, rowNo: map[p.name].rowNo }));
 
     const nRows = d3.max(data.map((d) => d.laneNo + 1));
@@ -271,7 +267,7 @@ export function Gantt(
       return height;
     },
     _width: () => {
-      width = getPxWidth(margin);
+      width = getPxWidth(margin, svgID);
       updateBars(_data);
       return width;
     },

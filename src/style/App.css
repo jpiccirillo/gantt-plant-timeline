@@ -1,8 +1,11 @@
+.App {
+  padding: 20px;
+}
+
 #gantt-wrapper {
   display: grid;
   grid-template-columns: 4fr 1fr;
   grid-gap: 10px;
-  padding: 10px;
   margin-top: 10px;
 }
 
@@ -15,5 +18,8 @@
   }
   .gantt {
     order: 2;
+  }
+  .App {
+    padding: 10px;
   }
 }

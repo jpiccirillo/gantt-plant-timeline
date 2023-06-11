@@ -48,7 +48,6 @@ const Sidebar = ({ onChoicesChanged }) => {
       const newState = prevState.map((checkbox) =>
         checkbox.id === name ? { ...checkbox, checked } : checkbox
       );
-      console.log(newState);
       onChoicesChanged([...newState, ...multiSelections]);
       return newState;
     });
@@ -65,8 +64,8 @@ const Sidebar = ({ onChoicesChanged }) => {
 
   return (
     <div className="sidebar">
-      <h4>Select plants:</h4>
-      <div class="plant-selector">
+      <h4>Select specific plants:</h4>
+      <div className="plant-selector">
         <Typeahead
           id="basic-typeahead-multiple"
           labelKey="name"

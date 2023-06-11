@@ -356,10 +356,18 @@ export function isMobile() {
   return window.innerWidth < 500;
 }
 
+export function getMargin() {
+  return isMobile()
+    ? { top: 50, right: 10, bottom: 30, left: 0, laneGutter: 90 }
+    : { top: 50, right: 10, bottom: 30, left: 0, laneGutter: 120 };
+}
+
 export function registerResize(callback) {
   window.addEventListener("resize", debounce(callback));
 }
 
-export function getPxWidth(margin) {
-  return d3.select(".gantt").style("width").split("px")[0] - margin.right;
+export function getPxWidth(margin, IDselector) {
+  return (
+    d3.select(`#${IDselector}`).style("width").split("px")[0] - margin.right
+  );
 }

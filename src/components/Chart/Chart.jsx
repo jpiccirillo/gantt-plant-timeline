@@ -2,24 +2,10 @@ import * as d3 from "d3";
 import "../../style/style.css";
 import "../../style/tippy.css";
 import { Gantt } from "./gantt";
-import { isMobile, toTitleCase, registerResize, cm } from "../../utils";
+import { getMargin, toTitleCase, registerResize, cm } from "../../utils";
+import config from "../../data/chart-config.json";
+import eventLabelMap from "../../data/event-map-config.json";
 import { useEffect, useRef, useState } from "react";
-
-let margin = isMobile()
-  ? { top: 50, right: 10, bottom: 30, left: 0, laneGutter: 90 }
-  : { top: 50, right: 10, bottom: 30, left: 0, laneGutter: 120 };
-
-const config = {
-  fixedRowHeight: true,
-  rowHeight: 13,
-  height: 500,
-  labelMinWidth: 50,
-  roundRadius: 2,
-  xPadding: 0,
-  yPadding: 0.1,
-  showLaneLabels: "left",
-  showAxis: true,
-};
 
 const referenceLines = [
   {
@@ -42,9 +28,6 @@ const referenceLines = [
 const DESIRED_UPDATE_TIMEOUT = 100;
 
 function chart(processedData, config) {
-  const eventLabelMap = {
-    inwater: "Placed in water jar",
-  };
   const statusLabel = toTitleCase;
   const eventLabel = (d) =>
     eventLabelMap[d] ? eventLabelMap[d] : toTitleCase(d);
@@ -56,7 +39,6 @@ function chart(processedData, config) {
     lane: (d) => d.name,
     color: (d) => cm(d.species),
     label: (d) => d.type,
-    labelMinWidth: config.labelMinWidth,
     eventLabel: (d) => eventLabelMap[d],
     title: (d) => {
       const f = d3.timeFormat("%b %d");
@@ -69,21 +51,10 @@ function chart(processedData, config) {
       return `${d.name} - ${eventLabel(d.type)} on ${f(new Date(d.start))}`;
     },
     // layout
-    margin,
-    width: config.width,
-    fixedRowHeight: config.fixedRowHeight,
-    //   height: config.height,
-    rowHeight: config.rowHeight,
-    roundRadius: config.roundRadius,
-    showLaneBoundaries: config.showLaneBoundaries,
-    showLaneLabels: config.showLaneLabels,
-    //   xScale
-    //   xDomain
-    yPadding: config.yPadding,
-    xPadding: config.xPadding,
-    showAxis: config.showAxis, // Only one of rowHeight or height takes effect based on fixedRowHeight
-    //   svg
+    margin: getMargin(),
+    svgID: "gantt",
     referenceLines,
+    ...config,
   });
 
   return { gantt: gantt };
