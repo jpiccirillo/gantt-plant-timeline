@@ -1,15 +1,46 @@
 import React, { useState } from "react";
+import { Typeahead } from "react-bootstrap-typeahead";
 import "../../style/sidebar.css";
+import data from "../../data/processed-data.json";
+import "bootstrap/dist/css/bootstrap.min.css";
+import "react-bootstrap-typeahead/css/Typeahead.css";
+import "react-bootstrap-typeahead/css/Typeahead.bs5.css";
+import { toTitleCase, toPlural } from "../../utils";
 
-const Sidebar = ({ onSidebarEvent }) => {
-  const [checkboxes, setCheckboxes] = useState([
-    { id: "mango", label: "Mangos", checked: false },
-    { id: "avocado", label: "Avocados", checked: false },
-    { id: "persimmon", label: "Persimmons", checked: false },
-    { id: "lemon", label: "Lemons", checked: false },
-    { id: "pink lemon", label: "Pink Lemons", checked: false },
-    { id: "pom", label: "Pomegranates", checked: false },
-  ]);
+const mapDataToSpecies = () =>
+  Array.from(new Set(data.map((p) => p.name.replace(/[0-9.]/g, "")))).map((a) =>
+    a.trim()
+  );
+
+// Dropdown options need id, label
+const mapDataToDropdownChoices = () =>
+  Array.from(new Set(data.map((p) => p.name)));
+
+const representPlant = (name, plural = false, initialCheckBox = true) => {
+  let r = {};
+  r.id = name;
+  r.label = plural ? toTitleCase(toPlural(name)) : toTitleCase(name);
+  r.checked = initialCheckBox;
+  return r;
+};
+
+const Sidebar = ({ onChoicesChanged }) => {
+  const [multiSelections, setMultiSelections] = useState([]);
+
+  const dropdownOptions = [
+    ...mapDataToDropdownChoices()
+      .map((s) => representPlant(s))
+      .map((s) => ({ ...s, inputType: "dropdown" })),
+  ];
+
+  const [checkboxes, setCheckboxes] = useState(
+    mapDataToSpecies()
+      .map((s) => representPlant(s, true, false))
+      .map((s) => ({
+        ...s,
+        inputType: "checkbox",
+      }))
+  );
 
   const handleCheckboxChange = (e) => {
     const { name, checked } = e.target;
@@ -17,14 +48,37 @@ const Sidebar = ({ onSidebarEvent }) => {
       const newState = prevState.map((checkbox) =>
         checkbox.id === name ? { ...checkbox, checked } : checkbox
       );
-      onSidebarEvent(newState);
+      console.log(newState);
+      onChoicesChanged([...newState, ...multiSelections]);
       return newState;
     });
   };
 
+  const handleTypeaheadChange = (e) => {
+    let lowerCaseEs = e.map((a) => a.toLowerCase());
+    let chosen = dropdownOptions.filter((option) =>
+      lowerCaseEs.includes(option.label.toLowerCase())
+    );
+    setMultiSelections(chosen);
+    onChoicesChanged([...chosen, ...checkboxes]);
+  };
+
   return (
     <div className="sidebar">
-      <h3>Show only:</h3>
+      <h4>Select plants:</h4>
+      <div class="plant-selector">
+        <Typeahead
+          id="basic-typeahead-multiple"
+          labelKey="name"
+          multiple
+          onChange={handleTypeaheadChange}
+          options={dropdownOptions.map((a) => a.label)}
+          placeholder="Choose some plants..."
+          selected={multiSelections.map((a) => a.label)}
+        />
+      </div>
+
+      <h4>Select species:</h4>
       <div className="checkboxes-container">
         {checkboxes.map((checkbox) => (
           <span className="label-input" key={`span-${checkbox.id}`}>

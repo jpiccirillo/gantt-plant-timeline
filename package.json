@@ -6,9 +6,11 @@
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
+    "bootstrap": "^5.3.0",
     "csvtojson": "^2.0.10",
     "d3": "^7.8.4",
     "react": "^18.2.0",
+    "react-bootstrap-typeahead": "^6.2.2",
     "react-dom": "^18.2.0",
     "react-scripts": "5.0.1",
     "tippy.js": "^6.3.7",
@@ -28,6 +30,11 @@
     "extends": [
       "react-app",
       "react-app/jest"
+    ]
+  },
+  "jest": {
+    "transformIgnorePatterns": [
+      "/node_modules/(?!d3|d3-array|internmap|delaunator|robust-predicates)"
     ]
   },
   "browserslist": {

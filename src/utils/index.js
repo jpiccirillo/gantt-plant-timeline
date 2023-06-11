@@ -1,6 +1,10 @@
 import * as d3 from "d3";
 import tippy from "tippy.js";
-import "tippy.js/dist/tippy.css";
+
+const alpha = Array.from(Array(26)).map((e, i) => i + 97);
+const alphabet = alpha.map((x) => String.fromCharCode(x));
+const vowels = ["a", "e", "i", "o", "u"];
+const consonants = alphabet.filter((letter) => !vowels.includes(letter));
 
 // Debounce
 function debounce(func, time = 100) {
@@ -17,6 +21,27 @@ function getClassName(suffix) {
 
 export function toTitleCase(str) {
   return `${str[0].toUpperCase()}${str.substr(1)}`;
+}
+
+export function toPlural(word) {
+  const w = word.toLowerCase();
+
+  // if last char already s then is already plural
+  if (w.endsWith("es")) return word;
+  if (w.endsWith("s")) return word + "es";
+  if (w.match(new RegExp(`[${consonants.join("|")}]y$`)))
+    return w.slice(0, -1) + "ies";
+  if (w.match(new RegExp(`[${consonants.join("|")}]$`))) return w + "s";
+  if (w.match(new RegExp(`[${vowels.join("|")}]$`))) return w + "s";
+}
+
+export function removeDuplicates(objArr, key, key2) {
+  return objArr.filter(
+    (thing, index, self) =>
+      self.findIndex(
+        (t) => t[key] === thing[key] && t[key2] === thing[key2]
+      ) === index
+  );
 }
 
 export function slugify(text) {
