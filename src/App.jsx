@@ -4,7 +4,7 @@ import data from "./data/processed-data.json";
 import { useState } from "react";
 import "./style/App.css";
 import "tippy.js/dist/tippy.css";
-import { removeDuplicates } from "./utils/";
+import { removeDuplicates } from "./utils";
 
 function App() {
   let [parentData, setParentData] = useState(data);
