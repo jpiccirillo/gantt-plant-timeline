@@ -1,17 +1,12 @@
 const csv = require("csvtojson");
-const fs = require("fs");
-const path = require("path");
 const eventNames = ["departed", "planted", "inwater"];
 const csvFilePath = "./original-data.csv";
+const { writePreprocessedData } = require("./utils");
 
-csv().fromFile(csvFilePath).then(preprocessData).then(writePreprocessedData);
-
-function writePreprocessedData(contentsObject) {
-  fs.writeFileSync(
-    path.resolve(__dirname, `./processed-data.json`),
-    JSON.stringify(contentsObject, null, 2)
-  );
-}
+csv()
+  .fromFile(csvFilePath)
+  .then(preprocessData)
+  .then((content) => writePreprocessedData(content, "processed-data"));
 
 function preprocessData(json) {
   return json

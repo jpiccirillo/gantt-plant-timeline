@@ -24,8 +24,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "preprocess-stages": "node generateStagesMap.js",
-    "preprocess-data": "node preprocessData.js"
+    "preprocess-stages": "node ./scripts/generateStagesMap.js",
+    "preprocess-data": "node ./scripts/preprocessData.js"
   },
   "eslintConfig": {
     "extends": [
