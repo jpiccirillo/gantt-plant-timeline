@@ -15,3 +15,9 @@
 .sidebar .plant-selector {
   margin-bottom: 10px;
 }
+
+@media only screen and (max-width: 800px) {
+  .rbt-input-multi.form-control.rbt-input {
+    font-size: 0.7em;
+  }
+}

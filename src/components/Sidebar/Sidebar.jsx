@@ -6,6 +6,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "react-bootstrap-typeahead/css/Typeahead.css";
 import "react-bootstrap-typeahead/css/Typeahead.bs5.css";
 import { toTitleCase, toPlural } from "../../utils";
+import useIsMobile from "../../hooks/useIsMobile";
 
 const mapDataToSpecies = () =>
   Array.from(new Set(data.map((p) => p.name.replace(/[0-9.]/g, "")))).map((a) =>
@@ -62,6 +63,8 @@ const Sidebar = ({ onChoicesChanged }) => {
     onChoicesChanged([...chosen, ...checkboxes]);
   };
 
+  const isMobile = useIsMobile();
+
   return (
     <div className="sidebar">
       <h4>Select specific plants:</h4>
@@ -72,7 +75,7 @@ const Sidebar = ({ onChoicesChanged }) => {
           multiple
           onChange={handleTypeaheadChange}
           options={dropdownOptions.map((a) => a.label)}
-          placeholder="Choose some plants..."
+          placeholder={isMobile ? "Select plants..." : "Choose some plants..."}
           selected={multiSelections.map((a) => a.label)}
         />
       </div>

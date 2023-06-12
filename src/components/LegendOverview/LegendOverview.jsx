@@ -74,7 +74,7 @@ function GanttChart({ data }) {
               represent spefifc day-level events.
             </p>
             <p>
-              This sample below is the timeline of Plant 1 - Germinating for a
+              This sample below is the timeline of Plant 1: Germinating for a
               month, sprouted and alive for another month or two, then dormant
               and died.
             </p>
