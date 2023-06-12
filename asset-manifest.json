@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/gantt-plant-timeline/static/css/main.91d3466c.css",
-    "main.js": "/gantt-plant-timeline/static/js/main.b3281a87.js",
+    "main.css": "/gantt-plant-timeline/static/css/main.0d5d5d08.css",
+    "main.js": "/gantt-plant-timeline/static/js/main.22dd5b33.js",
     "static/js/787.1a618639.chunk.js": "/gantt-plant-timeline/static/js/787.1a618639.chunk.js",
     "index.html": "/gantt-plant-timeline/index.html",
-    "main.91d3466c.css.map": "/gantt-plant-timeline/static/css/main.91d3466c.css.map",
-    "main.b3281a87.js.map": "/gantt-plant-timeline/static/js/main.b3281a87.js.map",
+    "main.0d5d5d08.css.map": "/gantt-plant-timeline/static/css/main.0d5d5d08.css.map",
+    "main.22dd5b33.js.map": "/gantt-plant-timeline/static/js/main.22dd5b33.js.map",
     "787.1a618639.chunk.js.map": "/gantt-plant-timeline/static/js/787.1a618639.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.91d3466c.css",
-    "static/js/main.b3281a87.js"
+    "static/css/main.0d5d5d08.css",
+    "static/js/main.22dd5b33.js"
   ]
 }
