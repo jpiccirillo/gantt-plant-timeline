@@ -7,7 +7,7 @@ const vowels = ["a", "e", "i", "o", "u"];
 const consonants = alphabet.filter((letter) => !vowels.includes(letter));
 
 // Debounce
-function debounce(func, time = 100) {
+export function debounce(func, time = 100) {
   var timer;
   return function (event) {
     if (timer) clearTimeout(timer);
