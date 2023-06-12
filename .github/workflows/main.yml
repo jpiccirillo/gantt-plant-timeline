@@ -29,13 +29,22 @@ jobs:
         run: npm install
 
       - name: Process data
-        run: npm run preprocess-data
+        run: |
+          npm run preprocess-data
+          npm run preprocess-stages
 
       - name: Examine data
-        run: ls -la && cat ./processed-data.json
+        run: |
+          ls -la
+          cat ./processed-data.json
+          cat ./plant-stages-data.json
+          cat ./possible-stages-data.json
 
       - name: Move data into subdirectory
-        run: cp ./processed-data.json ./src/data/processed-data.json
+        run: |
+          cp ./processed-data.json ./src/data/processed-data.json
+          cp ./plant-stages-data.json ./src/data/plant-stages-data.json
+          cp ./possible-stages-data.json ./src/data/possible-stages-data.json
 
       - name: Build app
         run: npm run build
