@@ -64,7 +64,17 @@ const Sidebar = ({ onChoicesChanged }) => {
   };
 
   const handleStatusCheckbox = (e) => {
-    const { name, checked } = e.target;
+    let { name, checked } = e.target;
+
+    // Find checked checkbox
+    const currentlyChecked = checkboxes
+      .filter((c) => c.checked)
+      .map((a) => a.id)
+      .includes(name);
+
+    // If the currently checked one is being clicked again, set it to false
+    if (currentlyChecked) checked = false;
+
     setCheckboxes((prevState) => {
       const newState = prevState.map(
         (checkbox) =>
@@ -140,7 +150,7 @@ const Sidebar = ({ onChoicesChanged }) => {
                 type="radio"
                 name={checkbox.id}
                 checked={checkbox.checked}
-                onChange={handleStatusCheckbox}
+                onClick={handleStatusCheckbox}
               />
               {checkbox.label}
             </label>
