@@ -8,4 +8,8 @@ function writePreprocessedData(content, filename) {
   );
 }
 
-module.exports = { writePreprocessedData };
+function getSpeciesName(p) {
+  return p.replace(/[0-9.]/g, "").trim();
+}
+
+module.exports = { writePreprocessedData, getSpeciesName };

@@ -4,19 +4,12 @@ import "../../style/sidebar.css";
 import data from "../../data/processed-data.json";
 import possibleStages from "../../data/possible-stages-data.json";
 import plantStagesData from "../../data/plant-stages-data.json";
-import dataByPlantName from "../../data/organized-by-name.json";
+import dataByName from "../../data/organized-by-name.json";
+import dataBySpecies from "../../data/organized-by-species.json";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "react-bootstrap-typeahead/css/Typeahead.css";
 import "react-bootstrap-typeahead/css/Typeahead.bs5.css";
 import useIsMobile from "../../hooks/useIsMobile";
-
-const mapDataToSpecies = () =>
-  Array.from(new Set(data.map((p) => p.name.replace(/[0-9.]/g, "")))).map((a) =>
-    a.trim()
-  );
-
-// Dropdown options need id, label
-const mapDataToPlants = () => Array.from(new Set(data.map((p) => p.name)));
 
 const Sidebar = ({ onChoicesChanged }) => {
   const [plantSelections, setPlantSelections] = useState([]);
@@ -24,8 +17,8 @@ const Sidebar = ({ onChoicesChanged }) => {
   const [plantsMatchedBySpecies, setPlantsMatchedBySpecies] = useState([]);
   const [plantsMatchedByName, setPlantsMatchedByName] = useState([]);
   const [plantsMatchedByStatus, setPlantsMatchedByStatus] = useState([]);
-  const plantDropdownOptions = mapDataToPlants();
-  const speciesDropdownOptions = mapDataToSpecies();
+  const plantDropdownOptions = Object.keys(dataByName);
+  const speciesDropdownOptions = Object.keys(dataBySpecies);
 
   const [checkboxes, setCheckboxes] = useState(
     possibleStages.map((stage) => ({
@@ -35,13 +28,13 @@ const Sidebar = ({ onChoicesChanged }) => {
     }))
   );
 
-  const handlePlantDropdownChange = (e) => {
+  const handlePlantDropdownChange = (chosenPlants) => {
     // Map chosen plants to their objects in data
-    let matchingData = e
-      .map((selected) => dataByPlantName[selected.toLowerCase()])
+    let matchingData = chosenPlants
+      .map((selected) => dataByName[selected.toLowerCase()])
       .flat();
 
-    setPlantSelections(e);
+    setPlantSelections(chosenPlants);
     setPlantsMatchedByName(matchingData);
     // Combine plants matched by name, with any existing data matched by species
     onChoicesChanged([
@@ -51,11 +44,12 @@ const Sidebar = ({ onChoicesChanged }) => {
     ]);
   };
 
-  const handleSpeciesDropdownChange = (e) => {
-    let matchingData = data.filter((plant) =>
-      e.find((p) => plant.name.toLowerCase().startsWith(p.toLowerCase()))
-    );
-    setSpeciesSelections(e);
+  const handleSpeciesDropdownChange = (chosenSpecies) => {
+    let matchingData = chosenSpecies
+      .map((selected) => dataBySpecies[selected])
+      .flat();
+
+    setSpeciesSelections(chosenSpecies);
     setPlantsMatchedBySpecies(matchingData);
     // Combine plants matched by species, with any existing data matched by full name
     onChoicesChanged([

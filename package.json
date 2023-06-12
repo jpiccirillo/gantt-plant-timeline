@@ -25,7 +25,8 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "preprocess-stages": "node ./scripts/generateStagesMap.js",
-    "preprocess-for-plant-name": "node ./scripts/organizeByPlantName.js",
+    "preprocess-for-name": "node ./scripts/organizeByPlantName.js",
+    "preprocess-for-species": "node ./scripts/organizeBySpecies.js",
     "preprocess-data": "node ./scripts/preprocessData.js"
   },
   "eslintConfig": {

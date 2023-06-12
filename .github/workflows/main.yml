@@ -32,7 +32,8 @@ jobs:
         run: |
           npm run preprocess-data
           npm run preprocess-stages
-          npm run preprocess-for-plant-name
+          npm run preprocess-for-name
+          npm run preprocess-for-species
 
       - name: Examine data
         run: |
