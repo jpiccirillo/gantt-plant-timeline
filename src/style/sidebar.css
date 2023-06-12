@@ -8,6 +8,16 @@
   margin-right: 5px;
 }
 
+.rbt-input-wrapper div:last-child {
+  line-height: 1.5em;
+  padding-left: 5px;
+}
+
+/* Hide hint text as it's out of sync with the typed text on safari and at small widths */
+.rbt-input-wrapper div:last-child input:last-child {
+  display: none;
+}
+
 .sidebar {
   display: flex;
   flex-direction: column;
