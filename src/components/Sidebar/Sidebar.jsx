@@ -101,42 +101,50 @@ const Sidebar = ({ onChoicesChanged }) => {
 
   return (
     <div className="sidebar">
-      <h4>Select specific plants:</h4>
-      <div className="plant-selector">
+      <div>
+        <h4>Select specific plants:</h4>
+        <div className="plant-selector">
+          <Typeahead
+            id="plant-typeahead"
+            labelKey="name"
+            multiple
+            onChange={handlePlantDropdownChange}
+            options={plantDropdownOptions}
+            placeholder={
+              isMobile ? "Select plants..." : "Choose some plants..."
+            }
+            selected={plantSelections}
+          />
+        </div>
+      </div>
+      <div>
+        <h4>Select species:</h4>
         <Typeahead
-          id="plant-typeahead"
+          id="species-typeahead"
           labelKey="name"
           multiple
-          onChange={handlePlantDropdownChange}
-          options={plantDropdownOptions}
-          placeholder={isMobile ? "Select plants..." : "Choose some plants..."}
-          selected={plantSelections}
+          onChange={handleSpeciesDropdownChange}
+          options={speciesDropdownOptions}
+          placeholder={isMobile ? "Select species..." : "Type a species..."}
+          selected={speciesSelections}
         />
       </div>
-      <h4>Select species:</h4>
-      <Typeahead
-        id="species-typeahead"
-        labelKey="name"
-        multiple
-        onChange={handleSpeciesDropdownChange}
-        options={speciesDropdownOptions}
-        placeholder={isMobile ? "Select species..." : "Type a species..."}
-        selected={speciesSelections}
-      />
-      <h4>Show plants whose last stage was:</h4>
-      {checkboxes.map((checkbox) => (
-        <span className="label-input" key={`span-${checkbox.id}`}>
-          <label key={checkbox.id}>
-            <input
-              type="radio"
-              name={checkbox.id}
-              checked={checkbox.checked}
-              onChange={handleStatusCheckbox}
-            />
-            {checkbox.label}
-          </label>
-        </span>
-      ))}
+      <div>
+        <h4>Show plants whose last stage was:</h4>
+        {checkboxes.map((checkbox) => (
+          <span className="label-input" key={`span-${checkbox.id}`}>
+            <label key={checkbox.id}>
+              <input
+                type="radio"
+                name={checkbox.id}
+                checked={checkbox.checked}
+                onChange={handleStatusCheckbox}
+              />
+              {checkbox.label}
+            </label>
+          </span>
+        ))}
+      </div>
     </div>
   );
 };
