@@ -71,7 +71,7 @@ function GanttChart({ data }) {
               Below is a timeline chart of plants I've grown from seed over the
               last year. Each species is its own color - horizontal bars
               represent long statuses in a plant's life, while black dots
-              represent spefifc day-level events.
+              represent specific day-level events.
             </p>
             <p>
               This sample below is the timeline of Plant 1: Germinating for a
