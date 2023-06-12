@@ -1,0 +1,6 @@
+[
+  { "original": "germinating", "label": "germinated" },
+  { "original": "sprouted", "label": "sprouted" },
+  { "original": "dormant", "label": "went dormant" },
+  { "original": "recovered", "label": "recovered" }
+]
