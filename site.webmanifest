@@ -11,11 +11,6 @@
       "src": "/android-chrome-512x512.png",
       "sizes": "512x512",
       "type": "image/png"
-    },
-    {
-      "src": "favicon-16x16.ico",
-      "sizes": "16x16",
-      "type": "image/x-icon"
     }
   ],
   "theme_color": "#ffffff",
