@@ -23,7 +23,7 @@ function writePreprocessedData({ plantMap, stages }) {
   );
 
   fs.writeFileSync(
-    path.resolve(__dirname, `./possible-stages.json`),
+    path.resolve(__dirname, `./possible-stages-data.json`),
     JSON.stringify(stages, null, 2)
   );
 }

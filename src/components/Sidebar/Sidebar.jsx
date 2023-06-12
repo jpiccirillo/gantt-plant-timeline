@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Typeahead } from "react-bootstrap-typeahead";
 import "../../style/sidebar.css";
 import data from "../../data/processed-data.json";
-import possibleStages from "../../data/possible-stages.json";
+import possibleStages from "../../data/possible-stages-data.json";
 import plantStagesData from "../../data/plant-stages-data.json";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "react-bootstrap-typeahead/css/Typeahead.css";
