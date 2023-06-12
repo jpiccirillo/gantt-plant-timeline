@@ -5,7 +5,6 @@ import data from "../../data/processed-data.json";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "react-bootstrap-typeahead/css/Typeahead.css";
 import "react-bootstrap-typeahead/css/Typeahead.bs5.css";
-import { toTitleCase, toPlural } from "../../utils";
 import useIsMobile from "../../hooks/useIsMobile";
 
 const mapDataToSpecies = () =>
@@ -14,53 +13,35 @@ const mapDataToSpecies = () =>
   );
 
 // Dropdown options need id, label
-const mapDataToDropdownChoices = () =>
-  Array.from(new Set(data.map((p) => p.name)));
-
-const representPlant = (name, plural = false, initialCheckBox = true) => {
-  let r = {};
-  r.id = name;
-  r.label = plural ? toTitleCase(toPlural(name)) : toTitleCase(name);
-  r.checked = initialCheckBox;
-  return r;
-};
+const mapDataToPlants = () => Array.from(new Set(data.map((p) => p.name)));
 
 const Sidebar = ({ onChoicesChanged }) => {
-  const [multiSelections, setMultiSelections] = useState([]);
+  const [plantSelections, setPlantSelections] = useState([]);
+  const [speciesSelections, setSpeciesSelections] = useState([]);
+  const [plantsMatchedBySpecies, setPlantsMatchedBySpecies] = useState([]);
+  const [plantsMatchedByName, setPlantsMatchedByName] = useState([]);
+  const plantDropdownOptions = mapDataToPlants();
+  const speciesDropdownOptions = mapDataToSpecies();
 
-  const dropdownOptions = [
-    ...mapDataToDropdownChoices()
-      .map((s) => representPlant(s))
-      .map((s) => ({ ...s, inputType: "dropdown" })),
-  ];
-
-  const [checkboxes, setCheckboxes] = useState(
-    mapDataToSpecies()
-      .map((s) => representPlant(s, true, false))
-      .map((s) => ({
-        ...s,
-        inputType: "checkbox",
-      }))
-  );
-
-  const handleCheckboxChange = (e) => {
-    const { name, checked } = e.target;
-    setCheckboxes((prevState) => {
-      const newState = prevState.map((checkbox) =>
-        checkbox.id === name ? { ...checkbox, checked } : checkbox
-      );
-      onChoicesChanged([...newState, ...multiSelections]);
-      return newState;
-    });
+  const handlePlantDropdownChange = (e) => {
+    // Map chosen plants to their objects in data
+    let matchingData = data.filter((plant) =>
+      e.find((p) => plant.name.toLowerCase() === p.toLowerCase())
+    );
+    setPlantSelections(e);
+    setPlantsMatchedByName(matchingData);
+    // Combine plants matched by name, with any existing data matched by species
+    onChoicesChanged([...matchingData, ...plantsMatchedBySpecies]);
   };
 
-  const handleTypeaheadChange = (e) => {
-    let lowerCaseEs = e.map((a) => a.toLowerCase());
-    let chosen = dropdownOptions.filter((option) =>
-      lowerCaseEs.includes(option.label.toLowerCase())
+  const handleSpeciesDropdownChange = (e) => {
+    let matchingData = data.filter((plant) =>
+      e.find((p) => plant.name.toLowerCase().startsWith(p.toLowerCase()))
     );
-    setMultiSelections(chosen);
-    onChoicesChanged([...chosen, ...checkboxes]);
+    setSpeciesSelections(e);
+    setPlantsMatchedBySpecies(matchingData);
+    // Combine plants matched by spceis, with any existing data matched by full name
+    onChoicesChanged([...matchingData, ...plantsMatchedByName]);
   };
 
   const isMobile = useIsMobile();
@@ -70,32 +51,26 @@ const Sidebar = ({ onChoicesChanged }) => {
       <h4>Select specific plants:</h4>
       <div className="plant-selector">
         <Typeahead
-          id="basic-typeahead-multiple"
+          id="plant-typeahead"
           labelKey="name"
           multiple
-          onChange={handleTypeaheadChange}
-          options={dropdownOptions.map((a) => a.label)}
+          onChange={handlePlantDropdownChange}
+          options={plantDropdownOptions}
           placeholder={isMobile ? "Select plants..." : "Choose some plants..."}
-          selected={multiSelections.map((a) => a.label)}
+          selected={plantSelections}
         />
       </div>
 
       <h4>Select species:</h4>
-      <div className="checkboxes-container">
-        {checkboxes.map((checkbox) => (
-          <span className="label-input" key={`span-${checkbox.id}`}>
-            <label key={checkbox.id}>
-              <input
-                type="checkbox"
-                name={checkbox.id}
-                checked={checkbox.checked}
-                onChange={handleCheckboxChange}
-              />
-              {checkbox.label}
-            </label>
-          </span>
-        ))}
-      </div>
+      <Typeahead
+        id="species-typeahead"
+        labelKey="name"
+        multiple
+        onChange={handleSpeciesDropdownChange}
+        options={speciesDropdownOptions}
+        placeholder={isMobile ? "Select species..." : "Type a species..."}
+        selected={speciesSelections}
+      />
     </div>
   );
 };
