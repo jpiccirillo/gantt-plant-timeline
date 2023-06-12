@@ -119,15 +119,17 @@ const Sidebar = ({ onChoicesChanged }) => {
       </div>
       <div>
         <h4>Select species:</h4>
-        <Typeahead
-          id="species-typeahead"
-          labelKey="name"
-          multiple
-          onChange={handleSpeciesDropdownChange}
-          options={speciesDropdownOptions}
-          placeholder={isMobile ? "Select species..." : "Type a species..."}
-          selected={speciesSelections}
-        />
+        <div className="plant-selector">
+          <Typeahead
+            id="species-typeahead"
+            labelKey="name"
+            multiple
+            onChange={handleSpeciesDropdownChange}
+            options={speciesDropdownOptions}
+            placeholder={isMobile ? "Select species..." : "Type a species..."}
+            selected={speciesSelections}
+          />
+        </div>
       </div>
       <div>
         <h4>Show plants whose last stage was:</h4>
