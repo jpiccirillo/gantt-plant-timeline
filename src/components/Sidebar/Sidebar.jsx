@@ -10,6 +10,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "react-bootstrap-typeahead/css/Typeahead.css";
 import "react-bootstrap-typeahead/css/Typeahead.bs5.css";
 import useIsMobile from "../../hooks/useIsMobile";
+import { toTitleCase } from "../../utils";
 
 const Sidebar = ({ onChoicesChanged }) => {
   const [plantSelections, setPlantSelections] = useState([]);
@@ -17,8 +18,8 @@ const Sidebar = ({ onChoicesChanged }) => {
   const [plantsMatchedBySpecies, setPlantsMatchedBySpecies] = useState([]);
   const [plantsMatchedByName, setPlantsMatchedByName] = useState([]);
   const [plantsMatchedByStatus, setPlantsMatchedByStatus] = useState([]);
-  const plantDropdownOptions = Object.keys(dataByName);
-  const speciesDropdownOptions = Object.keys(dataBySpecies);
+  const plantDropdownOptions = Object.keys(dataByName).map(toTitleCase);
+  const speciesDropdownOptions = Object.keys(dataBySpecies).map(toTitleCase);
 
   const [checkboxes, setCheckboxes] = useState(
     possibleStages.map((stage) => ({
@@ -46,7 +47,7 @@ const Sidebar = ({ onChoicesChanged }) => {
 
   const handleSpeciesDropdownChange = (chosenSpecies) => {
     let matchingData = chosenSpecies
-      .map((selected) => dataBySpecies[selected])
+      .map((selected) => dataBySpecies[selected.toLowerCase()])
       .flat();
 
     setSpeciesSelections(chosenSpecies);

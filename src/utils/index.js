@@ -20,7 +20,10 @@ function getClassName(suffix) {
 }
 
 export function toTitleCase(str) {
-  return `${str[0].toUpperCase()}${str.substr(1)}`;
+  return str
+    .split(" ")
+    .map((a) => `${a[0].toUpperCase()}${a.substr(1)}`)
+    .join(" ");
 }
 
 export function toPlural(word) {
@@ -348,7 +351,7 @@ export function cm(species) {
     anaheimpepper: "#8FC128",
     etrog: "#FFD507",
     jalapeno: "#629e07",
-    tomatillo: "#BFDE8E"
+    tomatillo: "#BFDE8E",
   };
   return colorMap[species];
 }
