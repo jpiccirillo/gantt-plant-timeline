@@ -76,20 +76,25 @@ body {
 .lemon .germinating ~ text,
 .papaya .germinating ~ text,
 .honeytangerine .germinating ~ text,
-.persimmon .germinating ~ text {
-  fill: rgb(150, 150, 150) !important;
-}
-
+.persimmon .germinating ~ text,
 .lemon .dormant ~ text,
 .keylime .dormant ~ text,
 .honeytangerine .dormant ~ text,
-.persimmon .dormant ~ text {
+.persimmon .dormant ~ text,
+.tomatillo .dormant ~ text,
+.tomatillo .germinating ~ text {
   fill: rgb(150, 150, 150) !important;
 }
 
 .lemon text,
 .pinklemon text,
 .etrog text,
+.turmeric text,
+.tomatillo text,
+.avocado .germinating ~ text,
+.mango .germinating ~ text,
+.blueberry .germinating ~ text,
+.tomatillo .germinating ~ text,
 .turmeric .germinating ~ text,
 .keylime .germinating ~ text,
 .guava .germinating ~ text,

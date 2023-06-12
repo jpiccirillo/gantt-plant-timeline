@@ -338,16 +338,17 @@ export function cm(species) {
     papaya: "#FFB90C",
     lemon: "#FAFA33",
     keylime: "#11b502",
-    turmeric: "#8FC128",
+    turmeric: "#ccff66",
     ginger: "#E5E3A8",
     tomato: "#EA0001",
     grapefruit: "#075900",
     pinklemon: "#F2B4C0",
     honeytangerine: "#FBBD66",
     persimmon: "#9FC47F",
-    anaheimpepper: "#72A60A",
+    anaheimpepper: "#8FC128",
     etrog: "#FFD507",
     jalapeno: "#629e07",
+    tomatillo: "#BFDE8E"
   };
   return colorMap[species];
 }
