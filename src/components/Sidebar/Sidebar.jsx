@@ -4,6 +4,7 @@ import "../../style/sidebar.css";
 import data from "../../data/processed-data.json";
 import possibleStages from "../../data/possible-stages-data.json";
 import plantStagesData from "../../data/plant-stages-data.json";
+import dataByPlantName from "../../data/organized-by-name.json";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "react-bootstrap-typeahead/css/Typeahead.css";
 import "react-bootstrap-typeahead/css/Typeahead.bs5.css";
@@ -36,9 +37,10 @@ const Sidebar = ({ onChoicesChanged }) => {
 
   const handlePlantDropdownChange = (e) => {
     // Map chosen plants to their objects in data
-    let matchingData = data.filter((plant) =>
-      e.find((p) => plant.name.toLowerCase() === p.toLowerCase())
-    );
+    let matchingData = e
+      .map((selected) => dataByPlantName[selected.toLowerCase()])
+      .flat();
+
     setPlantSelections(e);
     setPlantsMatchedByName(matchingData);
     // Combine plants matched by name, with any existing data matched by species
