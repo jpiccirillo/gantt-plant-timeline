@@ -2,7 +2,8 @@ import React, { useState } from "react";
 import { Typeahead } from "react-bootstrap-typeahead";
 import "../../style/sidebar.css";
 import data from "../../data/processed-data.json";
-import statusMapping from "../../data/status-map-config.json";
+import possibleStages from "../../data/possible-stages.json";
+import plantStagesData from "../../data/plant-stages-data.json";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "react-bootstrap-typeahead/css/Typeahead.css";
 import "react-bootstrap-typeahead/css/Typeahead.bs5.css";
@@ -26,11 +27,10 @@ const Sidebar = ({ onChoicesChanged }) => {
   const speciesDropdownOptions = mapDataToSpecies();
 
   const [checkboxes, setCheckboxes] = useState(
-    statusMapping.map(({ original, label }) => ({
-      id: original,
+    possibleStages.map((stage) => ({
+      id: stage,
       checked: false,
-      originalLabel: original,
-      label,
+      label: stage,
     }))
   );
 
@@ -66,15 +66,25 @@ const Sidebar = ({ onChoicesChanged }) => {
   const handleStatusCheckbox = (e) => {
     const { name, checked } = e.target;
     setCheckboxes((prevState) => {
-      const newState = prevState.map((checkbox) =>
-        checkbox.id === name ? { ...checkbox, checked } : checkbox
+      const newState = prevState.map(
+        (checkbox) =>
+          checkbox.id === name
+            ? { ...checkbox, checked }
+            : { ...checkbox, checked: false } // set all others to false
       );
-      let originalDescriptors = newState
+      let currentDescriptors = newState
         .filter((a) => a.checked)
-        .map((a) => a.originalLabel);
+        .map((a) => a.id);
+
+      // Now find all data for which the current descriptor is the last in the plant's status list
+      const applicablePlants = Object.entries(plantStagesData)
+        .filter(([, stages]) => {
+          return stages[stages.length - 1] === currentDescriptors[0];
+        })
+        .map((a) => a[0]);
 
       let matchingData = data.filter((entry) =>
-        originalDescriptors.includes(entry.type)
+        applicablePlants.includes(entry.name)
       );
 
       setPlantsMatchedByStatus(matchingData);
@@ -113,12 +123,12 @@ const Sidebar = ({ onChoicesChanged }) => {
         placeholder={isMobile ? "Select species..." : "Type a species..."}
         selected={speciesSelections}
       />
-      <h4>Show only plants that:</h4>
+      <h4>Show plants whose last stage was:</h4>
       {checkboxes.map((checkbox) => (
         <span className="label-input" key={`span-${checkbox.id}`}>
           <label key={checkbox.id}>
             <input
-              type="checkbox"
+              type="radio"
               name={checkbox.id}
               checked={checkbox.checked}
               onChange={handleStatusCheckbox}
