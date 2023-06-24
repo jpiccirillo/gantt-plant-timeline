@@ -337,7 +337,7 @@ export function cm(species) {
     medjooldate: "#351E10",
     serranopepper: "#507002",
     poblanopepper: "#074304",
-    habanero: "#ff8100",
+    habanero: "#FF4E00",
     papaya: "#FFB90C",
     lemon: "#FAFA33",
     keylime: "#11b502",
@@ -352,6 +352,7 @@ export function cm(species) {
     etrog: "#FFD507",
     jalapeno: "#629e07",
     tomatillo: "#BFDE8E",
+    manzanopepper: "#EE921B",
   };
   return colorMap[species];
 }
