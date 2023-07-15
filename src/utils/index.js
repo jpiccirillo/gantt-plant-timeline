@@ -1,5 +1,6 @@
 import * as d3 from "d3";
 import tippy from "tippy.js";
+import colors from "../data/colors.json";
 
 const alpha = Array.from(Array(26)).map((e, i) => i + 97);
 const alphabet = alpha.map((x) => String.fromCharCode(x));
@@ -326,35 +327,7 @@ export const refLineGroupUtils = {
 };
 
 export function cm(species) {
-  let colorMap = {
-    mango: "#37031A",
-    avocado: "#6E260E",
-    jackfruit: "#0a481e",
-    pomegranate: "#f2003c",
-    pineapple: "#FEEA63",
-    guava: "#69b562",
-    blueberry: "#464196",
-    medjooldate: "#351E10",
-    serranopepper: "#507002",
-    poblanopepper: "#074304",
-    habanero: "#FF4E00",
-    papaya: "#FFB90C",
-    lemon: "#FAFA33",
-    keylime: "#11b502",
-    turmeric: "#ccff66",
-    ginger: "#E5E3A8",
-    tomato: "#EA0001",
-    grapefruit: "#075900",
-    pinklemon: "#F2B4C0",
-    honeytangerine: "#FBBD66",
-    persimmon: "#9FC47F",
-    anaheimpepper: "#8FC128",
-    etrog: "#FFD507",
-    jalapeno: "#629e07",
-    tomatillo: "#BFDE8E",
-    manzanopepper: "#EE921B",
-  };
-  return colorMap[species];
+  return colors[species];
 }
 
 export function isMobile() {
