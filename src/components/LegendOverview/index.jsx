@@ -1,7 +1,7 @@
 import * as d3 from "d3";
-import "../../style/style.css";
+import "../GanttChart/style.css";
 import "../../style/tippy.css";
-import { Gantt } from "../Chart/gantt";
+import { Gantt } from "../GanttChart/gantt";
 import { getMargin, toTitleCase, registerResize } from "../../utils";
 import config from "../../data/chart-config.json";
 import eventLabelMap from "../../data/event-map-config.json";

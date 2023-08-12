@@ -1,11 +1,11 @@
-import GanttChart from "./components/Chart/Chart";
-import HeightChart from "./components/Timeseries/HeightChart";
-import LegendOverview from "./components/LegendOverview/LegendOverview";
-import Sidebar from "./components/Sidebar/Sidebar";
+import GanttChart from "./components/GanttChart";
+import LineChart from "./components/LineChart";
+import LegendOverview from "./components/LegendOverview";
+import Sidebar from "./components/Sidebar";
 import data from "./data/processed-data.json";
 import exampleData from "./data/example-data.json";
 import { useState } from "react";
-import "./style/App.css";
+import "./style.css";
 import "tippy.js/dist/tippy.css";
 import { removeDuplicates } from "./utils";
 import { dataViewNames } from "./dataViews";
@@ -37,7 +37,7 @@ function App() {
       />
     ),
     [dataViewNames[1]]: (
-      <HeightChart
+      <LineChart
         data={parentData}
         isActive={dataViewNames[activeStep] === dataViewNames[1]}
       />

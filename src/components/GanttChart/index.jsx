@@ -1,5 +1,5 @@
 import * as d3 from "d3";
-import "../../style/style.css";
+import "./style.css";
 import "../../style/tippy.css";
 import { Gantt } from "./gantt";
 import { getMargin, toTitleCase, registerResize, cm } from "../../utils";

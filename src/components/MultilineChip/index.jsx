@@ -1,6 +1,5 @@
 import React from "react";
 import { Chip, Typography } from "@mui/material";
-import "../../style/sidebar.css";
 
 const MultilineChip = ({ value, getTagProps }) => {
   return (

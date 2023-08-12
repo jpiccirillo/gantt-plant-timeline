@@ -11,7 +11,7 @@ import {
   laneGroupUtils,
   isMobile,
   getPxWidth,
-} from "../../utils/";
+} from "../../utils";
 
 const longMonthNames = [
   "February",
