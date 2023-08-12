@@ -3,10 +3,12 @@
   "version": "1.0.0",
   "description": "Gantt chart showing lifespan of plants",
   "dependencies": {
+    "@emotion/react": "^11.11.1",
+    "@emotion/styled": "^11.11.0",
+    "@mui/material": "^5.14.4",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
-    "bootstrap": "^5.3.0",
     "csvtojson": "^2.0.10",
     "d3": "^7.8.4",
     "react": "^18.2.0",
@@ -20,6 +22,7 @@
   "license": "ISC",
   "homepage": "https://jpiccirillo.com/gantt-plant-timeline",
   "scripts": {
+    "prepare-all-data": "npm run preprocess-data && npm run preprocess-stages && npm run preprocess-for-name && npm run preprocess-for-species",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",

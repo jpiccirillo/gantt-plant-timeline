@@ -1,14 +1,11 @@
 import React, { useState } from "react";
-import { Typeahead } from "react-bootstrap-typeahead";
+import { Autocomplete, TextField } from "@mui/material";
 import "../../style/sidebar.css";
 import data from "../../data/processed-data.json";
 import possibleStages from "../../data/possible-stages-data.json";
 import plantStagesData from "../../data/plant-stages-data.json";
 import dataByName from "../../data/organized-by-name.json";
 import dataBySpecies from "../../data/organized-by-species.json";
-import "bootstrap/dist/css/bootstrap.min.css";
-import "react-bootstrap-typeahead/css/Typeahead.css";
-import "react-bootstrap-typeahead/css/Typeahead.bs5.css";
 import useIsMobile from "../../hooks/useIsMobile";
 import { toTitleCase } from "../../utils";
 
@@ -29,7 +26,7 @@ const Sidebar = ({ onChoicesChanged }) => {
     }))
   );
 
-  const handlePlantDropdownChange = (chosenPlants) => {
+  const handlePlantDropdownChange = (e, chosenPlants) => {
     // Map chosen plants to their objects in data
     let matchingData = chosenPlants
       .map((selected) => dataByName[selected.toLowerCase()])
@@ -45,7 +42,7 @@ const Sidebar = ({ onChoicesChanged }) => {
     ]);
   };
 
-  const handleSpeciesDropdownChange = (chosenSpecies) => {
+  const handleSpeciesDropdownChange = (e, chosenSpecies) => {
     let matchingData = chosenSpecies
       .map((selected) => dataBySpecies[selected.toLowerCase()])
       .flat();
@@ -111,30 +108,38 @@ const Sidebar = ({ onChoicesChanged }) => {
       <div>
         <h4>Select specific plants:</h4>
         <div className="plant-selector">
-          <Typeahead
+          <Autocomplete
             id="plant-typeahead"
-            labelKey="name"
+            disablePortal
             multiple
+            fullWidth
             onChange={handlePlantDropdownChange}
             options={plantDropdownOptions}
-            placeholder={
-              isMobile ? "Select plants..." : "Choose some plants..."
-            }
-            selected={plantSelections}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                label={isMobile ? "Select plants..." : "Choose some plants..."}
+              />
+            )}
           />
         </div>
       </div>
       <div>
         <h4>Select species:</h4>
         <div className="plant-selector">
-          <Typeahead
+          <Autocomplete
             id="species-typeahead"
-            labelKey="name"
+            disablePortal
             multiple
+            fullWidth
             onChange={handleSpeciesDropdownChange}
             options={speciesDropdownOptions}
-            placeholder={isMobile ? "Select species..." : "Type a species..."}
-            selected={speciesSelections}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                label={isMobile ? "Select species..." : "Type a species..."}
+              />
+            )}
           />
         </div>
       </div>
