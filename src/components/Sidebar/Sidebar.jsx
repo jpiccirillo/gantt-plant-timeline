@@ -1,5 +1,10 @@
 import React, { useState } from "react";
-import { Autocomplete, TextField } from "@mui/material";
+import {
+  Autocomplete,
+  TextField,
+  ToggleButton,
+  ToggleButtonGroup,
+} from "@mui/material";
 import "../../style/sidebar.css";
 import data from "../../data/processed-data.json";
 import possibleStages from "../../data/possible-stages-data.json";
@@ -12,6 +17,7 @@ import { toTitleCase } from "../../utils";
 const Sidebar = ({ onChoicesChanged }) => {
   const [plantSelections, setPlantSelections] = useState([]);
   const [speciesSelections, setSpeciesSelections] = useState([]);
+  const [currentDisplay, setCurrentDisplay] = useState("timeline");
   const [plantsMatchedBySpecies, setPlantsMatchedBySpecies] = useState([]);
   const [plantsMatchedByName, setPlantsMatchedByName] = useState([]);
   const [plantsMatchedByStatus, setPlantsMatchedByStatus] = useState([]);
@@ -101,10 +107,26 @@ const Sidebar = ({ onChoicesChanged }) => {
     });
   };
 
+  const handleChangeDisplay = (e, newDisplay) => {
+    setCurrentDisplay(newDisplay);
+  };
+
   const isMobile = useIsMobile();
 
   return (
     <div className="sidebar">
+      <ToggleButtonGroup
+        color="primary"
+        value={currentDisplay}
+        exclusive
+        onChange={handleChangeDisplay}
+        aria-label="Platform"
+        fullWidth
+        size="small"
+      >
+        <ToggleButton value="timeline">Timeline</ToggleButton>
+        <ToggleButton value="timeseries">Heights</ToggleButton>
+      </ToggleButtonGroup>
       <div>
         <h4>Select specific plants:</h4>
         <div className="plant-selector">
