@@ -22,7 +22,7 @@ const longMonthNames = [
   "December",
 ];
 
-export function Gantt(
+export function ChartFactory(
   _data,
   {
     // Data Accessors

@@ -1,7 +1,7 @@
 import * as d3 from "d3";
 import "../GanttChart/style.css";
 import "../../style/tippy.css";
-import { Gantt } from "../GanttChart/gantt";
+import { ChartFactory } from "../GanttChart/helper";
 import { getMargin, toTitleCase, registerResize } from "../../utils";
 import config from "../../data/chart-config.json";
 import eventLabelMap from "../../data/event-map-config.json";
@@ -13,7 +13,7 @@ function chart(processedData, config) {
   const eventLabel = (d) =>
     eventLabelMap[d] ? eventLabelMap[d] : toTitleCase(d);
 
-  const gantt = Gantt(processedData, {
+  const gantt = ChartFactory(processedData, {
     key: (d) => d.name.split(" ").join("_") + d.start,
     start: (d) => new Date(d.start),
     end: (d) => new Date(d.end),
