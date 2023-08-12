@@ -4,6 +4,7 @@ import LegendOverview from "./components/LegendOverview";
 import Sidebar from "./components/Sidebar";
 import data from "./data/processed-data.json";
 import exampleData from "./data/example-data.json";
+import heightData from "./data/processed-height-data.json";
 import { useState } from "react";
 import "./style.css";
 import "tippy.js/dist/tippy.css";
@@ -38,7 +39,7 @@ function App() {
     ),
     [dataViewNames[1]]: (
       <LineChart
-        data={parentData}
+        data={heightData}
         isActive={dataViewNames[activeStep] === dataViewNames[1]}
       />
     ),

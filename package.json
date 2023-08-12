@@ -23,7 +23,7 @@
   "license": "ISC",
   "homepage": "https://jpiccirillo.com/gantt-plant-timeline",
   "scripts": {
-    "prepare-all-data": "npm run preprocess-data && npm run preprocess-stages && npm run preprocess-for-name && npm run preprocess-for-species",
+    "prepare-all-data": "npm run preprocess-data && npm run preprocess-height-data && npm run preprocess-stages && npm run preprocess-for-name && npm run preprocess-for-species",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
@@ -31,6 +31,7 @@
     "preprocess-stages": "node ./scripts/generateStagesMap.js",
     "preprocess-for-name": "node ./scripts/organizeByPlantName.js",
     "preprocess-for-species": "node ./scripts/organizeBySpecies.js",
+    "preprocess-height-data": "node ./scripts/preprocessHeightData.js",
     "preprocess-data": "node ./scripts/preprocessData.js"
   },
   "eslintConfig": {
