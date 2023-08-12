@@ -13,11 +13,12 @@ import dataByName from "../../data/organized-by-name.json";
 import dataBySpecies from "../../data/organized-by-species.json";
 import useIsMobile from "../../hooks/useIsMobile";
 import { toTitleCase } from "../../utils";
+import { dataViewNames } from "../../dataViews";
 
-const Sidebar = ({ onChoicesChanged }) => {
+const Sidebar = ({ onChoicesChanged, onDataViewChanged }) => {
   const [plantSelections, setPlantSelections] = useState([]);
   const [speciesSelections, setSpeciesSelections] = useState([]);
-  const [currentDisplay, setCurrentDisplay] = useState("timeline");
+  const [currentDisplay, setCurrentDisplay] = useState(dataViewNames[0]);
   const [plantsMatchedBySpecies, setPlantsMatchedBySpecies] = useState([]);
   const [plantsMatchedByName, setPlantsMatchedByName] = useState([]);
   const [plantsMatchedByStatus, setPlantsMatchedByStatus] = useState([]);
@@ -107,8 +108,9 @@ const Sidebar = ({ onChoicesChanged }) => {
     });
   };
 
-  const handleChangeDisplay = (e, newDisplay) => {
-    setCurrentDisplay(newDisplay);
+  const handleChangingDisplay = (e, newValue) => {
+    setCurrentDisplay(newValue);
+    onDataViewChanged(newValue);
   };
 
   const isMobile = useIsMobile();
@@ -119,13 +121,13 @@ const Sidebar = ({ onChoicesChanged }) => {
         color="primary"
         value={currentDisplay}
         exclusive
-        onChange={handleChangeDisplay}
+        onChange={handleChangingDisplay}
         aria-label="Platform"
         fullWidth
         size="small"
       >
-        <ToggleButton value="timeline">Timeline</ToggleButton>
-        <ToggleButton value="timeseries">Heights</ToggleButton>
+        <ToggleButton value={dataViewNames[0]}>Timeline</ToggleButton>
+        <ToggleButton value={dataViewNames[1]}>Heights</ToggleButton>
       </ToggleButtonGroup>
       <div>
         <h4>Select specific plants:</h4>
