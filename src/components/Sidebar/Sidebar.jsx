@@ -14,6 +14,7 @@ import dataBySpecies from "../../data/organized-by-species.json";
 import useIsMobile from "../../hooks/useIsMobile";
 import { toTitleCase } from "../../utils";
 import { dataViewNames } from "../../dataViews";
+import MuiltilineChip from "../MultilineChip";
 
 const Sidebar = ({ onChoicesChanged, onDataViewChanged }) => {
   const [plantSelections, setPlantSelections] = useState([]);
@@ -137,8 +138,12 @@ const Sidebar = ({ onChoicesChanged, onDataViewChanged }) => {
             disablePortal
             multiple
             fullWidth
+            size="small"
             onChange={handlePlantDropdownChange}
             options={plantDropdownOptions}
+            renderTags={(value, getTagProps) => (
+              <MuiltilineChip value={value} getTagProps={getTagProps} />
+            )}
             renderInput={(params) => (
               <TextField
                 {...params}
@@ -156,8 +161,12 @@ const Sidebar = ({ onChoicesChanged, onDataViewChanged }) => {
             disablePortal
             multiple
             fullWidth
+            size="small"
             onChange={handleSpeciesDropdownChange}
             options={speciesDropdownOptions}
+            renderTags={(value, getTagProps) => (
+              <MuiltilineChip value={value} getTagProps={getTagProps} />
+            )}
             renderInput={(params) => (
               <TextField
                 {...params}

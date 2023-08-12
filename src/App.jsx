@@ -30,8 +30,18 @@ function App() {
   };
 
   const viewMapping = {
-    [dataViewNames[0]]: <GanttChart data={parentData} />,
-    [dataViewNames[1]]: <HeightChart data={parentData} />,
+    [dataViewNames[0]]: (
+      <GanttChart
+        data={parentData}
+        isActive={dataViewNames[activeStep] === dataViewNames[0]}
+      />
+    ),
+    [dataViewNames[1]]: (
+      <HeightChart
+        data={parentData}
+        isActive={dataViewNames[activeStep] === dataViewNames[1]}
+      />
+    ),
   };
 
   return (

@@ -60,7 +60,7 @@ function chart(processedData, config) {
   return { gantt: gantt };
 }
 
-function GanttChart({ data }) {
+function GanttChart({ data, isActive }) {
   let [g, setG] = useState({});
   const gantIsSetup = useRef(false);
 
@@ -68,7 +68,9 @@ function GanttChart({ data }) {
     if (!g.gantt && !gantIsSetup.current) {
       gantIsSetup.current = true;
       let _g = chart(data, config);
-      registerResize(() => _g.gantt._width());
+      registerResize(() => {
+        isActive && _g.gantt._width();
+      });
       setG(_g);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
