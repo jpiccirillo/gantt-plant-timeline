@@ -56,6 +56,9 @@ export function ChartFactory(_data, { colors, xScale, margin, svgID }) {
         if (getNode(a)) getNode(a)._tippy.hide()
       },
     },
+    size: {
+      height: window.innerWidth < 810 ? 400 : 700,
+    },
     axis: {
       y: {
         tick: {

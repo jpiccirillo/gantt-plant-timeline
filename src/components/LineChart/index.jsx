@@ -31,12 +31,13 @@ function GanttChart({ data, isActive }) {
   let [g, setG] = useState({});
   const gantIsSetup = useRef(false);
 
-  function afterNewData() {
+  function afterNewData(_g) {
+    let validG = _g || g;
     setUpTooltips();
-    let [min, max] = getXIndexDomain(g.gantt.data());
+    let [min, max] = getXIndexDomain(validG.gantt.data());
     let firstDate = data[0].data[min];
     let lastDate = data[0].data[max];
-    g.gantt.axis.range({
+    validG.gantt.axis.range({
       min: {
         x: firstDate,
       },
@@ -52,10 +53,10 @@ function GanttChart({ data, isActive }) {
       gantIsSetup.current = true;
       let _g = chart(data);
       registerResize(() =>
-        _g.gantt.resize({ height: window.innerWidth < 810 ? 300 : 600 })
+        _g.gantt.resize({ height: window.innerWidth < 810 ? 400 : 700 })
       );
-      setUpTooltips();
       setG(_g);
+      afterNewData(_g);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
