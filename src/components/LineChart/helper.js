@@ -3,21 +3,13 @@ import tippy from 'tippy.js'
 import { mergeDeep, cm, formatDate, formatValue } from '../../utils/'
 import staticProps from './staticProps.json'
 
-export function ChartFactory(_data) {
-  const finalData = _data.map((a) => [a.title, ...a.data])
-  const colors = _data
-    .filter((a) => a.title !== 'x')
-    .reduce((agg, plant) => {
-      agg[plant.title] = cm(plant.species)
-      return agg
-    }, {})
-
+export function ChartFactory(_data, options) {
   const mergedProps = mergeDeep(staticProps, {
     data: {
       x: 'x',
       xFormat: '%m/%d/%Y', // 'xFormat' can be used as custom format of 'x'
-      columns: finalData,
-      colors,
+      columns: _data,
+      colors: options.colors,
       onmouseover: function (a) {
         if (document.getElementById(getTippyId(a))) {
           document.getElementById(getTippyId(a))._tippy.show()

@@ -4,7 +4,7 @@ import LegendOverview from "./components/LegendOverview";
 import Sidebar from "./components/Sidebar";
 import data from "./data/processed-data.json";
 import exampleData from "./data/example-data.json";
-import heightData from "./data/processed-height-data.json";
+import originalHeightData from "./data/processed-height-data.json";
 import { useState } from "react";
 import "./style.css";
 import "tippy.js/dist/tippy.css";
@@ -13,6 +13,7 @@ import { dataViewNames } from "./dataViews";
 
 function App() {
   let [parentData, setParentData] = useState(data);
+  let [heightData, setHeightData] = useState(originalHeightData);
   const [activeStep, setActiveStep] = useState(0);
 
   const handleCheckboxChange = (matchingData) => {
@@ -23,7 +24,19 @@ function App() {
     );
 
     const chartData = matchingPlants.length ? matchingPlants : data;
+    let uniquePlantNames = Array.from(
+      new Set(matchingPlants.map((a) => a.name))
+    );
+
     setParentData(chartData);
+    setHeightData(
+      uniquePlantNames.length
+        ? originalHeightData.filter(
+            (entry) =>
+              uniquePlantNames.includes(entry.title) || entry.title === "x"
+          )
+        : originalHeightData
+    );
   };
 
   const handleDataViewChange = (chosenView) => {

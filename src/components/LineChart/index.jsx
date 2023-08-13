@@ -5,8 +5,18 @@ import { registerResize, cm } from "../../utils";
 import "./c3.css";
 import "./style.css";
 
+function formatData(d) {
+  return d.map((a) => [a.title, ...a.data]);
+}
+
 function chart(processedData) {
-  const gantt = ChartFactory(processedData);
+  const colors = processedData
+    .filter((a) => a.title !== "x")
+    .reduce((agg, plant) => {
+      agg[plant.title] = cm(plant.species);
+      return agg;
+    }, {});
+  const gantt = ChartFactory(formatData(processedData), { colors });
   return { gantt: gantt };
 }
 
@@ -26,6 +36,16 @@ function GanttChart({ data, isActive }) {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    if (g.gantt && gantIsSetup) {
+      g.gantt.load({
+        columns: formatData(data),
+        unload: true,
+        done: setUpTooltips,
+      });
+    }
+  }, [data]);
 
   return <div className="line-chart" id="chart"></div>;
 }

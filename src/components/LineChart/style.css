@@ -5,3 +5,7 @@
 .c3-line {
   stroke-width: 2px;
 }
+
+.c3-legend-item {
+  display: none;
+}
