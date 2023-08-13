@@ -30,10 +30,7 @@ jobs:
 
       - name: Process data
         run: |
-          npm run preprocess-data
-          npm run preprocess-stages
-          npm run preprocess-for-name
-          npm run preprocess-for-species
+          npm run prepare-all-data
 
       - name: Examine data
         run: |
