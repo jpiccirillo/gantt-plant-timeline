@@ -47,7 +47,10 @@ function App() {
 
   return (
     <div className="App">
-      <LegendOverview data={exampleData} />
+      <LegendOverview
+        data={exampleData}
+        activeView={dataViewNames[activeStep]}
+      />
       <div id="gantt-wrapper">
         <div class="data-view">{viewMapping[dataViewNames[activeStep]]}</div>
         <Sidebar

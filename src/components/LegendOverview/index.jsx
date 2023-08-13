@@ -5,6 +5,8 @@ import { ChartFactory } from "../GanttChart/helper";
 import { getMargin, toTitleCase, registerResize } from "../../utils";
 import config from "../../data/chart-config.json";
 import eventLabelMap from "../../data/event-map-config.json";
+import copy from "./copy";
+import { dataViewNames } from "../../dataViews";
 import { useEffect, useRef, useState } from "react";
 import useIsMobile from "../../hooks/useIsMobile";
 
@@ -39,7 +41,7 @@ function chart(processedData, config) {
   return { gantt: gantt };
 }
 
-function GanttChart({ data }) {
+function GanttChart({ data, activeView }) {
   let [g, setG] = useState({});
   const gantIsSetup = useRef(false);
 
@@ -67,39 +69,21 @@ function GanttChart({ data }) {
       >
         {isMobile ? (
           <div className="copy">
-            <p>
-              Below is a timeline chart of plants I've grown from seed over the
-              last year. Each species is its own color - horizontal bars
-              represent long statuses in a plant's life, while black dots
-              represent specific day-level events.
-            </p>
-            <p>
-              This sample below is the timeline of Plant 1: Germinating for a
-              month, sprouted and alive for another month or two, then dormant
-              and died.
-            </p>
+            <p>{copy[activeView].mobile[0]}</p>
+            <p>{copy[activeView].mobile[1]}</p>
           </div>
         ) : (
           <div className="copy">
-            <p>
-              The below chart is an interactive timeline, in the form of a Gantt
-              Chart, showing the lifespan of all plants I've grown from seed.
-              Some are still going strong, while others were with me for just a
-              short time before rotting, withering in the sun, getting stolen,
-              or meeting another fate.
-            </p>
-            <p style={{ marginBottom: 0 }}>
-              In this timeline, each species has a specific color, and bars
-              represent long statuses of the plant's life - germinating,
-              being-sprouted, dormant, or recovered. Black dots represent
-              specific events, like day of planting, or certain overvations.
-              Below is an example timeline: germinating (roots but no shoot yet)
-              from Sept - Oct. Sprouting, and actively growing, from Oct - Dec.
-              Dormant (not dead but no growth) from Dec - Jan.
-            </p>
+            <p>{copy[activeView].desktop[0]}</p>
+            <p style={{ marginBottom: 0 }}>{copy[activeView].desktop[1]}</p>
           </div>
         )}
-        <div>
+        <div
+          style={{
+            height: activeView === dataViewNames[0] ? "100px" : "0px",
+            visibility: activeView === dataViewNames[0] ? "visible" : "hidden",
+          }}
+        >
           <svg className="gantt-example" id="gantt-example"></svg>
         </div>
       </div>
