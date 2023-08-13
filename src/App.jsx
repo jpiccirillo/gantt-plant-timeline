@@ -49,7 +49,7 @@ function App() {
     <div className="App">
       <LegendOverview data={exampleData} />
       <div id="gantt-wrapper">
-        {viewMapping[dataViewNames[activeStep]]}
+        <div class="data-view">{viewMapping[dataViewNames[activeStep]]}</div>
         <Sidebar
           onChoicesChanged={handleCheckboxChange}
           onDataViewChanged={handleDataViewChange}

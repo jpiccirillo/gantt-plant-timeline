@@ -19,7 +19,7 @@ function GanttChart({ data, isActive }) {
       gantIsSetup.current = true;
       let _g = chart(data);
       registerResize(() =>
-        _g.gantt.resize({ height: window.innerWidth < 810 ? 300 : 900 })
+        _g.gantt.resize({ height: window.innerWidth < 810 ? 300 : 600 })
       );
       setUpTooltips();
       setG(_g);

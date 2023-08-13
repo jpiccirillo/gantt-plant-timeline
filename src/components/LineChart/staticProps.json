@@ -6,5 +6,8 @@
   "tooltip": { "grouped": false },
   "legend": {
     "hide": true
+  },
+  "padding": {
+    "left": 20
   }
 }
