@@ -78,7 +78,7 @@ export function ChartFactory(_data, { colors, xScale, margin, svgID }) {
 
 export function getTippyId(data) {
   let { id, index } = data
-  return `${id.replace(/[\ ]/g, '')}-${index}`
+  return `${id.replace(/[ ]/g, '')}-${index}`
 }
 
 export function setUpTooltips() {

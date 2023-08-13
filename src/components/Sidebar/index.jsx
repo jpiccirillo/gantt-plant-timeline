@@ -21,8 +21,8 @@ const Sidebar = ({
   onChoicesChanged,
   onDataViewChanged,
 }) => {
-  const [plantSelections, setPlantSelections] = useState([]);
-  const [speciesSelections, setSpeciesSelections] = useState([]);
+  const [, setPlantSelections] = useState([]);
+  const [, setSpeciesSelections] = useState([]);
   const [currentDisplay, setCurrentDisplay] = useState(dataViewNames[0]);
   const [plantsMatchedBySpecies, setPlantsMatchedBySpecies] = useState([]);
   const [plantsMatchedByName, setPlantsMatchedByName] = useState([]);

@@ -1,6 +1,6 @@
 import { dataViewNames } from '../../dataViews'
 
-export default {
+let copy = {
   [dataViewNames[0]]: {
     mobile: [
       "Below is a timeline chart of plants I've grown from seed over the last year. Each species is its own color - horizontal bars represent long statuses in a plant's life, while black dots represent specific day-level events.",
@@ -22,3 +22,5 @@ export default {
     ],
   },
 }
+
+export default copy

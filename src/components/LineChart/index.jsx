@@ -70,6 +70,7 @@ function GanttChart({ data, isActive }) {
         done: afterNewData,
       });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data]);
 
   return <div className="line-chart" id="chart"></div>;
