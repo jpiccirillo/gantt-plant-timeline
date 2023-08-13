@@ -3,6 +3,8 @@ import tippy from 'tippy.js'
 import { mergeDeep, cm, formatDate, formatValue } from '../../utils/'
 import staticProps from './staticProps.json'
 
+const getNode = (a) => document.getElementById(getTippyId(a))
+
 export function ChartFactory(_data, options) {
   const mergedProps = mergeDeep(staticProps, {
     data: {
@@ -11,14 +13,10 @@ export function ChartFactory(_data, options) {
       columns: _data,
       colors: options.colors,
       onmouseover: function (a) {
-        if (document.getElementById(getTippyId(a))) {
-          document.getElementById(getTippyId(a))._tippy.show()
-        }
+        if (getNode(a)) getNode(a)._tippy.show()
       },
       onmouseout: function (a) {
-        if (document.getElementById(getTippyId(a))) {
-          document.getElementById(getTippyId(a))._tippy.hide()
-        }
+        if (getNode(a)) getNode(a)._tippy.hide()
       },
     },
 
