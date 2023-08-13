@@ -1,5 +1,5 @@
 import * as d3 from "d3";
-import { ChartFactory } from "./helper";
+import { ChartFactory, setUpTooltips } from "./helper";
 import { useEffect, useRef, useState } from "react";
 import { registerResize, cm } from "../../utils";
 import "./c3.css";
@@ -21,6 +21,7 @@ function GanttChart({ data, isActive }) {
       registerResize(() =>
         _g.gantt.resize({ height: window.innerWidth < 810 ? 300 : 900 })
       );
+      setUpTooltips();
       setG(_g);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
