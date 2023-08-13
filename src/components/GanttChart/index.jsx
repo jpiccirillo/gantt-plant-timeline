@@ -2,7 +2,13 @@ import * as d3 from "d3";
 import "./style.css";
 import "../../style/tippy.css";
 import { ChartFactory } from "./helper";
-import { getMargin, toTitleCase, registerResize, cm } from "../../utils";
+import {
+  getMargin,
+  toTitleCase,
+  registerResize,
+  cm,
+  formatDate,
+} from "../../utils";
 import config from "../../data/chart-config.json";
 import eventLabelMap from "../../data/event-map-config.json";
 import { useEffect, useRef, useState } from "react";
@@ -41,14 +47,13 @@ function chart(processedData, config) {
     label: (d) => d.type,
     eventLabel: (d) => eventLabelMap[d],
     title: (d) => {
-      const f = d3.timeFormat("%b %d");
-      return `${d.name} - ${statusLabel(d.type)} from ${f(
-        new Date(d.start)
-      )} to ${f(new Date(d.end))}`;
+      const b = formatDate(new Date(d.start));
+      const e = formatDate(new Date(d.end));
+      return `${d.name} - ${statusLabel(d.type)} from ${b} to ${e}`;
     },
     eventTitle: (d) => {
-      const f = d3.timeFormat("%b %d");
-      return `${d.name} - ${eventLabel(d.type)} on ${f(new Date(d.start))}`;
+      const b = formatDate(new Date(d.start));
+      return `${d.name} - ${eventLabel(d.type)} on ${b}`;
     },
     // layout
     margin: getMargin(),

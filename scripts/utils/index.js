@@ -12,6 +12,13 @@ function getSpeciesName(p) {
   return p.replace(/[0-9.]/g, "").trim();
 }
 
+function getSpeciesDisplayName(p) {
+  return p
+    .replace(/[\ \0-9.]/g, "")
+    .trim()
+    .toLowerCase();
+}
+
 function getDatesBetween(beginning, end) {
   let fullDateSet = [];
   let currentDate = beginning;
@@ -28,4 +35,9 @@ function getDatesBetween(beginning, end) {
   return fullDateSet;
 }
 
-module.exports = { writePreprocessedData, getSpeciesName, getDatesBetween };
+module.exports = {
+  writePreprocessedData,
+  getSpeciesName,
+  getSpeciesDisplayName,
+  getDatesBetween,
+};

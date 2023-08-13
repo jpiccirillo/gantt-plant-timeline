@@ -13,11 +13,14 @@ function chart(processedData) {
 function GanttChart({ data, isActive }) {
   let [g, setG] = useState({});
   const gantIsSetup = useRef(false);
+
   useEffect(() => {
     if (!g.gantt && !gantIsSetup.current) {
       gantIsSetup.current = true;
       let _g = chart(data);
-      registerResize(() => {});
+      registerResize(() =>
+        _g.gantt.resize({ height: window.innerWidth < 810 ? 300 : 900 })
+      );
       setG(_g);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

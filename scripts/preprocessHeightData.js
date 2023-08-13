@@ -1,6 +1,6 @@
 const csv = require('csvtojson')
 const csvFilePath = './original-height-data.csv'
-const { writePreprocessedData, getDatesBetween } = require('./utils')
+const { writePreprocessedData, getDatesBetween, getSpeciesDisplayName } = require('./utils')
 
 const splitDate = (date) => date
 const standardizeUnits = (a) =>
@@ -52,10 +52,14 @@ async function preprocessData(csvData) {
   }
 
   // Now finally prepare the data the way c3.js expects
-  let finalData = [['x', ...fullDateSet]]
+  let finalData = [{ title: 'x', data: fullDateSet }]
   for (let plantName in mapWithBlankDays) {
     let data = mapWithBlankDays[plantName]
-    finalData.push([plantName, ...data])
+    finalData.push({
+      title: plantName,
+      species: getSpeciesDisplayName(plantName),
+      data,
+    })
   }
 
   return finalData

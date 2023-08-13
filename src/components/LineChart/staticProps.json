@@ -3,6 +3,7 @@
   "line": {
     "connectNull": true
   },
+  "tooltip": { "grouped": false },
   "legend": {
     "hide": true
   }

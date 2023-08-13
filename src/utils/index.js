@@ -381,3 +381,7 @@ export function mergeDeep(target, ...sources) {
 
   return mergeDeep(target, ...sources);
 }
+
+export function formatDate(date) {
+  return d3.timeFormat("%b %d")(date);
+}
