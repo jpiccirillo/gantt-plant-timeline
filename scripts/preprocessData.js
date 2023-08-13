@@ -1,7 +1,7 @@
 const csv = require("csvtojson");
 const eventNames = ["departed", "planted", "inwater"];
 const csvFilePath = "./original-data.csv";
-const { writePreprocessedData } = require("./utils");
+const { writePreprocessedData, getSpeciesDisplayName } = require("./utils");
 
 csv()
   .fromFile(csvFilePath)
@@ -23,7 +23,7 @@ function preprocessData(json) {
 function format(entry) {
   entry.name = entry.Name;
   entry.dates = {};
-  entry.plantType = entry.name.replace(/[\ \.0-9]/g, "").toLowerCase();
+  entry.plantType = getSpeciesDisplayName(entry.name);
   let dateKeys = [
     { orig: "Departure date", new: "departed" },
     { orig: "Intake date", new: "germinating" },

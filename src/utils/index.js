@@ -418,12 +418,12 @@ export function getXIndexDomain(data) {
 
 function getFirstNonNull(arr) {
   let index = 0;
-  while (arr[index].value === null) index += 1;
+  while (arr[index] && arr[index].value === null) index += 1;
   return index;
 }
 
 function getLastNonNull(arr) {
   let index = arr.length - 1;
-  while (arr[index].value === null) index -= 1;
+  while (arr[index] && arr[index].value === null) index -= 1;
   return index;
 }

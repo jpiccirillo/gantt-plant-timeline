@@ -14,7 +14,7 @@ function getSpeciesName(p) {
 
 function getSpeciesDisplayName(p) {
   return p
-    .replace(/[\ \0-9.]/g, "")
+    .replace(/[0-9.]/g, "")
     .trim()
     .toLowerCase();
 }

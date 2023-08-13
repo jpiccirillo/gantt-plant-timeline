@@ -12,20 +12,21 @@ import plantStagesData from "../../data/plant-stages-data.json";
 import dataByName from "../../data/organized-by-name.json";
 import dataBySpecies from "../../data/organized-by-species.json";
 import useIsMobile from "../../hooks/useIsMobile";
-import { toTitleCase } from "../../utils";
 import { dataViewNames } from "../../dataViews";
 import MuiltilineChip from "../MultilineChip";
 
-const Sidebar = ({ onChoicesChanged, onDataViewChanged }) => {
+const Sidebar = ({
+  plantDropdownOptions,
+  speciesDropdownOptions,
+  onChoicesChanged,
+  onDataViewChanged,
+}) => {
   const [plantSelections, setPlantSelections] = useState([]);
   const [speciesSelections, setSpeciesSelections] = useState([]);
   const [currentDisplay, setCurrentDisplay] = useState(dataViewNames[0]);
   const [plantsMatchedBySpecies, setPlantsMatchedBySpecies] = useState([]);
   const [plantsMatchedByName, setPlantsMatchedByName] = useState([]);
   const [plantsMatchedByStatus, setPlantsMatchedByStatus] = useState([]);
-  const plantDropdownOptions = Object.keys(dataByName).map(toTitleCase);
-  const speciesDropdownOptions = Object.keys(dataBySpecies).map(toTitleCase);
-
   const [checkboxes, setCheckboxes] = useState(
     possibleStages.map((stage) => ({
       id: stage,

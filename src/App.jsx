@@ -5,16 +5,43 @@ import Sidebar from "./components/Sidebar";
 import data from "./data/processed-data.json";
 import exampleData from "./data/example-data.json";
 import originalHeightData from "./data/processed-height-data.json";
-import { useState } from "react";
+import dataByName from "./data/organized-by-name.json";
+import dataBySpecies from "./data/organized-by-species.json";
+import { useEffect, useState } from "react";
 import "./style.css";
 import "tippy.js/dist/tippy.css";
-import { removeDuplicates } from "./utils";
+import { removeDuplicates, toTitleCase } from "./utils";
 import { dataViewNames } from "./dataViews";
 
+function determinePlantDropdown(_dataByName, dataViewStep) {
+  let lineGraphMode = dataViewNames[dataViewStep] === dataViewNames[1];
+  let options = lineGraphMode
+    ? originalHeightData.filter((a) => a.title !== "x").map((a) => a.title)
+    : Object.keys(_dataByName);
+
+  return options.map(toTitleCase);
+}
+
+function determineSpeciesDropdown(_dataBySpecies, dataViewStep) {
+  let lineGraphMode = dataViewNames[dataViewStep] === dataViewNames[1];
+  let options = lineGraphMode
+    ? originalHeightData.filter((a) => a.title !== "x").map((a) => a.species)
+    : Object.keys(_dataBySpecies);
+
+  return Array.from(new Set(options.map(toTitleCase)));
+}
+
 function App() {
+  let defaultDataViewIndex = 0;
   let [parentData, setParentData] = useState(data);
   let [heightData, setHeightData] = useState(originalHeightData);
-  const [activeStep, setActiveStep] = useState(0);
+  const [activeStep, setActiveStep] = useState(defaultDataViewIndex);
+  let [plantDropdownOptions, setPlantDropdownOptions] = useState(
+    determinePlantDropdown(dataByName, activeStep)
+  );
+  let [speciesDropdownOptions, setSpeciesDropdownOptions] = useState(
+    determineSpeciesDropdown(dataBySpecies, activeStep)
+  );
 
   const handleCheckboxChange = (matchingData) => {
     const matchingPlants = removeDuplicates(
@@ -43,6 +70,14 @@ function App() {
     setActiveStep(dataViewNames.indexOf(chosenView));
   };
 
+  // Switch dropdown options when changing activeStep
+  useEffect(() => {
+    setPlantDropdownOptions(determinePlantDropdown(dataByName, activeStep));
+    setSpeciesDropdownOptions(
+      determineSpeciesDropdown(dataBySpecies, activeStep)
+    );
+  }, [activeStep]);
+
   const viewMapping = {
     [dataViewNames[0]]: (
       <GanttChart
@@ -67,6 +102,8 @@ function App() {
       <div id="gantt-wrapper">
         <div class="data-view">{viewMapping[dataViewNames[activeStep]]}</div>
         <Sidebar
+          plantDropdownOptions={plantDropdownOptions}
+          speciesDropdownOptions={speciesDropdownOptions}
           onChoicesChanged={handleCheckboxChange}
           onDataViewChanged={handleDataViewChange}
         />
