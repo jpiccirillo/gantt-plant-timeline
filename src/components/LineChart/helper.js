@@ -1,17 +1,54 @@
+import * as d3 from 'd3'
 import c3 from 'c3'
 import tippy from 'tippy.js'
-import { mergeDeep, cm, formatDate, formatValue } from '../../utils/'
+import {
+  mergeDeep,
+  createAxisGroup,
+  formatDate,
+  formatValue,
+  longMonthNames,
+} from '../../utils/'
 import staticProps from './staticProps.json'
 
 const getNode = (a) => document.getElementById(getTippyId(a))
+let axisGroup
 
-export function ChartFactory(_data, options) {
+export function ChartFactory(_data, { colors, xScale, margin, svgID }) {
   const mergedProps = mergeDeep(staticProps, {
+    oninit: function () {
+      this.svg.attr('id', svgID)
+      axisGroup = createAxisGroup(d3.select(`#${svgID}`), this.height)
+    },
+    onrendered: function () {
+      let width = this.width
+      const x = xScale
+        .domain([new Date('08/01/2022'), new Date('08/10/2023')])
+        .range([margin.left - margin.laneGutter, width - margin.right])
+
+      axisGroup
+        .transition()
+        .duration(0)
+        .attr('transform', `translate(0, ${this.height + 5})`)
+        .call(
+          d3.axisBottom(x).tickFormat((one) => {
+            const label = x.tickFormat()(one)
+            return longMonthNames.includes(label)
+              ? d3.timeFormat('%b')(one)
+              : label
+          }),
+        )
+        .selectAll('text')
+        .attr('y', 10)
+        .attr('x', -8)
+        .attr('dy', '0em')
+        .attr('transform', 'rotate(-45)')
+        .style('text-anchor', 'end')
+    },
     data: {
       x: 'x',
       xFormat: '%m/%d/%Y', // 'xFormat' can be used as custom format of 'x'
       columns: _data,
-      colors: options.colors,
+      colors,
       onmouseover: function (a) {
         if (getNode(a)) getNode(a)._tippy.show()
       },
@@ -19,7 +56,6 @@ export function ChartFactory(_data, options) {
         if (getNode(a)) getNode(a)._tippy.hide()
       },
     },
-
     tooltip: {
       show: false,
     },

@@ -1,7 +1,7 @@
 import * as d3 from "d3";
 import { ChartFactory, setUpTooltips } from "./helper";
 import { useEffect, useRef, useState } from "react";
-import { registerResize, cm } from "../../utils";
+import { registerResize, cm, getMargin } from "../../utils";
 import "./c3.css";
 import "./style.css";
 
@@ -16,7 +16,14 @@ function chart(processedData) {
       agg[plant.title] = cm(plant.species);
       return agg;
     }, {});
-  const gantt = ChartFactory(formatData(processedData), { colors });
+
+  const gantt = ChartFactory(formatData(processedData), {
+    colors,
+    xScale: d3.scaleTime(),
+    svgID: "line-chart",
+    margin: { left: 10, right: -20, top: 0, bottom: -20, laneGutter: -15 },
+  });
+
   return { gantt: gantt };
 }
 

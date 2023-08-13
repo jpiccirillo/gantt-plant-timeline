@@ -8,6 +8,10 @@
     "hide": true
   },
   "padding": {
-    "left": 20
+    "left": 20,
+    "bottom": 10
+  },
+  "axis": {
+    "x": { "show": false }
   }
 }

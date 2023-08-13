@@ -7,6 +7,15 @@ const alphabet = alpha.map((x) => String.fromCharCode(x));
 const vowels = ["a", "e", "i", "o", "u"];
 const consonants = alphabet.filter((letter) => !vowels.includes(letter));
 
+export const longMonthNames = [
+  "February",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
+];
+
 // Debounce
 export function debounce(func, time = 100) {
   var timer;

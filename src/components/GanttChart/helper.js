@@ -11,16 +11,8 @@ import {
   laneGroupUtils,
   isMobile,
   getPxWidth,
+  longMonthNames,
 } from "../../utils";
-
-const longMonthNames = [
-  "February",
-  "August",
-  "September",
-  "October",
-  "November",
-  "December",
-];
 
 export function ChartFactory(
   _data,
@@ -42,7 +34,6 @@ export function ChartFactory(
     roundRadius = 4, // Rounded corner radius for bars.
     showLaneBoundaries = true, // Whether to draw dividing lines for swim lanes
     xScale = d3.scaleTime(), // Kind of scale to use for the x axis, choose d3.scaleTime for dates, or d3.scaleLinear for numbers as your start and end values.
-    xDomain = undefined, // Constrain the x axis by providing a domain to clip it to.
     yPadding = 0.2, // Padding between rows (float from 0-1)
     xPadding = 5, // Padding between bars in the same row (pixels)
     showAxis = true,
@@ -120,7 +111,7 @@ export function ChartFactory(
     ];
 
     // Update the x domain
-    x.domain(xDomain || xDomainData);
+    x.domain(xDomainData);
     if (!isMobile()) x.nice();
 
     // Map our _data to swim lanes
