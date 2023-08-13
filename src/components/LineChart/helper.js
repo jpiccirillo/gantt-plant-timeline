@@ -20,15 +20,15 @@ export function ChartFactory(_data, { colors, xScale, margin, svgID }) {
       axisGroup = createAxisGroup(d3.select(`#${svgID}`), this.height)
     },
     onrendered: function () {
-      let width = this.width
+      let { height, width, orgXDomain } = this
       const x = xScale
-        .domain([new Date('08/01/2022'), new Date('08/10/2023')])
+        .domain(orgXDomain.map((a) => new Date(a)))
         .range([margin.left - margin.laneGutter, width - margin.right])
 
       axisGroup
         .transition()
         .duration(0)
-        .attr('transform', `translate(0, ${this.height + 5})`)
+        .attr('transform', `translate(0, ${height + 5})`)
         .call(
           d3.axisBottom(x).tickFormat((one) => {
             const label = x.tickFormat()(one)

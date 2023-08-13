@@ -398,3 +398,32 @@ export function formatDate(date) {
 export function formatValue(value) {
   return value.toFixed(2);
 }
+
+export function getXIndexDomain(data) {
+  let firstNonNullIndex = Infinity; // start at opposite ends
+  let lastNonNullIndex = 0;
+
+  for (let dataseries of data) {
+    firstNonNullIndex = Math.min(
+      getFirstNonNull(dataseries.values),
+      firstNonNullIndex
+    );
+    lastNonNullIndex = Math.max(
+      getLastNonNull(dataseries.values),
+      lastNonNullIndex
+    );
+  }
+  return [firstNonNullIndex, lastNonNullIndex];
+}
+
+function getFirstNonNull(arr) {
+  let index = 0;
+  while (arr[index].value === null) index += 1;
+  return index;
+}
+
+function getLastNonNull(arr) {
+  let index = arr.length - 1;
+  while (arr[index].value === null) index -= 1;
+  return index;
+}

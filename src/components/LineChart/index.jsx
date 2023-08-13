@@ -1,7 +1,7 @@
 import * as d3 from "d3";
 import { ChartFactory, setUpTooltips } from "./helper";
 import { useEffect, useRef, useState } from "react";
-import { registerResize, cm, getMargin } from "../../utils";
+import { registerResize, cm, getXIndexDomain } from "../../utils";
 import "./c3.css";
 import "./style.css";
 
@@ -31,6 +31,22 @@ function GanttChart({ data, isActive }) {
   let [g, setG] = useState({});
   const gantIsSetup = useRef(false);
 
+  function afterNewData() {
+    setUpTooltips();
+    let [min, max] = getXIndexDomain(g.gantt.data());
+    let firstDate = data[0].data[min];
+    let lastDate = data[0].data[max];
+    g.gantt.axis.range({
+      min: {
+        x: firstDate,
+      },
+      max: {
+        x: lastDate,
+      },
+    });
+  }
+
+  // When chart first loads
   useEffect(() => {
     if (!g.gantt && !gantIsSetup.current) {
       gantIsSetup.current = true;
@@ -44,12 +60,13 @@ function GanttChart({ data, isActive }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  // When data inputs are mutated
   useEffect(() => {
     if (g.gantt && gantIsSetup) {
       g.gantt.load({
         columns: formatData(data),
         unload: true,
-        done: setUpTooltips,
+        done: afterNewData,
       });
     }
   }, [data]);
