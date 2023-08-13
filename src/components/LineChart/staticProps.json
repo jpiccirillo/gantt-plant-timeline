@@ -3,15 +3,21 @@
   "line": {
     "connectNull": true
   },
-  "tooltip": { "grouped": false },
+  "tooltip": {
+    "show": false,
+    "grouped": false
+  },
   "legend": {
     "hide": true
   },
   "padding": {
-    "left": 20,
+    "left": 30,
     "bottom": 10
   },
   "axis": {
+    "y": {
+      "label": { "text": "Height (inches)", "position": "inner-top" }
+    },
     "x": { "show": false }
   }
 }

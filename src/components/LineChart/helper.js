@@ -56,10 +56,12 @@ export function ChartFactory(_data, { colors, xScale, margin, svgID }) {
         if (getNode(a)) getNode(a)._tippy.hide()
       },
     },
-    tooltip: {
-      show: false,
-    },
     axis: {
+      y: {
+        tick: {
+          format: (x) => x.toFixed(1),
+        },
+      },
       x: {
         type: 'timeseries',
         tick: {

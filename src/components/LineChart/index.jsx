@@ -21,7 +21,7 @@ function chart(processedData) {
     colors,
     xScale: d3.scaleTime(),
     svgID: "line-chart",
-    margin: { left: 10, right: -20, top: 0, bottom: -20, laneGutter: -15 },
+    margin: { left: 15, right: -20, top: 0, bottom: -20, laneGutter: -15 },
   });
 
   return { gantt: gantt };

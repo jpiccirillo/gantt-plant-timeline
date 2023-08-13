@@ -9,3 +9,7 @@
 .c3-legend-item {
   display: none;
 }
+
+.c3-axis.c3-axis-y {
+  pointer-events: none;
+}
