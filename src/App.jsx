@@ -16,7 +16,7 @@ import { dataViewNames } from "./dataViews";
 function determinePlantDropdown(_dataByName, dataViewStep) {
   let lineGraphMode = dataViewNames[dataViewStep] === dataViewNames[1];
   let options = lineGraphMode
-    ? originalHeightData.filter((a) => a.title !== "x").map((a) => a.title)
+    ? originalHeightData.map((a) => a.title)
     : Object.keys(_dataByName);
 
   return options.map(toTitleCase);
@@ -25,7 +25,7 @@ function determinePlantDropdown(_dataByName, dataViewStep) {
 function determineSpeciesDropdown(_dataBySpecies, dataViewStep) {
   let lineGraphMode = dataViewNames[dataViewStep] === dataViewNames[1];
   let options = lineGraphMode
-    ? originalHeightData.filter((a) => a.title !== "x").map((a) => a.species)
+    ? originalHeightData.map((a) => a.species)
     : Object.keys(_dataBySpecies);
 
   return Array.from(new Set(options.map(toTitleCase)));

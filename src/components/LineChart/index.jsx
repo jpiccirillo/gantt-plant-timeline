@@ -2,20 +2,20 @@ import * as d3 from "d3";
 import { ChartFactory, setUpTooltips } from "./helper";
 import { useEffect, useRef, useState } from "react";
 import { registerResize, cm, getXIndexDomain } from "../../utils";
+import fullDateSet from "../../data/full-date-set.json";
 import "./c3.css";
 import "./style.css";
 
 function formatData(d) {
+  d = [{ title: "x", data: fullDateSet }, ...d];
   return d.map((a) => [a.title, ...a.data]);
 }
 
 function chart(processedData) {
-  const colors = processedData
-    .filter((a) => a.title !== "x")
-    .reduce((agg, plant) => {
-      agg[plant.title] = cm(plant.species);
-      return agg;
-    }, {});
+  const colors = processedData.reduce((agg, plant) => {
+    agg[plant.title] = cm(plant.species);
+    return agg;
+  }, {});
 
   const gantt = ChartFactory(formatData(processedData), {
     colors,
@@ -35,8 +35,8 @@ function GanttChart({ data, isActive }) {
     let validG = _g || g;
     setUpTooltips();
     let [min, max] = getXIndexDomain(validG.gantt.data());
-    let firstDate = data[0].data[min];
-    let lastDate = data[0].data[max];
+    let firstDate = fullDateSet[min];
+    let lastDate = fullDateSet[max];
     validG.gantt.axis.range({
       min: {
         x: firstDate,
