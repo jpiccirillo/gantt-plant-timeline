@@ -48,15 +48,6 @@ export function toPlural(word) {
   if (w.match(new RegExp(`[${vowels.join("|")}]$`))) return w + "s";
 }
 
-export function removeDuplicates(objArr, key, key2) {
-  return objArr.filter(
-    (thing, index, self) =>
-      self.findIndex(
-        (t) => t[key] === thing[key] && t[key2] === thing[key2]
-      ) === index
-  );
-}
-
 export function slugify(text) {
   return text
     .toString()

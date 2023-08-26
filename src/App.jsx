@@ -10,7 +10,7 @@ import dataBySpecies from "./data/organized-by-species.json";
 import { useEffect, useState } from "react";
 import "./style.css";
 import "tippy.js/dist/tippy.css";
-import { removeDuplicates, toTitleCase } from "./utils";
+import { toTitleCase } from "./utils";
 import { dataViewNames } from "./dataViews";
 
 function determinePlantDropdown(_dataByName, dataViewStep) {
