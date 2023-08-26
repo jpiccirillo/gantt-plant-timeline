@@ -44,11 +44,7 @@ function App() {
   );
 
   const handleCheckboxChange = (matchingData) => {
-    const matchingPlants = removeDuplicates(
-      !matchingData ? data : matchingData,
-      "name",
-      "type"
-    );
+    const matchingPlants = !matchingData ? data : matchingData;
 
     const chartData = matchingPlants.length ? matchingPlants : data;
     let uniquePlantNames = Array.from(
