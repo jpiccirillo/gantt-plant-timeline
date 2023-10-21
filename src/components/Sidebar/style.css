@@ -21,7 +21,11 @@
 .sidebar {
   display: flex;
   flex-direction: column;
-  gap: 15px;
+}
+
+.sidebar > * {
+  margin-bottom: 15px; 
+  /*  fix for old safari not supporting flex-gap */
 }
 
 .sidebar h4 {
