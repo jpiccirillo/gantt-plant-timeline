@@ -105,6 +105,8 @@ body {
 .habanero .germinating ~ text,
 .serranopepper .germinating ~ text,
 .serranopepper .dormant ~ text,
+.honeylocust .dormant ~ text,
+.honeylocust .germinating ~ text,
 .papaya .dormant ~ text,
 .papaya .planted ~ text {
   fill: rgb(100, 100, 100) !important;

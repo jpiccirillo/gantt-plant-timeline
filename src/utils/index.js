@@ -119,7 +119,7 @@ export const barGroupUtils = {
       .attr("transform", (d) => `translate(${x(start(d))}, ${y(d.rowNo)})`);
 
     const rect = g
-      .attr("class", (d) => d.species)
+      .attr("class", (d) => d.species.split(" ").join(""))
       .append("rect")
       .attr("height", y.bandwidth())
       .attr("fill", (d) => color(d))

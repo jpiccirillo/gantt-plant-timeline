@@ -116,6 +116,18 @@ function expandEntries({ name, plantType, dates }) {
     .sort((a, b) => a.date - b.date)
     .filter(({ stage }) => !eventNames.includes(stage));
 
+  // Edge case for when germinating + dormant are on same day (transplanted from soil elsewhere)
+  let germinatingEntry = sortedArray.find((e) => e.stage === "germinating");
+  let dormantEntry = sortedArray.find((e) => e.stage === "dormant");
+
+  if (
+    germinatingEntry &&
+    dormantEntry &&
+    germinatingEntry.date.toString() === dormantEntry.date.toString()
+  ) {
+    sortedArray = sortedArray.filter((a) => a.stage !== "germinating");
+  }
+
   let buckets = [];
 
   for (let i = 0; i < sortedArray.length - 1; i++) {
