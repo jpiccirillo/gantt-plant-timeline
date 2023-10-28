@@ -13,8 +13,7 @@ import "tippy.js/dist/tippy.css";
 import { toTitleCase } from "./utils";
 import { dataViewNames } from "./dataViews";
 
-function determinePlantDropdown(_dataByName, dataViewStep) {
-  let lineGraphMode = dataViewNames[dataViewStep] === dataViewNames[1];
+function determinePlantDropdown(_dataByName, lineGraphMode) {
   let options = lineGraphMode
     ? originalHeightData.map((a) => a.title)
     : Object.keys(_dataByName);
@@ -22,8 +21,7 @@ function determinePlantDropdown(_dataByName, dataViewStep) {
   return options.map(toTitleCase);
 }
 
-function determineSpeciesDropdown(_dataBySpecies, dataViewStep) {
-  let lineGraphMode = dataViewNames[dataViewStep] === dataViewNames[1];
+function determineSpeciesDropdown(_dataBySpecies, lineGraphMode) {
   let options = lineGraphMode
     ? originalHeightData.map((a) => a.species)
     : Object.keys(_dataBySpecies);
@@ -36,11 +34,12 @@ function App() {
   let [parentData, setParentData] = useState(data);
   let [heightData, setHeightData] = useState(originalHeightData);
   const [activeStep, setActiveStep] = useState(defaultDataViewIndex);
+  let lineGraphMode = dataViewNames[activeStep] === dataViewNames[1];
   let [plantDropdownOptions, setPlantDropdownOptions] = useState(
-    determinePlantDropdown(dataByName, activeStep)
+    determinePlantDropdown(dataByName, lineGraphMode)
   );
   let [speciesDropdownOptions, setSpeciesDropdownOptions] = useState(
-    determineSpeciesDropdown(dataBySpecies, activeStep)
+    determineSpeciesDropdown(dataBySpecies, lineGraphMode)
   );
 
   const handleCheckboxChange = (matchingData) => {
