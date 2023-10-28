@@ -1,14 +1,21 @@
 import * as d3 from "d3";
 import { ChartFactory, setUpTooltips } from "./helper";
 import { useEffect, useRef, useState } from "react";
-import { registerResize, cm, getXIndexDomain } from "../../utils";
-import fullDateSet from "../../data/full-date-set.json";
+import { registerResize, cm } from "../../utils";
 import "./c3.css";
 import "./style.css";
 
 function formatData(d) {
-  d = [{ title: "x", data: fullDateSet }, ...d];
-  return d.map((a) => [a.title, ...a.data]);
+  return {
+    xs: d.reduce((a, i, index) => {
+      a[i.title] = index;
+      return a;
+    }, {}),
+    columns: [
+      ...d.map((a, i) => [i, ...a.data.dates.map((a) => new Date(a))]),
+      ...d.map((a, i) => [a.title, ...a.data.values]),
+    ],
+  };
 }
 
 function chart(processedData) {
@@ -27,25 +34,9 @@ function chart(processedData) {
   return { gantt: gantt };
 }
 
-function GanttChart({ data, isActive }) {
+function LineChart({ data, isActive }) {
   let [g, setG] = useState({});
   const gantIsSetup = useRef(false);
-
-  function afterNewData(_g) {
-    let validG = _g || g;
-    setUpTooltips();
-    let [min, max] = getXIndexDomain(validG.gantt.data());
-    let firstDate = fullDateSet[min];
-    let lastDate = fullDateSet[max];
-    validG.gantt.axis.range({
-      min: {
-        x: firstDate,
-      },
-      max: {
-        x: lastDate,
-      },
-    });
-  }
 
   // When chart first loads
   useEffect(() => {
@@ -56,7 +47,7 @@ function GanttChart({ data, isActive }) {
         _g.gantt.resize({ height: window.innerWidth < 810 ? 400 : 700 })
       );
       setG(_g);
-      afterNewData(_g);
+      setUpTooltips();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -65,9 +56,9 @@ function GanttChart({ data, isActive }) {
   useEffect(() => {
     if (g.gantt && gantIsSetup) {
       g.gantt.load({
-        columns: formatData(data),
+        ...formatData(data),
         unload: true,
-        done: afterNewData,
+        done: setUpTooltips,
       });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -76,4 +67,4 @@ function GanttChart({ data, isActive }) {
   return <div className="line-chart" id="chart"></div>;
 }
 
-export default GanttChart;
+export default LineChart;

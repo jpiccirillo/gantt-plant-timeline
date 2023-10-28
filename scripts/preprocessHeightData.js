@@ -2,11 +2,10 @@ const csv = require("csvtojson");
 const csvFilePath = "./original-height-data.csv";
 const {
   writePreprocessedData,
-  getDatesBetween,
+  formatDate,
   getSpeciesDisplayName,
 } = require("./utils");
 
-const splitDate = (date) => date;
 const standardizeUnits = (a) =>
   a.Unit === "inches" ? Number(a.Height) : Number(a.Height / 2.54);
 
@@ -15,24 +14,9 @@ csv()
   .then(preprocessData)
   .then((content) => {
     writePreprocessedData(content.finalData, "processed-height-data");
-    writePreprocessedData(content.fullDateSet, "full-date-set");
   });
 
 async function preprocessData(csvData) {
-  const sortedData = csvData.sort(
-    (a, b) => new Date(a.Date) - new Date(b.Date)
-  );
-
-  var dates = [
-    splitDate(sortedData[0].Date),
-    splitDate(sortedData[sortedData.length - 1].Date),
-  ];
-
-  let fullDateSet = getDatesBetween(
-    new Date(dates[0]).getTime(),
-    new Date(dates[dates.length - 1]).getTime()
-  );
-
   let mapIndexedByPlant = {};
   for (let recording of csvData) {
     if (!(recording.Name in mapIndexedByPlant)) {
@@ -47,17 +31,13 @@ async function preprocessData(csvData) {
   let mapWithBlankDays = {};
   for (let plantName in mapIndexedByPlant) {
     let plantRecordings = mapIndexedByPlant[plantName];
-    let paddedPlantRecordings = Array.from(fullDateSet).map((date) => {
-      let dateEntry = { date, value: null };
-      let format = (b) => new Date(b).toString();
-      for (let a = 0; a < plantRecordings.length; a++) {
-        if (format(plantRecordings[a].Date) === format(date)) {
-          return { ...dateEntry, value: standardizeUnits(plantRecordings[a]) };
-        }
-      }
-      return dateEntry;
-    });
-    mapWithBlankDays[plantName] = paddedPlantRecordings.map((a) => a.value);
+    let sortedByDates = plantRecordings.sort(
+      (a, b) => new Date(a.Date) - new Date(b.Date)
+    );
+
+    let dates = sortedByDates.map((a) => formatDate(a.Date));
+    let values = sortedByDates.map((a) => standardizeUnits(a));
+    mapWithBlankDays[plantName] = { dates, values };
   }
 
   // Now finally prepare the data the way c3.js expects
@@ -71,5 +51,5 @@ async function preprocessData(csvData) {
     });
   }
 
-  return { finalData, fullDateSet };
+  return { finalData };
 }

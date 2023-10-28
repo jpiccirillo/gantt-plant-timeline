@@ -45,9 +45,8 @@ export function ChartFactory(_data, { colors, xScale, margin, svgID }) {
         .style("text-anchor", "end");
     },
     data: {
-      x: "x",
-      xFormat: "%m/%d/%Y", // 'xFormat' can be used as custom format of 'x'
-      columns: _data,
+      ..._data,
+      xFormat: "%m/%d/%Y",
       colors,
       onmouseover: function (a) {
         if (getNode(a)) getNode(a)._tippy.show();
