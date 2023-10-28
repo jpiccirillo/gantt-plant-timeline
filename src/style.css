@@ -9,6 +9,16 @@
   margin-top: 10px;
 }
 
+#gantt-wrapper > div > .line-chart,
+#gantt-wrapper > div > .gantt-chart {
+  display: none;
+}
+
+.line-chart.active,
+.gantt-chart.active {
+  display: block !important;
+}
+
 @media only screen and (max-width: 500px) {
   #gantt-wrapper {
     grid-template-columns: 1fr;
