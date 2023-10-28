@@ -73,6 +73,11 @@ body {
   fill: rgb(150, 150, 150) !important;
 }
 
+.germinating ~ text,
+.dormant ~ text {
+  fill: rgb(100, 100, 100) !important;
+}
+
 .lemon .germinating ~ text,
 .papaya .germinating ~ text,
 .honeytangerine .germinating ~ text,
@@ -91,23 +96,6 @@ body {
 .etrog text,
 .turmeric text,
 .tomatillo text,
-.avocado .germinating ~ text,
-.mango .germinating ~ text,
-.blueberry .germinating ~ text,
-.tomatillo .germinating ~ text,
-.turmeric .germinating ~ text,
-.keylime .germinating ~ text,
-.guava .germinating ~ text,
-.turmeric .dormant ~ text,
-.guava .dormant ~ text,
-.habanero .dormant ~ text,
-.avocado .dormant ~ text,
-.habanero .germinating ~ text,
-.serranopepper .germinating ~ text,
-.serranopepper .dormant ~ text,
-.honeylocust .dormant ~ text,
-.honeylocust .germinating ~ text,
-.papaya .dormant ~ text,
 .papaya .planted ~ text {
   fill: rgb(100, 100, 100) !important;
 }
