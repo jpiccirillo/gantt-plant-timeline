@@ -15,8 +15,13 @@
   },
   "axis": {
     "y": {
-      "label": { "text": "Height (inches)", "position": "inner-top" }
+      "label": {
+        "text": "Height (inches)",
+        "position": "inner-top"
+      }
     },
-    "x": { "show": false }
+    "x": {
+      "show": false
+    }
   }
 }
