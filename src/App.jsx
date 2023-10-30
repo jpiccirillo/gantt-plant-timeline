@@ -95,18 +95,14 @@ function App() {
         activeView={dataViewNames[activeStep]}
       />
       <div id="gantt-wrapper">
-        <div>
+        <div className={"data-view"}>
           <div
-            className={`data-view line-chart ${
-              activeStep === 1 ? "active" : "hidden"
-            }`}
+            className={`line-chart ${activeStep === 1 ? "active" : "hidden"}`}
           >
             {viewMapping[dataViewNames[1]]}
           </div>
           <div
-            className={`data-view gantt-chart ${
-              activeStep === 0 ? "active" : "hidden"
-            }`}
+            className={`gantt-chart ${activeStep === 0 ? "active" : "hidden"}`}
           >
             {viewMapping[dataViewNames[0]]}
           </div>
