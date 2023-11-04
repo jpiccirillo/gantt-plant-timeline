@@ -10,6 +10,9 @@
     "left": 30,
     "bottom": 10
   },
+  "point": {
+    "show": false
+  },
   "axis": {
     "y": {
       "label": {
