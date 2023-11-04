@@ -1,7 +1,4 @@
 {
-  "line": {
-    "connectNull": true
-  },
   "tooltip": {
     "show": false,
     "grouped": false
