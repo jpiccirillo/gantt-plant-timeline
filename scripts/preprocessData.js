@@ -21,8 +21,29 @@ let dateLabelMap = {
   Undormant: "recovered",
 };
 
+const dateFields = Object.keys(dateLabelMap).filter(k => k.includes('date'))
+const sortDateFields = (entry) => {
+  return dateFields.map(keyName => entry[keyName])
+    .filter(Boolean)
+    .map(d => new Date(d))
+    .sort((a, b) => a < b ? -1 : 1)
+}
+
+console.log(dateFields)
 function preprocessData([originalData, dormancyData]) {
   return originalData
+    .sort((a, b) => {
+      return a.Name.localeCompare(b.Name, undefined, {
+        numeric: true,
+        sensitivity: 'base'
+      });
+    })
+    // .sort((a, b) => a.Name < b.Name ? -1 : 1)
+    .sort((a, b) => {
+      const earliestdateForA = sortDateFields(a)
+      const earliestdateForB = sortDateFields(b)
+      return earliestdateForA[0] < earliestdateForB[0] ? -1 : 1
+    })
     .map((originalEntry) => {
       originalEntry.dates = [];
       // now weave in dormancy data
