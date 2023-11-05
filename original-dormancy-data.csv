@@ -1,15 +1,15 @@
 Name,Date,Note
 Lemon 5,10/28/2022,Dormant
-Serrano pepper 1,11/9/2022,Dormant
+Serrano Pepper 1,11/9/2022,Dormant
 Mango 3,11/18/2022,Dormant
-Serrano pepper 2,11/20/2022,Dormant
-Serrano pepper 3,11/20/2022,Dormant
-Serrano pepper 4,11/29/2022,Dormant
-Habanero 8,12/1/2022,Dormant
-Habanero 9,12/1/2022,Dormant
-Habanero 16,12/1/2022,Dormant
-Habanero 17,12/1/2022,Dormant
-Habanero 18,12/1/2022,Dormant
+Serrano Pepper 2,11/20/2022,Dormant
+Serrano Pepper 3,11/20/2022,Dormant
+Serrano Pepper 4,11/29/2022,Dormant
+Habanero Pepper 8,12/1/2022,Dormant
+Habanero Pepper 9,12/1/2022,Dormant
+Habanero Pepper 16,12/1/2022,Dormant
+Habanero Pepper 17,12/1/2022,Dormant
+Habanero Pepper 18,12/1/2022,Dormant
 Mango 1,12/10/2022,Dormant
 Ginger 1,12/20/2022,Dormant
 Pomegranate 8,12/27/2022,Dormant
@@ -23,7 +23,7 @@ Mango 16,12/28/2022,Dormant
 Pomegranate 17,12/29/2022,Dormant
 Pomegranate 18,12/29/2022,Dormant
 Mango 1,1/3/2023,Undormant
-Habanero 11,1/4/2023,Dormant
+Habanero Pepper 11,1/4/2023,Dormant
 Pomegranate 5,1/5/2023,Dormant
 Pomegranate 7,1/5/2023,Dormant
 Avocado 5,1/8/2023,Dormant
@@ -35,7 +35,7 @@ Lemon 3,2/1/2023,Dormant
 Lemon 4,2/1/2023,Dormant
 Lemon 6,2/1/2023,Dormant
 Lemon 7,2/1/2023,Dormant
-Jalapeno 4,2/1/2023,Dormant
+Jalapeno Pepper 4,2/1/2023,Dormant
 Persimmon 2,2/1/2023,Dormant
 Persimmon 3,2/1/2023,Dormant
 Persimmon 4,2/1/2023,Dormant
@@ -53,27 +53,27 @@ Turmeric 2,4/1/2023,Dormant
 Lemon 14,4/1/2023,Dormant
 Turmeric 10,4/1/2023,Dormant
 Pomegranate 35,4/1/2023,Undormant
-Habanero 9,4/2/2023,Undormant
-Poblano pepper 11,4/8/2023,Dormant
-Poblano pepper 12,4/8/2023,Dormant
-Poblano pepper 13,4/8/2023,Dormant
-Poblano pepper 14,4/8/2023,Dormant
-Poblano pepper 16,4/8/2023,Dormant
-Poblano pepper 17,4/8/2023,Dormant
-Poblano pepper 18,4/8/2023,Dormant
+Habanero Pepper 9,4/2/2023,Undormant
+Poblano Pepper 11,4/8/2023,Dormant
+Poblano Pepper 12,4/8/2023,Dormant
+Poblano Pepper 13,4/8/2023,Dormant
+Poblano Pepper 14,4/8/2023,Dormant
+Poblano Pepper 16,4/8/2023,Dormant
+Poblano Pepper 17,4/8/2023,Dormant
+Poblano Pepper 18,4/8/2023,Dormant
 Turmeric 7,4/10/2023,Dormant
-Poblano pepper 1,4/15/2023,Dormant
+Poblano Pepper 1,4/15/2023,Dormant
 Lemon 6,4/15/2023,Undormant
 Lemon 7,4/15/2023,Undormant
 Avocado 7,4/23/2023,Dormant
-Serrano pepper 7,4/27/2023,Dormant
+Serrano Pepper 7,4/27/2023,Dormant
 Pink Lemon 3.5,5/8/2023,Dormant
 Pink Lemon 3,5/8/2023,Dormant
 Grapefruit 5.5,5/8/2023,Dormant
 Grapefruit 5,5/8/2023,Dormant
 Grapefruit 6,5/8/2023,Dormant
-Poblano pepper 2,5/10/2023,Dormant
-Habanero 9,5/15/2023,Dormant
+Poblano Pepper 2,5/10/2023,Dormant
+Habanero Pepper 9,5/15/2023,Dormant
 Anaheim Pepper 2,5/15/2023,Dormant
 Anaheim Pepper 3,5/15/2023,Dormant
 Anaheim Pepper 4,5/15/2023,Dormant
@@ -84,9 +84,9 @@ Avocado 7,5/20/2023,Undormant
 Avocado 6,5/22/2023,Dormant
 Jackfruit 6,5/22/2023,Dormant
 Key Lime 1,5/22/2023,Dormant
-Poblano pepper 1,5/28/2023,Undormant
+Poblano Pepper 1,5/28/2023,Undormant
 Lemon 14,5/30/2023,Undormant
-Poblano pepper 9,6/1/2023,Dormant
+Poblano Pepper 9,6/1/2023,Dormant
 Guava 10,6/1/2023,Dormant
 Guava 11,6/1/2023,Dormant
 Guava 12,6/1/2023,Dormant
@@ -96,12 +96,12 @@ Mango 30,6/4/2023,Dormant
 Mango 31,6/4/2023,Dormant
 Avocado 13,6/7/2023,Dormant
 Avocado 10,6/8/2023,Dormant
-Habanero 11,6/10/2023,Undormant
+Habanero Pepper 11,6/10/2023,Undormant
 Mango 29,6/11/2023,Dormant
 Avocado 11,6/13/2023,Undormant
 Avocado 20,6/15/2023,Dormant
 Anaheim Pepper 1,6/15/2023,Dormant
-Poblano pepper 9,6/15/2023,Undormant
+Poblano Pepper 9,6/15/2023,Undormant
 Lemon 3,6/16/2023,Undormant
 Lemon 4,6/16/2023,Undormant
 Lemon 12,6/16/2023,Undormant
@@ -109,7 +109,7 @@ Avocado 18,6/26/2023,Dormant
 Avocado 16,6/26/2023,Dormant
 Avocado 26,7/1/2023,Dormant
 Avocado 6,7/1/2023,Undormant
-Habanero 9,7/1/2023,Undormant
+Habanero Pepper 9,7/1/2023,Undormant
 Grapefruit 5,7/1/2023,Undormant
 Grapefruit 6,7/1/2023,Undormant
 Avocado 17,7/1/2023,Dormant
