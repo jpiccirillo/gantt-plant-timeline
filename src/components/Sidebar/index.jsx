@@ -6,10 +6,8 @@ import {
   ToggleButtonGroup,
 } from "@mui/material";
 import "./style.css";
-import data from "../../data/processed-data.json";
 import possibleStages from "../../data/possible-stages-data.json";
 import plantStagesData from "../../data/plant-stages-data.json";
-import dataByName from "../../data/organized-by-name.json";
 import dataBySpecies from "../../data/organized-by-species.json";
 import useIsMobile from "../../hooks/useIsMobile";
 import { dataViewNames } from "../../dataViews";
@@ -21,8 +19,6 @@ const Sidebar = ({
   onChoicesChanged,
   onDataViewChanged,
 }) => {
-  const [, setPlantSelections] = useState([]);
-  const [, setSpeciesSelections] = useState([]);
   const [currentDisplay, setCurrentDisplay] = useState(dataViewNames[0]);
   const [plantsMatchedBySpecies, setPlantsMatchedBySpecies] = useState([]);
   const [plantsMatchedByName, setPlantsMatchedByName] = useState([]);
@@ -36,16 +32,10 @@ const Sidebar = ({
   );
 
   const handlePlantDropdownChange = (e, chosenPlants) => {
-    // Map chosen plants to their objects in data
-    let matchingData = chosenPlants
-      .map((selected) => dataByName[selected.toLowerCase()])
-      .flat();
-
-    setPlantSelections(chosenPlants);
-    setPlantsMatchedByName(matchingData);
+    setPlantsMatchedByName(chosenPlants);
     // Combine plants matched by name, with any existing data matched by species
     onChoicesChanged([
-      ...matchingData,
+      ...chosenPlants,
       ...plantsMatchedBySpecies,
       ...plantsMatchedByStatus,
     ]);
@@ -56,7 +46,6 @@ const Sidebar = ({
       .map((selected) => dataBySpecies[selected.toLowerCase()])
       .flat();
 
-    setSpeciesSelections(chosenSpecies);
     setPlantsMatchedBySpecies(matchingData);
     // Combine plants matched by species, with any existing data matched by full name
     onChoicesChanged([
@@ -96,13 +85,9 @@ const Sidebar = ({
         })
         .map((a) => a[0]);
 
-      let matchingData = data.filter((entry) =>
-        applicablePlants.includes(entry.name)
-      );
-
-      setPlantsMatchedByStatus(matchingData);
+      setPlantsMatchedByStatus(applicablePlants);
       onChoicesChanged([
-        ...matchingData,
+        ...applicablePlants,
         ...plantsMatchedBySpecies,
         ...plantsMatchedByName,
       ]);

@@ -6,10 +6,15 @@ function generatePlantNameLookupMap() {
   let plantMap = {};
   for (let plantEntry of data) {
     const key = getSpeciesName(plantEntry.name).toLowerCase();
-    if (!plantMap[key]) plantMap[key] = [];
-    plantMap[key].push(plantEntry);
+    if (!plantMap[key]) plantMap[key] = new Set();
+    plantMap[key].add(plantEntry.name);
   }
-  return { plantMap };
+  return {
+    plantMap:  Object.entries(plantMap).reduce((a, [name, value]) => { 
+      a[name] = Array.from(value)
+      return a;
+    }, {})
+  }
 }
 
 const { plantMap } = generatePlantNameLookupMap();

@@ -42,21 +42,16 @@ function App() {
     determineSpeciesDropdown(dataBySpecies, lineGraphMode)
   );
 
-  const handleCheckboxChange = (matchingData) => {
-    const matchingPlants = !matchingData ? data : matchingData;
-
-    const chartData = matchingPlants.length ? matchingPlants : data;
-    let uniquePlantNames = Array.from(
-      new Set(matchingPlants.map((a) => a.name))
-    );
+  const handleCheckboxChange = (nonUniqueNameList) => {
+    const uniqueNameList = new Set(nonUniqueNameList);
+    let chartData = uniqueNameList.size
+      ? data.filter((entry) => uniqueNameList.has(entry.name))
+      : data;
 
     setParentData(chartData);
     setHeightData(
-      uniquePlantNames.length
-        ? originalHeightData.filter(
-            (entry) =>
-              uniquePlantNames.includes(entry.title) || entry.title === "x"
-          )
+      uniqueNameList.size
+        ? originalHeightData.filter((entry) => uniqueNameList.has(entry.title))
         : originalHeightData
     );
   };
