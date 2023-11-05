@@ -9,7 +9,10 @@ Promise.all([
   csv().fromFile(dormancyDataPath).then(convertToObject).then(findDuplicates),
 ])
   .then(preprocessData)
-  .then((content) => writePreprocessedData(content, "processed-data"));
+  .then(([buckets, stillAlive]) => {
+    writePreprocessedData(buckets, "processed-data");
+    writePreprocessedData(stillAlive, "still-alive-data");
+  });
 
 let dateLabelMap = {
   "Departure date": "departed",
@@ -29,16 +32,14 @@ const sortDateFields = (entry) => {
     .sort((a, b) => a < b ? -1 : 1)
 }
 
-console.log(dateFields)
 function preprocessData([originalData, dormancyData]) {
-  return originalData
+  const formattedData = originalData
     .sort((a, b) => {
       return a.Name.localeCompare(b.Name, undefined, {
         numeric: true,
         sensitivity: 'base'
       });
     })
-    // .sort((a, b) => a.Name < b.Name ? -1 : 1)
     .sort((a, b) => {
       const earliestdateForA = sortDateFields(a)
       const earliestdateForB = sortDateFields(b)
@@ -61,8 +62,13 @@ function preprocessData([originalData, dormancyData]) {
       return originalEntry;
     })
     .map(format)
-    .map(expandEntries)
-    .flat();
+
+  const buckets = formattedData.map(expandEntries).flat();
+
+  const stillAlive = formattedData
+    .filter((a) => a["Departure date"] === "")
+    .map((a) => a.Name);
+  return [buckets, stillAlive];
 }
 
 function format(entry) {

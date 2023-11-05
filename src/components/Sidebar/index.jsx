@@ -9,6 +9,7 @@ import "./style.css";
 import possibleStages from "../../data/possible-stages-data.json";
 import plantStagesData from "../../data/plant-stages-data.json";
 import dataBySpecies from "../../data/organized-by-species.json";
+import stillAlivePlants from "../../data/still-alive-data.json";
 import useIsMobile from "../../hooks/useIsMobile";
 import { dataViewNames } from "../../dataViews";
 import MuiltilineChip from "../MultilineChip";
@@ -23,13 +24,18 @@ const Sidebar = ({
   const [plantsMatchedBySpecies, setPlantsMatchedBySpecies] = useState([]);
   const [plantsMatchedByName, setPlantsMatchedByName] = useState([]);
   const [plantsMatchedByStatus, setPlantsMatchedByStatus] = useState([]);
-  const [checkboxes, setCheckboxes] = useState(
-    possibleStages.map((stage) => ({
+  const [checkboxes, setCheckboxes] = useState([
+    ...possibleStages.map((stage) => ({
       id: stage,
       checked: false,
       label: stage,
-    }))
-  );
+    })),
+    {
+      id: "sprouted-or-recovered",
+      checked: false,
+      label: "alive",
+    },
+  ]);
 
   const handlePlantDropdownChange = (e, chosenPlants) => {
     setPlantsMatchedByName(chosenPlants);
@@ -79,11 +85,18 @@ const Sidebar = ({
         .map((a) => a.id);
 
       // Now find all data for which the current descriptor is the last in the plant's status list
-      const applicablePlants = Object.entries(plantStagesData)
-        .filter(([, stages]) => {
-          return stages[stages.length - 1] === currentDescriptors[0];
-        })
-        .map((a) => a[0]);
+      let applicablePlants = [];
+      if (currentDescriptors.length) {
+        applicablePlants =
+          name !== "sprouted-or-recovered"
+            ? Object.entries(plantStagesData)
+                .filter(([, stages]) => {
+                  const last = stages[stages.length - 1];
+                  return last === currentDescriptors[0];
+                })
+                .map((a) => a[0])
+            : stillAlivePlants;
+      }
 
       setPlantsMatchedByStatus(applicablePlants);
       onChoicesChanged([
@@ -163,7 +176,7 @@ const Sidebar = ({
         </div>
       </div>
       <div>
-        <h4>Show plants whose last stage was:</h4>
+        <h4>Show plants who are:</h4>
         {checkboxes.map((checkbox) => (
           <span className="label-input" key={`span-${checkbox.id}`}>
             <label key={checkbox.id}>
