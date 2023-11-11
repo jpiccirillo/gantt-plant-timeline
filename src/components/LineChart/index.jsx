@@ -34,7 +34,7 @@ function chart(processedData) {
   return { gantt: gantt };
 }
 
-function LineChart({ data, isActive }) {
+function LineChart({ data }) {
   let [g, setG] = useState({});
   const gantIsSetup = useRef(false);
 

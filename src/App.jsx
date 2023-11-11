@@ -68,21 +68,6 @@ function App() {
     );
   }, [activeStep]);
 
-  const viewMapping = {
-    [dataViewNames[0]]: (
-      <GanttChart
-        data={parentData}
-        isActive={dataViewNames[activeStep] === dataViewNames[0]}
-      />
-    ),
-    [dataViewNames[1]]: (
-      <LineChart
-        data={heightData}
-        isActive={dataViewNames[activeStep] === dataViewNames[1]}
-      />
-    ),
-  };
-
   return (
     <div className="App">
       <LegendOverview
@@ -90,16 +75,16 @@ function App() {
         activeView={dataViewNames[activeStep]}
       />
       <div id="gantt-wrapper">
-        <div className={"data-view"}>
+        <div className={"data-view"} id='parentId'>
           <div
             className={`line-chart ${activeStep === 1 ? "active" : "hidden"}`}
           >
-            {viewMapping[dataViewNames[1]]}
+            <LineChart data={heightData} />
           </div>
           <div
             className={`gantt-chart ${activeStep === 0 ? "active" : "hidden"}`}
           >
-            {viewMapping[dataViewNames[0]]}
+            <GanttChart data={parentData} />
           </div>
         </div>
         <Sidebar

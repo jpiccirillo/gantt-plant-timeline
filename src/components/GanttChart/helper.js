@@ -258,7 +258,7 @@ export function ChartFactory(
       return height;
     },
     _width: () => {
-      width = getPxWidth(margin, svgID);
+      width = getPxWidth(margin, 'parentId');
       updateBars(_data);
       return width;
     },

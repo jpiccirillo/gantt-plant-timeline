@@ -12,24 +12,6 @@ import config from "../../data/chart-config.json";
 import eventLabelMap from "../../data/event-map-config.json";
 import { useEffect, useRef, useState } from "react";
 
-const referenceLines = [
-  {
-    start: new Date(2023, 4, 2),
-    label: "Some plants stolen",
-    color: "indianred",
-  },
-  {
-    start: new Date(2023, 1, 20),
-    label: "Threw plants away when moving",
-    color: "indianred",
-  },
-  {
-    start: new Date(2023, 1, 19),
-    label: "",
-    color: "indianred",
-  },
-];
-
 const DESIRED_UPDATE_TIMEOUT = 100;
 
 function chart(processedData, config) {
@@ -57,14 +39,14 @@ function chart(processedData, config) {
     // layout
     margin: getMargin(),
     svgID: "gantt",
-    referenceLines,
+    referenceLines: [],
     ...config,
   });
 
   return { gantt: gantt };
 }
 
-function GanttChart({ data, isActive }) {
+function GanttChart({ data }) {
   let [g, setG] = useState({});
   const gantIsSetup = useRef(false);
 
@@ -73,7 +55,7 @@ function GanttChart({ data, isActive }) {
       gantIsSetup.current = true;
       let _g = chart(data, config);
       registerResize(() => {
-        isActive && _g.gantt._width();
+        _g.gantt._width();
       });
       setG(_g);
     }
@@ -82,7 +64,6 @@ function GanttChart({ data, isActive }) {
 
   useEffect(() => {
     if (g.gantt) {
-      g.gantt._update().referenceLines([], DESIRED_UPDATE_TIMEOUT);
       g.gantt._update().bars(data, DESIRED_UPDATE_TIMEOUT);
     }
   }, [data, g]);
