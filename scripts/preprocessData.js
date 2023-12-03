@@ -1,12 +1,15 @@
 const csv = require("csvtojson");
 const eventNames = ["departed", "planted", "inwater"];
 const csvFilePath = "./original-data.csv";
+const heightFilePath = "./original-height-data.csv"
 const dormancyDataPath = "./original-dormancy-data.csv";
 const { writePreprocessedData, getSpeciesDisplayName } = require("./utils");
+const MIN_DISPLAYED_PLANT_LIFESPAN = 60; // In days - plants w lifespans shorter than this hidden
 
 Promise.all([
   csv().fromFile(csvFilePath).then(ensureMinimumFieldsExist),
   csv().fromFile(dormancyDataPath).then(convertToObject).then(findDuplicates),
+  csv().fromFile(heightFilePath).then(convertToObject)
 ])
   .then(preprocessData)
   .then(([buckets, stillAlive]) => {
@@ -32,7 +35,7 @@ const sortDateFields = (entry) => {
     .sort((a, b) => a < b ? -1 : 1)
 }
 
-function preprocessData([originalData, dormancyData]) {
+function preprocessData([originalData, dormancyData, heightData]) {
   const formattedData = originalData
     .sort((a, b) => {
       return a.Name.localeCompare(b.Name, undefined, {
@@ -62,6 +65,18 @@ function preprocessData([originalData, dormancyData]) {
       return originalEntry;
     })
     .map(format)
+    .filter((a) => {
+      // Select only plants whose entire lifespan is/was more than X days 
+      const first = a.dates[0].date;
+      const last = a.dates[a.dates.length - 1].date
+      const diffInMs = new Date(last) - new Date(first)
+      const diffInDays = diffInMs / (1000 * 60 * 60 * 24);
+
+      // and those for whom there is at least one measurement
+      // This ensures data compatibility when switching btwn timeline and height charts
+      const hasHeightEntry = heightData[a.name]
+      return diffInDays > MIN_DISPLAYED_PLANT_LIFESPAN || hasHeightEntry;
+    })
 
   const buckets = formattedData.map(expandEntries).flat();
 
@@ -77,7 +92,10 @@ function format(entry) {
   Object.entries(dateLabelMap).forEach(([key, value]) => {
     if (entry[key] && entry[key].trim())
       entry.dates.push({ stage: value, date: new Date(entry[key]) });
-  });
+  })
+
+  entry.dates.sort((a, b) => a.date < b.date ? -1 : 1)
+
   return entry;
 }
 
@@ -139,9 +157,7 @@ function expandEntries({ name, plantType, dates }) {
     return a;
   }, {});
 
-  let sortedArray = dates
-    .sort((a, b) => a.date - b.date)
-    .filter(({ stage }) => !eventNames.includes(stage));
+  let sortedArray = dates.filter(({ stage }) => !eventNames.includes(stage));
 
   // Edge case for when germinating + dormant are on same day (transplanted from soil elsewhere)
   let germinatingEntry = sortedArray.find((e) => e.stage === "germinating");
