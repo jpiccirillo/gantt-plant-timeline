@@ -1,16 +1,24 @@
 Name,Date,Note
+Papaya 1,10/23/2022,Dormant
 Lemon 5,10/28/2022,Dormant
 Serrano Pepper 1,11/9/2022,Dormant
+Papaya 2,11/16/2022,Dormant
+Papaya 3,11/16/2022,Dormant
+Papaya 4,11/16/2022,Dormant
 Mango 3,11/18/2022,Dormant
 Serrano Pepper 2,11/20/2022,Dormant
 Serrano Pepper 3,11/20/2022,Dormant
 Serrano Pepper 4,11/29/2022,Dormant
+Papaya 5,11/30/2022,Dormant
 Habanero Pepper 8,12/1/2022,Dormant
 Habanero Pepper 9,12/1/2022,Dormant
 Habanero Pepper 16,12/1/2022,Dormant
 Habanero Pepper 17,12/1/2022,Dormant
 Habanero Pepper 18,12/1/2022,Dormant
+Papaya 13,12/1/2022,Dormant
 Mango 1,12/10/2022,Dormant
+Papaya 9,12/10/2022,Dormant
+Papaya 7,12/10/2022,Dormant
 Ginger 1,12/20/2022,Dormant
 Pomegranate 8,12/27/2022,Dormant
 Pomegranate 9,12/27/2022,Dormant
@@ -115,6 +123,7 @@ Grapefruit 6,7/1/2023,Undormant
 Avocado 17,7/1/2023,Dormant
 Pomegranate 36,7/2/2023,Dormant
 Pomegranate 37,7/2/2023,Dormant
+Desert Peach 1,7/2/2023,Dormant
 Pomegranate 36,7/10/2023,Undormant
 Guava 20,7/11/2023,Dormant
 Pomegranate 37,7/11/2023,Undormant
@@ -146,6 +155,7 @@ Pomegranate 31,9/10/2023,Dormant
 Pomegranate 35,9/10/2023,Dormant
 Pomegranate 16,9/10/2023,Undormant
 Pineapple 4,9/10/2023,Undormant
+Pomegranate 15,9/10/2023,Undormant
 Persimmon 7,9/13/2023,Dormant
 Palo Verde 4,9/13/2023,Dormant
 Avocado 18,9/15/2023,Undormant
@@ -164,24 +174,37 @@ Persimmon 1,10/1/2023,Dormant
 Persimmon 7,10/3/2023,Dormant
 Persimmon 7,10/10/2023,Undormant
 Honey Locust 4,10/12/2023,Undormant
-Pomegranate 15,9/10/2023,Undormant
-Pomegranate 15,10/15/2023,Dormant
-Pomegranate 16,10/15/2023,Dormant
-Pomegranate 3,10/15/2023,Dormant
-Pomegranate 15,11/4/2023,Undormant
-Pomegranate 29,10/15/2023,Dormant
-Desert Peach 1,7/2/2023,Dormant
-Papaya 1,10/23/2022,Dormant
-Papaya 2,11/16/2022,Dormant
-Papaya 3,11/16/2022,Dormant
-Papaya 4,11/16/2022,Dormant
-Papaya 5,11/30/2022,Dormant
-Papaya 13,12/1/2022,Dormant
-Papaya 9,12/10/2022,Dormant
-Papaya 7,12/10/2022,Dormant
-Honey Locust 9,11/20/2023,Dormant
-Texas Persimmon 9,11/20/2023,Dormant
-Tomatillo 12,11/22/2023,Dormant
 Turmeric 4,10/14/2023,Dormant
 Turmeric 6,10/14/2023,Dormant
 Turmeric 5,10/14/2023,Dormant
+Pomegranate 15,10/15/2023,Dormant
+Pomegranate 16,10/15/2023,Dormant
+Pomegranate 3,10/15/2023,Dormant
+Pomegranate 29,10/15/2023,Dormant
+Honey Locust 6,10/29/2023,Dormant
+Pomegranate 15,11/4/2023,Undormant
+Honey Locust 6,11/18/2023,Undormant
+Honey Locust 9,11/20/2023,Dormant
+Texas Persimmon 9,11/20/2023,Dormant
+Tomatillo 12,11/22/2023,Dormant
+Rosemary 6,12/3/2023,Dormant
+Rosemary 7,12/3/2023,Dormant
+Rosemary 8,12/3/2023,Dormant
+Rosemary 9,12/3/2023,Dormant
+Pomegranate 16,12/5/2023,Undormant
+Rosemary 2,12/5/2023,Dormant
+Rosemary 3,12/5/2023,Dormant
+Rosemary 4,12/5/2023,Dormant
+Rosemary 5,12/5/2023,Dormant
+Rosemary 14,12/5/2023,Dormant
+Rosemary 15,12/5/2023,Dormant
+Rosemary 16,12/5/2023,Dormant
+Rosemary 17,12/5/2023,Dormant
+Rosemary 18,12/5/2023,Dormant
+Rosemary 19,12/5/2023,Dormant
+Rosemary 20,12/5/2023,Dormant
+Rosemary 21,12/5/2023,Dormant
+Guava 7,12/6/2023,Dormant
+Etrog 6,12/3/2023,Dormant
+Grapefruit 1,11/1/2023,Dormant
+Grapefruit 1.5,11/1/2023,Dormant
