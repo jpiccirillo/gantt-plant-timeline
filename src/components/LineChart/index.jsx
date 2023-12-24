@@ -8,19 +8,19 @@ import "./style.css";
 function formatData(d) {
   return {
     xs: d.reduce((a, i, index) => {
-      a[i.title] = index;
+      a[i.name] = index;
       return a;
     }, {}),
     columns: [
       ...d.map((a, i) => [i, ...a.data.dates.map((a) => new Date(a))]),
-      ...d.map((a, i) => [a.title, ...a.data.values]),
+      ...d.map((a, i) => [a.name, ...a.data.values]),
     ],
   };
 }
 
 function chart(processedData) {
   const colors = processedData.reduce((agg, plant) => {
-    agg[plant.title] = cm(plant.species);
+    agg[plant.name] = cm(plant.species);
     return agg;
   }, {});
 

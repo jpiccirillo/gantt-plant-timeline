@@ -15,7 +15,7 @@ import { dataViewNames } from "./dataViews";
 
 function determinePlantDropdown(_dataByName, lineGraphMode) {
   let options = lineGraphMode
-    ? originalHeightData.map((a) => a.title)
+    ? originalHeightData.map((a) => a.name)
     : Object.keys(_dataByName);
 
   return options.map(toTitleCase);
@@ -44,15 +44,11 @@ function App() {
 
   const handleCheckboxChange = (nonUniqueNameList) => {
     const uniqueNameList = new Set(nonUniqueNameList);
-    let chartData = uniqueNameList.size
-      ? data.filter((entry) => uniqueNameList.has(entry.name))
-      : data;
+    const cb = (entry) => uniqueNameList.has(entry.name);
 
-    setParentData(chartData);
+    setParentData(uniqueNameList.size ? data.filter(cb) : data);
     setHeightData(
-      uniqueNameList.size
-        ? originalHeightData.filter((entry) => uniqueNameList.has(entry.title))
-        : originalHeightData
+      uniqueNameList.size ? originalHeightData.filter(cb) : originalHeightData
     );
   };
 
@@ -75,7 +71,7 @@ function App() {
         activeView={dataViewNames[activeStep]}
       />
       <div id="gantt-wrapper">
-        <div className={"data-view"} id='parentId'>
+        <div className={"data-view"} id="parentId">
           <div
             className={`line-chart ${activeStep === 1 ? "active" : "hidden"}`}
           >

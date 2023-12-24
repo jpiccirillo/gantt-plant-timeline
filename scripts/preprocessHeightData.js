@@ -45,7 +45,7 @@ async function preprocessData(csvData) {
   for (let plantName in mapWithBlankDays) {
     let data = mapWithBlankDays[plantName];
     finalData.push({
-      title: plantName,
+      name: plantName,
       species: getSpeciesDisplayName(plantName),
       data,
     });
