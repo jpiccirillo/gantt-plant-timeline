@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import {
   Autocomplete,
   TextField,
@@ -13,6 +13,7 @@ import stillAlivePlants from "../../data/still-alive-data.json";
 import useIsMobile from "../../hooks/useIsMobile";
 import { dataViewNames } from "../../dataViews";
 import MuiltilineChip from "../MultilineChip";
+import { getPlantsFromURL, setUrlBarBasedOnName } from "../../utils/url";
 
 const Sidebar = ({
   plantDropdownOptions,
@@ -37,8 +38,13 @@ const Sidebar = ({
     },
   ]);
 
+  useEffect(() => {
+    setPlantsMatchedByName(getPlantsFromURL());
+  }, []);
+
   const handlePlantDropdownChange = (e, chosenPlants) => {
     setPlantsMatchedByName(chosenPlants);
+    setUrlBarBasedOnName(chosenPlants);
     // Combine plants matched by name, with any existing data matched by species
     onChoicesChanged([
       ...chosenPlants,
@@ -115,6 +121,8 @@ const Sidebar = ({
 
   const isMobile = useIsMobile();
 
+  const selectedValues = useMemo(() => plantsMatchedByName, [plantsMatchedByName]);
+
   return (
     <div className="sidebar">
       <ToggleButtonGroup
@@ -138,6 +146,7 @@ const Sidebar = ({
             multiple
             fullWidth
             size="small"
+            value={selectedValues}
             onChange={handlePlantDropdownChange}
             options={plantDropdownOptions}
             renderTags={(value, getTagProps) => (

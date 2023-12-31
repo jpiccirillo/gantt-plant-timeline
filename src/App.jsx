@@ -12,6 +12,7 @@ import "./style.css";
 import "tippy.js/dist/tippy.css";
 import { toTitleCase } from "./utils";
 import { dataViewNames } from "./dataViews";
+import { getPlantsFromURL} from "./utils/url"
 
 function determinePlantDropdown(_dataByName, lineGraphMode) {
   let options = lineGraphMode
@@ -29,10 +30,15 @@ function determineSpeciesDropdown(_dataBySpecies, lineGraphMode) {
   return Array.from(new Set(options.map(toTitleCase)));
 }
 
+function withUrlChoices(a) {
+  const urlChoices = getPlantsFromURL();
+  return urlChoices.length ? a.filter((entry) => urlChoices.includes(entry.name)) : a;
+}
+
 function App() {
   let defaultDataViewIndex = 0;
-  let [parentData, setParentData] = useState(data);
-  let [heightData, setHeightData] = useState(originalHeightData);
+  let [parentData, setParentData] = useState(withUrlChoices(data));
+  let [heightData, setHeightData] = useState(withUrlChoices(originalHeightData));
   const [activeStep, setActiveStep] = useState(defaultDataViewIndex);
   let lineGraphMode = dataViewNames[activeStep] === dataViewNames[1];
   let [plantDropdownOptions, setPlantDropdownOptions] = useState(
