@@ -13,7 +13,7 @@ import stillAlivePlants from "../../data/still-alive-data.json";
 import useIsMobile from "../../hooks/useIsMobile";
 import { dataViewNames } from "../../dataViews";
 import MuiltilineChip from "../MultilineChip";
-import { getPlantsFromURL, setUrlBarBasedOnName } from "../../utils/url";
+import { getPlantsFromURL } from "../../utils/url";
 
 const Sidebar = ({
   plantDropdownOptions,
@@ -44,7 +44,6 @@ const Sidebar = ({
 
   const handlePlantDropdownChange = (e, chosenPlants) => {
     setPlantsMatchedByName(chosenPlants);
-    setUrlBarBasedOnName(chosenPlants);
     // Combine plants matched by name, with any existing data matched by species
     onChoicesChanged([
       ...chosenPlants,

@@ -12,7 +12,7 @@ import "./style.css";
 import "tippy.js/dist/tippy.css";
 import { toTitleCase } from "./utils";
 import { dataViewNames } from "./dataViews";
-import { getPlantsFromURL} from "./utils/url"
+import { getPlantsFromURL, setUrlBarBasedOnName } from "./utils/url";
 
 function determinePlantDropdown(_dataByName, lineGraphMode) {
   let options = lineGraphMode
@@ -53,6 +53,8 @@ function App() {
     const cb = (entry) => uniqueNameList.has(entry.name);
 
     setParentData(uniqueNameList.size ? data.filter(cb) : data);
+
+    setUrlBarBasedOnName(Array.from(uniqueNameList));
     setHeightData(
       uniqueNameList.size ? originalHeightData.filter(cb) : originalHeightData
     );

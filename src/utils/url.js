@@ -22,9 +22,9 @@ const convertFromURLName = (name) => {
 
 const getPlantTitlesFromUrlSafeNames = (arr) => {
     // filter url names to ensure they're even valid plants
-    return arr
+    return Array.from(new Set(arr
         .filter((name) => name.replace(/[ 0-9]/g, "") in joinedSpeciesNameMap)
-        .map(convertFromURLName);
+        .map(convertFromURLName)));
 };
 
 export function getPlantsFromURL() {
@@ -45,3 +45,4 @@ export function setUrlBarBasedOnName(newPlants) {
         window.history.pushState({ path: newURL.href }, "", newURL.href);
     }
 }
+

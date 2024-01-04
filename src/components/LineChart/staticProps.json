@@ -15,6 +15,7 @@
   },
   "axis": {
     "y": {
+      "padding": { "bottom": 1 },
       "label": {
         "text": "Height (inches)",
         "position": "inner-top"
