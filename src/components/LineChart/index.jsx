@@ -2,6 +2,7 @@ import * as d3 from "d3";
 import { ChartFactory, setUpTooltips } from "./helper";
 import { useEffect, useRef, useState } from "react";
 import { registerResize, cm } from "../../utils";
+import originalHeightData from "../../data/processed-height-data.json";
 import "./c3.css";
 import "./style.css";
 
@@ -19,7 +20,7 @@ function formatData(d) {
 }
 
 function chart(processedData) {
-  const colors = processedData.reduce((agg, plant) => {
+  const colors = originalHeightData.reduce((agg, plant) => {
     agg[plant.name] = cm(plant.species);
     return agg;
   }, {});
