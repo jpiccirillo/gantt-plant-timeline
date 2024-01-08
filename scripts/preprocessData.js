@@ -68,7 +68,8 @@ function preprocessData([originalData, dormancyData, heightData]) {
     .filter((a) => {
       // Select only plants whose entire lifespan is/was more than X days 
       const first = a.dates[0].date;
-      const last = a.dates[a.dates.length - 1].stage === 'departed' ? a.dates[a.dates.length - 1].date : new Date()
+      const departedEntry = a.dates.find(d => d.stage === 'departed');
+      const last = departedEntry ? departedEntry.date : new Date()
       const diffInMs = new Date(last) - new Date(first)
       const diffInDays = diffInMs / (1000 * 60 * 60 * 24);
 
