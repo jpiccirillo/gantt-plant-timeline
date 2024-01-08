@@ -212,5 +212,5 @@ function expandEntries({ name, plantType, dates }) {
     }
   }
 
-  return buckets;
+  return buckets.filter(({ start, end }) =>  (start && end) ? start.toString() !== end.toString() : true)
 }
