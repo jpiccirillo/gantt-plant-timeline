@@ -112,7 +112,7 @@ export function ChartFactory(
 
     // Update the x domain
     x.domain(xDomainData);
-    if (!isMobile()) x.nice();
+    // if (!isMobile()) x.nice();
 
     // Map our _data to swim lanes
     const data = layout(_data, {
