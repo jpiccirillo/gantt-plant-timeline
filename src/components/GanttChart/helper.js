@@ -9,7 +9,6 @@ import {
   eventGroupUtils,
   barGroupUtils,
   laneGroupUtils,
-  isMobile,
   getPxWidth,
   longMonthNames,
 } from "../../utils";
