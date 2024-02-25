@@ -32,6 +32,7 @@
     "preprocess-for-name": "node ./scripts/organizeByPlantName.js",
     "preprocess-for-species": "node ./scripts/organizeBySpecies.js",
     "preprocess-height-data": "node ./scripts/preprocessHeightData.js",
+    "grab-files": "node ./scripts/grabFiles.js",
     "preprocess-data": "node ./scripts/preprocessData.js"
   },
   "eslintConfig": {
