@@ -79,6 +79,7 @@ body {
 }
 
 .lemon .germinating ~ text,
+.magnolia .germinating ~ text,
 .papaya .germinating ~ text,
 .honeytangerine .germinating ~ text,
 .persimmon .germinating ~ text,
@@ -94,8 +95,10 @@ body {
 .lemon text,
 .pinklemon text,
 .etrog text,
+.magnolia text,
 .turmeric text,
 .tomatillo text,
+.honeytangerine text,
 .papaya .planted ~ text {
   fill: rgb(100, 100, 100) !important;
 }
