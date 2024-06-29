@@ -79,6 +79,8 @@ body {
 }
 
 .lemon .germinating ~ text,
+.basil .germinating ~ text,
+.africanmilkplant .germinating ~ text,
 .magnolia .germinating ~ text,
 .papaya .germinating ~ text,
 .honeytangerine .germinating ~ text,
@@ -93,6 +95,8 @@ body {
 }
 
 .lemon text,
+.basil text,
+.banana text,
 .pinklemon text,
 .etrog text,
 .magnolia text,
