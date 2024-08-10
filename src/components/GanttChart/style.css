@@ -79,6 +79,8 @@ body {
 }
 
 .lemon .germinating ~ text,
+.corn .germinating ~ text,
+.loofahgourd .germinating ~ text,
 .basil .germinating ~ text,
 .africanmilkplant .germinating ~ text,
 .magnolia .germinating ~ text,
@@ -95,6 +97,8 @@ body {
 }
 
 .lemon text,
+.loofahgourd text,
+.corn text,
 .basil text,
 .banana text,
 .pinklemon text,
